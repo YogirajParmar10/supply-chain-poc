@@ -1,0 +1,21 @@
+                Python Generators
+                      │
+          Generate CSV files
+                      │
+                      ▼
+              data/
+                ├── erp/
+                ├── wms/
+                ├── mes/
+                ├── supplier/
+                ├── pos/
+                └── external/
+                      │
+                      ▼
+            Databricks Auto Loader
+                      │
+                 Bronze Tables
+                      │
+                 Silver Tables
+                      │
+                  Gold Tables
