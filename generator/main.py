@@ -8,7 +8,9 @@ from generator.master import (
     generate_suppliers,
     generate_warehouses,
 )
+from generator.transactional.purchase_orders import generate_purchase_orders
 from generator.utils.csv_export import write_csv
+from generator.utils.master_data import load_materials, load_suppliers
 from generator.utils.rng import create_rng
 
 
@@ -35,13 +37,33 @@ def generate_master_data(config: GeneratorConfig | None = None) -> dict[str, Pat
     return written_paths
 
 
+def generate_purchase_order_data(config: GeneratorConfig | None = None) -> Path:
+    config = config or GeneratorConfig()
+    rng = create_rng(config.seed)
+
+    materials = load_materials(config.erp_output_dir)
+    suppliers = load_suppliers(config.erp_output_dir)
+    purchase_orders = generate_purchase_orders(
+        materials,
+        suppliers,
+        config.purchase_orders,
+        rng,
+    )
+
+    path = config.erp_output_dir / "purchase_orders.csv"
+    write_csv(purchase_orders, path)
+    return path
+
+
 def main() -> None:
     config = GeneratorConfig()
     written_paths = generate_master_data(config)
+    purchase_orders_path = generate_purchase_order_data(config)
 
-    print(f"Generated master data for {config.company_name}")
+    print(f"Generated data for {config.company_name}")
     for filename, path in written_paths.items():
         print(f"  - {path}")
+    print(f"  - {purchase_orders_path}")
 
 
 if __name__ == "__main__":
