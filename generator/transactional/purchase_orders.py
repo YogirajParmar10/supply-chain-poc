@@ -1,9 +1,11 @@
 from datetime import date, timedelta
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from generator.config.settings import PurchaseOrderSettings
+from generator.utils.csv_export import write_csv
 from generator.utils.ids import format_id
 
 QUANTITY_RANGES: tuple[tuple[int, int], ...] = (
@@ -65,8 +67,8 @@ def generate_purchase_orders(
 
     order_dates = _generate_order_dates(
         settings.count,
-        settings.start_date,
-        settings.end_date,
+        settings.resolved_start_date,
+        settings.resolved_end_date,
         rng,
     )
     lead_times = rng.integers(
@@ -96,3 +98,22 @@ def generate_purchase_orders(
         )
 
     return pd.DataFrame(rows)
+
+
+def purchase_order_batch_filename(order_date: date) -> str:
+    return f"purchase_orders_{order_date.strftime('%Y%m%d')}.csv"
+
+
+def write_purchase_order_batches(purchase_orders: pd.DataFrame, output_dir: Path) -> list[Path]:
+    if purchase_orders.empty:
+        return []
+
+    grouped_orders = purchase_orders.groupby("order_date", sort=True)
+    written_paths: list[Path] = []
+    for order_date, daily_orders in grouped_orders:
+        filename = purchase_order_batch_filename(date.fromisoformat(str(order_date)))
+        path = output_dir / filename
+        write_csv(daily_orders.reset_index(drop=True), path)
+        written_paths.append(path)
+
+    return written_paths
