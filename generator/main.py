@@ -12,8 +12,12 @@ from generator.transactional.purchase_orders import (
     generate_purchase_orders,
     write_purchase_order_batches,
 )
+from generator.transactional.sales_orders import (
+    generate_sales_orders,
+    write_sales_order_batches,
+)
 from generator.utils.csv_export import write_csv
-from generator.utils.master_data import load_materials, load_suppliers
+from generator.utils.master_data import load_customers, load_materials, load_suppliers
 from generator.utils.rng import create_rng
 
 
@@ -56,15 +60,34 @@ def generate_purchase_order_data(config: GeneratorConfig | None = None) -> list[
     return write_purchase_order_batches(purchase_orders, config.erp_output_dir)
 
 
+def generate_sales_order_data(config: GeneratorConfig | None = None) -> list[Path]:
+    config = config or GeneratorConfig()
+    rng = create_rng(config.seed)
+
+    materials = load_materials(config.erp_output_dir)
+    customers = load_customers(config.erp_output_dir)
+    sales_orders = generate_sales_orders(
+        materials,
+        customers,
+        config.sales_orders,
+        rng,
+    )
+
+    return write_sales_order_batches(sales_orders, config.erp_sales_orders_output_dir)
+
+
 def main() -> None:
     config = GeneratorConfig()
     written_paths = generate_master_data(config)
     purchase_order_paths = generate_purchase_order_data(config)
+    sales_order_paths = generate_sales_order_data(config)
 
     print(f"Generated data for {config.company_name}")
     for filename, path in written_paths.items():
         print(f"  - {path}")
     for path in purchase_order_paths:
+        print(f"  - {path}")
+    for path in sales_order_paths:
         print(f"  - {path}")
 
 
