@@ -32,6 +32,8 @@ def generate_sales_orders(
     settings: SalesOrderSettings,
     rng: np.random.Generator,
     noise_settings: NoiseSettings | None = None,
+    *,
+    id_start: int = 1,
 ) -> pd.DataFrame:
     material_ids = _finished_good_ids(materials)
     customer_ids = _customer_ids(customers)
@@ -59,7 +61,7 @@ def generate_sales_orders(
         requested_delivery_date = order_date + timedelta(days=int(lead_times[index]))
         rows.append(
             {
-                "sales_order_id": format_id("SO", index + 1, 6),
+                "sales_order_id": format_id("SO", id_start + index, 6),
                 "order_date": order_date.isoformat(),
                 "customer_id": selected_customers[index],
                 "material_id": selected_materials[index],

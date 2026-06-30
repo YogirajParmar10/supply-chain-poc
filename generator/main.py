@@ -17,6 +17,7 @@ from generator.utils.master_data import (
     load_shipped_sales_orders,
     load_suppliers,
 )
+from generator.utils.order_ids import resolve_next_id_start
 from generator.wms.inventory_transactions import generate_inventory_transactions
 from generator.utils.rng import create_rng
 
@@ -49,15 +50,20 @@ def generate_purchase_order_data(config: GeneratorConfig | None = None) -> int:
 
     materials = load_materials(engine)
     suppliers = load_suppliers(engine)
+    id_start = resolve_next_id_start(engine, "purchase_orders", "purchase_order_id", "PO")
     purchase_orders = generate_purchase_orders(
         materials,
         suppliers,
         config.purchase_orders,
         rng,
         noise_settings=config.noise,
+        id_start=id_start,
     )
 
-    return write_dataframe(purchase_orders, "purchase_orders", engine)
+    rows_written = write_dataframe(purchase_orders, "purchase_orders", engine)
+    last_id = id_start + config.purchase_orders.count - 1
+    print(f"  purchase_order_id range: PO{id_start:06d} – PO{last_id:06d}")
+    return rows_written
 
 
 def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
@@ -67,15 +73,20 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
 
     materials = load_materials(engine)
     customers = load_customers(engine)
+    id_start = resolve_next_id_start(engine, "sales_orders", "sales_order_id", "SO")
     sales_orders = generate_sales_orders(
         materials,
         customers,
         config.sales_orders,
         rng,
         noise_settings=config.noise,
+        id_start=id_start,
     )
 
-    return write_dataframe(sales_orders, "sales_orders", engine)
+    rows_written = write_dataframe(sales_orders, "sales_orders", engine)
+    last_id = id_start + config.sales_orders.count - 1
+    print(f"  sales_order_id range: SO{id_start:06d} – SO{last_id:06d}")
+    return rows_written
 
 
 def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> int:

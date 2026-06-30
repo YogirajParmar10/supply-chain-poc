@@ -32,6 +32,8 @@ def generate_purchase_orders(
     settings: PurchaseOrderSettings,
     rng: np.random.Generator,
     noise_settings: NoiseSettings | None = None,
+    *,
+    id_start: int = 1,
 ) -> pd.DataFrame:
     material_ids = _raw_material_ids(materials)
     supplier_ids = _supplier_ids(suppliers)
@@ -59,7 +61,7 @@ def generate_purchase_orders(
         expected_delivery_date = order_date + timedelta(days=int(lead_times[index]))
         rows.append(
             {
-                "purchase_order_id": format_id("PO", index + 1, 6),
+                "purchase_order_id": format_id("PO", id_start + index, 6),
                 "order_date": order_date.isoformat(),
                 "supplier_id": selected_suppliers[index],
                 "material_id": selected_materials[index],
