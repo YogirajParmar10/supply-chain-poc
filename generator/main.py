@@ -10,7 +10,14 @@ from generator.transactional.purchase_orders import generate_purchase_orders
 from generator.transactional.sales_orders import generate_sales_orders
 from generator.utils.db import get_engine
 from generator.utils.db_export import write_dataframe
-from generator.utils.master_data import load_customers, load_materials, load_suppliers
+from generator.utils.master_data import (
+    load_customers,
+    load_delivered_purchase_orders,
+    load_materials,
+    load_shipped_sales_orders,
+    load_suppliers,
+)
+from generator.wms.inventory_transactions import generate_inventory_transactions
 from generator.utils.rng import create_rng
 
 
@@ -69,6 +76,20 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
     )
 
     return write_dataframe(sales_orders, "sales_orders", engine)
+
+
+def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> int:
+    config = config or GeneratorConfig()
+    engine = get_engine()
+
+    purchase_orders = load_delivered_purchase_orders(engine)
+    sales_orders = load_shipped_sales_orders(engine)
+    inventory_transactions = generate_inventory_transactions(
+        purchase_orders,
+        sales_orders,
+    )
+
+    return write_dataframe(inventory_transactions, "inventory_transactions", engine)
 
 
 def main() -> None:
