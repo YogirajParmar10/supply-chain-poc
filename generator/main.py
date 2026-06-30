@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from generator.config.settings import GeneratorConfig
 from generator.master import (
     generate_customers,
@@ -8,48 +6,42 @@ from generator.master import (
     generate_suppliers,
     generate_warehouses,
 )
-from generator.transactional.purchase_orders import (
-    generate_purchase_orders,
-    write_purchase_order_batches,
-)
-from generator.transactional.sales_orders import (
-    generate_sales_orders,
-    write_sales_order_batches,
-)
-from generator.utils.csv_export import write_csv
+from generator.transactional.purchase_orders import generate_purchase_orders
+from generator.transactional.sales_orders import generate_sales_orders
+from generator.utils.db import get_engine
+from generator.utils.db_export import write_dataframe
 from generator.utils.master_data import load_customers, load_materials, load_suppliers
 from generator.utils.rng import create_rng
 
 
-def generate_master_data(config: GeneratorConfig | None = None) -> dict[str, Path]:
+def generate_master_data(config: GeneratorConfig | None = None) -> dict[str, int]:
     config = config or GeneratorConfig()
-    output_dir = config.erp_output_dir
+    engine = get_engine()
     rng = create_rng(config.seed)
 
     plants = generate_plants(config.sizes)
     datasets = {
-        "materials.csv": generate_materials(config.sizes, rng),
-        "suppliers.csv": generate_suppliers(config.sizes, rng),
-        "customers.csv": generate_customers(config.sizes, rng),
-        "plants.csv": plants,
-        "warehouses.csv": generate_warehouses(config.sizes, plants, rng),
+        "materials": generate_materials(config.sizes, rng),
+        "suppliers": generate_suppliers(config.sizes, rng),
+        "customers": generate_customers(config.sizes, rng),
+        "plants": plants,
+        "warehouses": generate_warehouses(config.sizes, plants, rng),
     }
 
-    written_paths: dict[str, Path] = {}
-    for filename, dataframe in datasets.items():
-        path = output_dir / filename
-        write_csv(dataframe, path)
-        written_paths[filename] = path
+    rows_written: dict[str, int] = {}
+    for table_name, dataframe in datasets.items():
+        rows_written[table_name] = write_dataframe(dataframe, table_name, engine)
 
-    return written_paths
+    return rows_written
 
 
-def generate_purchase_order_data(config: GeneratorConfig | None = None) -> list[Path]:
+def generate_purchase_order_data(config: GeneratorConfig | None = None) -> int:
     config = config or GeneratorConfig()
+    engine = get_engine()
     rng = create_rng(config.seed)
 
-    materials = load_materials(config.erp_output_dir)
-    suppliers = load_suppliers(config.erp_output_dir)
+    materials = load_materials(engine)
+    suppliers = load_suppliers(engine)
     purchase_orders = generate_purchase_orders(
         materials,
         suppliers,
@@ -57,15 +49,16 @@ def generate_purchase_order_data(config: GeneratorConfig | None = None) -> list[
         rng,
     )
 
-    return write_purchase_order_batches(purchase_orders, config.erp_output_dir)
+    return write_dataframe(purchase_orders, "purchase_orders", engine)
 
 
-def generate_sales_order_data(config: GeneratorConfig | None = None) -> list[Path]:
+def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
     config = config or GeneratorConfig()
+    engine = get_engine()
     rng = create_rng(config.seed)
 
-    materials = load_materials(config.erp_output_dir)
-    customers = load_customers(config.erp_output_dir)
+    materials = load_materials(engine)
+    customers = load_customers(engine)
     sales_orders = generate_sales_orders(
         materials,
         customers,
@@ -73,22 +66,20 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> list[Pat
         rng,
     )
 
-    return write_sales_order_batches(sales_orders, config.erp_sales_orders_output_dir)
+    return write_dataframe(sales_orders, "sales_orders", engine)
 
 
 def main() -> None:
     config = GeneratorConfig()
-    written_paths = generate_master_data(config)
-    purchase_order_paths = generate_purchase_order_data(config)
-    sales_order_paths = generate_sales_order_data(config)
+    master_rows = generate_master_data(config)
+    purchase_order_rows = generate_purchase_order_data(config)
+    sales_order_rows = generate_sales_order_data(config)
 
     print(f"Generated data for {config.company_name}")
-    for filename, path in written_paths.items():
-        print(f"  - {path}")
-    for path in purchase_order_paths:
-        print(f"  - {path}")
-    for path in sales_order_paths:
-        print(f"  - {path}")
+    for table_name, row_count in master_rows.items():
+        print(f"  - {table_name}: {row_count} rows")
+    print(f"  - purchase_orders: {purchase_order_rows} rows")
+    print(f"  - sales_orders: {sales_order_rows} rows")
 
 
 if __name__ == "__main__":

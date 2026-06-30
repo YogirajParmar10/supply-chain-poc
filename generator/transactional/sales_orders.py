@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -10,7 +9,6 @@ from generator.transactional.common import (
     generate_quantities,
     status_choices,
 )
-from generator.utils.csv_export import write_csv
 from generator.utils.ids import format_id
 
 
@@ -70,22 +68,3 @@ def generate_sales_orders(
         )
 
     return pd.DataFrame(rows)
-
-
-def sales_order_batch_filename(order_date: date) -> str:
-    return f"sales_orders_{order_date.strftime('%Y%m%d')}.csv"
-
-
-def write_sales_order_batches(sales_orders: pd.DataFrame, output_dir: Path) -> list[Path]:
-    if sales_orders.empty:
-        return []
-
-    grouped_orders = sales_orders.groupby("order_date", sort=True)
-    written_paths: list[Path] = []
-    for order_date, daily_orders in grouped_orders:
-        filename = sales_order_batch_filename(date.fromisoformat(str(order_date)))
-        path = output_dir / filename
-        write_csv(daily_orders.reset_index(drop=True), path)
-        written_paths.append(path)
-
-    return written_paths

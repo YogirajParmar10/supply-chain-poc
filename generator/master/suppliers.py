@@ -45,3 +45,24 @@ def generate_suppliers(sizes: DatasetSizes, rng: np.random.Generator) -> pd.Data
         for index in range(1, sizes.suppliers + 1)
     ]
     return pd.DataFrame(rows)
+
+
+def main() -> None:
+    from generator.config.settings import GeneratorConfig
+    from generator.utils.db import get_engine
+    from generator.utils.db_export import write_dataframe
+    from generator.utils.rng import create_rng
+
+    config = GeneratorConfig()
+    engine = get_engine()
+    rng = create_rng(config.seed)
+
+    suppliers = generate_suppliers(config.sizes, rng)
+    rows_written = write_dataframe(suppliers, "suppliers", engine)
+
+    print(f"Wrote {rows_written} suppliers to database")
+    print(suppliers.to_string(index=False))
+
+
+if __name__ == "__main__":
+    main()

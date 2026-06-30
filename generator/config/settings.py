@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from datetime import date, timedelta
-from pathlib import Path
 
 
 def current_month_date_range(reference: date | None = None) -> tuple[date, date]:
@@ -96,12 +95,3 @@ class GeneratorConfig:
     sizes: DatasetSizes = DatasetSizes()
     purchase_orders: PurchaseOrderSettings = field(default_factory=default_purchase_order_settings)
     sales_orders: SalesOrderSettings = field(default_factory=default_sales_order_settings)
-    output_dir: Path = Path("output")
-
-    @property
-    def erp_output_dir(self) -> Path:
-        return self.output_dir / "erp"
-
-    @property
-    def erp_sales_orders_output_dir(self) -> Path:
-        return self.erp_output_dir / "sales-orders"
