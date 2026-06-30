@@ -108,12 +108,14 @@ def main() -> None:
     master_rows = generate_master_data(config)
     purchase_order_rows = generate_purchase_order_data(config)
     sales_order_rows = generate_sales_order_data(config)
+    wms_transaction_rows = generate_wms_transaction_data(config)
 
     print(f"Generated data for {config.company_name}")
     for table_name, row_count in master_rows.items():
         print(f"  - {table_name}: {row_count} rows")
     print(f"  - purchase_orders: {purchase_order_rows} rows")
     print(f"  - sales_orders: {sales_order_rows} rows")
+    print(f"  - inventory_transactions: {wms_transaction_rows} rows")
 
 
 if __name__ == "__main__":
