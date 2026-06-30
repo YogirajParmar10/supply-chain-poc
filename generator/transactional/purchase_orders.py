@@ -3,12 +3,13 @@ from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 
-from generator.config.settings import PurchaseOrderSettings
+from generator.config.settings import PurchaseOrderSettings, NoiseSettings
 from generator.transactional.common import (
     generate_order_dates,
     generate_quantities,
     status_choices,
 )
+from generator.transactional.noise import apply_purchase_order_noise
 from generator.utils.ids import format_id
 
 
@@ -30,6 +31,7 @@ def generate_purchase_orders(
     suppliers: pd.DataFrame,
     settings: PurchaseOrderSettings,
     rng: np.random.Generator,
+    noise_settings: NoiseSettings | None = None,
 ) -> pd.DataFrame:
     material_ids = _raw_material_ids(materials)
     supplier_ids = _supplier_ids(suppliers)
@@ -67,4 +69,14 @@ def generate_purchase_orders(
             }
         )
 
-    return pd.DataFrame(rows)
+    purchase_orders = pd.DataFrame(rows)
+    if noise_settings is None:
+        return purchase_orders
+
+    return apply_purchase_order_noise(
+        purchase_orders,
+        materials,
+        suppliers,
+        noise_settings,
+        rng,
+    )

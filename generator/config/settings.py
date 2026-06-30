@@ -79,6 +79,13 @@ def default_sales_order_settings() -> SalesOrderSettings:
 
 
 @dataclass(frozen=True)
+class NoiseSettings:
+    enabled: bool = True
+    row_noise_rate: float = 0.06
+    duplicate_rate: float = 0.01
+
+
+@dataclass(frozen=True)
 class DatasetSizes:
     raw_materials: int = 25
     finished_goods: int = 100
@@ -95,3 +102,4 @@ class GeneratorConfig:
     sizes: DatasetSizes = DatasetSizes()
     purchase_orders: PurchaseOrderSettings = field(default_factory=default_purchase_order_settings)
     sales_orders: SalesOrderSettings = field(default_factory=default_sales_order_settings)
+    noise: NoiseSettings = field(default_factory=NoiseSettings)

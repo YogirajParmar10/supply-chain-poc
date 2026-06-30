@@ -8,9 +8,10 @@ TABLE_PRIMARY_KEYS: dict[str, str] = {
     "customers": "customer_id",
     "plants": "plant_id",
     "warehouses": "warehouse_id",
-    "purchase_orders": "purchase_order_id",
-    "sales_orders": "sales_order_id",
 }
+
+# Transactional bronze tables append raw rows (duplicates allowed).
+BRONZE_APPEND_TABLES: frozenset[str] = frozenset({"purchase_orders", "sales_orders"})
 
 
 def _upsert_method(conflict_columns: list[str]):
@@ -44,8 +45,11 @@ def write_dataframe(
     if df.empty:
         return 0
 
-    primary_key = conflict_column or TABLE_PRIMARY_KEYS.get(table_name)
-    method = _upsert_method([primary_key]) if primary_key else None
+    if table_name in BRONZE_APPEND_TABLES:
+        method = None
+    else:
+        primary_key = conflict_column or TABLE_PRIMARY_KEYS.get(table_name)
+        method = _upsert_method([primary_key]) if primary_key else None
 
     df.to_sql(
         table_name,

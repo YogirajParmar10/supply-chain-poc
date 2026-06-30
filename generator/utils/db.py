@@ -22,26 +22,25 @@ _load_env()
 
 
 def get_database_url() -> str:
+    required_vars = ("DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD")
+    if all(os.getenv(var) for var in required_vars):
+        host = os.environ["DB_HOST"]
+        port = os.getenv("DB_PORT", "5432")
+        name = os.environ["DB_NAME"]
+        user = os.environ["DB_USER"]
+        password = os.environ["DB_PASSWORD"]
+        return (
+            f"postgresql://{quote_plus(user)}:{quote_plus(password)}"
+            f"@{host}:{port}/{name}"
+        )
+
     database_url = os.getenv("DATABASE_URL")
     if database_url:
         return database_url
 
-    required_vars = ("DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD")
-    missing = [var for var in required_vars if not os.getenv(var)]
-    if missing:
-        raise ValueError(
-            "Database credentials not configured. Set DATABASE_URL or: "
-            + ", ".join(required_vars)
-        )
-
-    host = os.environ["DB_HOST"]
-    port = os.getenv("DB_PORT", "5432")
-    name = os.environ["DB_NAME"]
-    user = os.environ["DB_USER"]
-    password = os.environ["DB_PASSWORD"]
-    return (
-        f"postgresql://{quote_plus(user)}:{quote_plus(password)}"
-        f"@{host}:{port}/{name}"
+    raise ValueError(
+        "Database credentials not configured. Set DATABASE_URL or: "
+        + ", ".join(required_vars)
     )
 
 

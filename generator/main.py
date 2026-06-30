@@ -47,6 +47,7 @@ def generate_purchase_order_data(config: GeneratorConfig | None = None) -> int:
         suppliers,
         config.purchase_orders,
         rng,
+        noise_settings=config.noise,
     )
 
     return write_dataframe(purchase_orders, "purchase_orders", engine)
@@ -64,6 +65,7 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
         customers,
         config.sales_orders,
         rng,
+        noise_settings=config.noise,
     )
 
     return write_dataframe(sales_orders, "sales_orders", engine)

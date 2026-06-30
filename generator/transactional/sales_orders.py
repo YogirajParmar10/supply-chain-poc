@@ -3,12 +3,13 @@ from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 
-from generator.config.settings import SalesOrderSettings
+from generator.config.settings import SalesOrderSettings, NoiseSettings
 from generator.transactional.common import (
     generate_order_dates,
     generate_quantities,
     status_choices,
 )
+from generator.transactional.noise import apply_sales_order_noise
 from generator.utils.ids import format_id
 
 
@@ -30,6 +31,7 @@ def generate_sales_orders(
     customers: pd.DataFrame,
     settings: SalesOrderSettings,
     rng: np.random.Generator,
+    noise_settings: NoiseSettings | None = None,
 ) -> pd.DataFrame:
     material_ids = _finished_good_ids(materials)
     customer_ids = _customer_ids(customers)
@@ -67,4 +69,14 @@ def generate_sales_orders(
             }
         )
 
-    return pd.DataFrame(rows)
+    sales_orders = pd.DataFrame(rows)
+    if noise_settings is None:
+        return sales_orders
+
+    return apply_sales_order_noise(
+        sales_orders,
+        materials,
+        customers,
+        noise_settings,
+        rng,
+    )
