@@ -36,6 +36,20 @@ def load_inventory_transactions(engine: Engine) -> pd.DataFrame:
     return pd.read_sql_table("inventory_transactions", con=engine)
 
 
+def load_goods_receipt_reference_ids(engine: Engine) -> set[str]:
+    inventory_transactions = load_inventory_transactions(engine)
+    if inventory_transactions.empty:
+        return set()
+
+    goods_receipts = inventory_transactions[
+        inventory_transactions["transaction_type"] == "GOODS_RECEIPT"
+    ]
+    if goods_receipts.empty:
+        return set()
+
+    return set(goods_receipts["reference_id"].dropna().astype(str))
+
+
 def load_clean_delivered_purchase_orders(engine: Engine) -> pd.DataFrame:
     purchase_orders = load_purchase_orders(engine)
     purchase_orders = dedupe_bronze_orders(purchase_orders, "purchase_order_id")

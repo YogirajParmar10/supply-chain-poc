@@ -15,7 +15,7 @@ def current_month_date_range(reference: date | None = None) -> tuple[date, date]
 
 @dataclass(frozen=True)
 class PurchaseOrderSettings:
-    count: int = 2_000
+    count: int = 1_000
     start_date: date | None = None
     end_date: date | None = None
     min_lead_time_days: int = 3
@@ -47,7 +47,7 @@ def default_purchase_order_settings() -> PurchaseOrderSettings:
 
 @dataclass(frozen=True)
 class SalesOrderSettings:
-    count: int = 3_000
+    count: int = 1_000
     start_date: date | None = None
     end_date: date | None = None
     min_lead_time_days: int = 5

@@ -1,4 +1,5 @@
 import pandas as pd
+from sqlalchemy.engine import Engine
 
 from generator.wms.inventory_transactions import (
     ISSUE_TRANSACTION_TYPES,
@@ -45,3 +46,12 @@ def generate_inventory(inventory_transactions: pd.DataFrame) -> pd.DataFrame:
     ]
 
     return pd.DataFrame(rows)
+
+
+def refresh_inventory_snapshot(engine: Engine) -> int:
+    from generator.utils.db_export import write_dataframe
+    from generator.utils.master_data import load_inventory_transactions
+
+    inventory_transactions = load_inventory_transactions(engine)
+    inventory = generate_inventory(inventory_transactions)
+    return write_dataframe(inventory, "inventory", engine)

@@ -112,6 +112,38 @@ def _sales_shipment_rows(
     return rows
 
 
+_EMPTY_TRANSACTION_COLUMNS = [
+    "transaction_id",
+    "transaction_date",
+    "warehouse_id",
+    "material_id",
+    "transaction_type",
+    "quantity",
+    "reference_id",
+]
+
+
+def generate_goods_receipt_transactions(
+    purchase_orders: pd.DataFrame,
+    materials: pd.DataFrame,
+    warehouses: pd.DataFrame,
+    *,
+    id_start: int = 1,
+) -> pd.DataFrame:
+    raw_materials_warehouse_id, _ = resolve_warehouse_ids(warehouses)
+    goods_receipt_rows = _goods_receipt_rows(
+        purchase_orders,
+        materials,
+        raw_materials_warehouse_id,
+        id_start=id_start,
+    )
+
+    if not goods_receipt_rows:
+        return pd.DataFrame(columns=_EMPTY_TRANSACTION_COLUMNS)
+
+    return pd.DataFrame(goods_receipt_rows)
+
+
 def generate_inventory_transactions(
     purchase_orders: pd.DataFrame,
     sales_orders: pd.DataFrame,
@@ -137,16 +169,6 @@ def generate_inventory_transactions(
 
     rows = goods_receipt_rows + sales_shipment_rows
     if not rows:
-        return pd.DataFrame(
-            columns=[
-                "transaction_id",
-                "transaction_date",
-                "warehouse_id",
-                "material_id",
-                "transaction_type",
-                "quantity",
-                "reference_id",
-            ]
-        )
+        return pd.DataFrame(columns=_EMPTY_TRANSACTION_COLUMNS)
 
     return pd.DataFrame(rows)

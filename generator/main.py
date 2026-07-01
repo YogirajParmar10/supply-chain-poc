@@ -15,13 +15,12 @@ from generator.utils.master_data import (
     load_clean_delivered_purchase_orders,
     load_clean_shipped_sales_orders,
     load_customers,
-    load_inventory_transactions,
     load_materials,
     load_suppliers,
     load_warehouses,
 )
 from generator.utils.order_ids import resolve_next_id_start
-from generator.wms.inventory import generate_inventory
+from generator.wms.inventory import refresh_inventory_snapshot
 from generator.wms.inventory_transactions import generate_inventory_transactions
 from generator.utils.rng import create_rng
 
@@ -132,10 +131,7 @@ def generate_wms_inventory_data(config: GeneratorConfig | None = None) -> int:
     config = config or GeneratorConfig()
     engine = get_engine()
 
-    inventory_transactions = load_inventory_transactions(engine)
-    inventory = generate_inventory(inventory_transactions)
-
-    rows_written = write_dataframe(inventory, "inventory", engine)
+    rows_written = refresh_inventory_snapshot(engine)
     print(f"  inventory snapshot rows: {rows_written}")
     return rows_written
 
