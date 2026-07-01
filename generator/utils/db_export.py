@@ -3,6 +3,8 @@ from sqlalchemy import inspect, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Engine
 
+from generator.utils.migrations import ensure_migrations_applied
+
 TABLE_PRIMARY_KEYS: dict[str, str] = {
     "materials": "material_id",
     "suppliers": "supplier_id",
@@ -17,6 +19,9 @@ BRONZE_APPEND_TABLES: frozenset[str] = frozenset({
     "sales_orders",
     "inventory_transactions",
 })
+
+# Snapshot tables are fully replaced on each generation run.
+SNAPSHOT_TABLES: frozenset[str] = frozenset({"inventory"})
 
 
 def _upsert_method(conflict_columns: list[str]):
@@ -62,20 +67,28 @@ def write_dataframe(
     if df.empty:
         return 0
 
+    ensure_migrations_applied()
+
     table_exists = inspect(engine).has_table(table_name)
     primary_key = conflict_column or TABLE_PRIMARY_KEYS.get(table_name)
 
-    if table_name in BRONZE_APPEND_TABLES:
+    if table_name in SNAPSHOT_TABLES:
+        if_exists = "replace"
+        method = None
+    elif table_name in BRONZE_APPEND_TABLES:
+        if_exists = "append"
         method = None
     elif not table_exists:
+        if_exists = "append"
         method = None
     else:
+        if_exists = "append"
         method = _upsert_method([primary_key]) if primary_key else None
 
     df.to_sql(
         table_name,
         con=engine,
-        if_exists="append",
+        if_exists=if_exists,
         index=False,
         method=method,
     )

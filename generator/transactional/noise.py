@@ -44,9 +44,13 @@ def _fake_id(prefix: str, rng: np.random.Generator) -> str:
     return f"{prefix}{int(rng.integers(900, 999)):03d}"
 
 
+def _apply_null(df: pd.DataFrame, index: int, column: str) -> None:
+    df.at[index, column] = None
+
+
 def _apply_nulls(df: pd.DataFrame, index: int, columns: list[str], rng: np.random.Generator) -> None:
     column = str(rng.choice(columns))
-    df.at[index, column] = None
+    _apply_null(df, index, column)
 
 
 def _apply_whitespace(value: str) -> str:
@@ -71,6 +75,27 @@ def _append_duplicates(df: pd.DataFrame, rate: float, rng: np.random.Generator) 
     return pd.concat([df, duplicates], ignore_index=True)
 
 
+def sanitize_material_ids(
+    orders: pd.DataFrame,
+    allowed_material_ids: set[str],
+) -> pd.DataFrame:
+    """Keep null material_id noise; ensure non-null values reference materials master."""
+    sanitized = orders.copy()
+
+    for index, value in sanitized["material_id"].items():
+        if value is None or (isinstance(value, float) and pd.isna(value)):
+            sanitized.at[index, "material_id"] = None
+            continue
+
+        material_id = str(value).strip()
+        if not material_id or material_id not in allowed_material_ids:
+            sanitized.at[index, "material_id"] = None
+        else:
+            sanitized.at[index, "material_id"] = material_id
+
+    return sanitized
+
+
 def apply_purchase_order_noise(
     purchase_orders: pd.DataFrame,
     materials: pd.DataFrame,
@@ -82,40 +107,36 @@ def apply_purchase_order_noise(
         return purchase_orders
 
     df = purchase_orders.copy()
-    wrong_material_ids = materials.loc[
-        materials["material_type"] == "FINISHED_GOOD", "material_id"
-    ].tolist()
-
     noisy_indices = _pick_indices(len(df), settings.row_noise_rate, rng)
     for index in noisy_indices:
-        noise_type = int(rng.integers(0, 9))
+        noise_type = int(rng.integers(0, 8))
         if noise_type == 0:
             df.at[index, "supplier_id"] = _fake_id("SUP", rng)
-        elif noise_type == 1 and wrong_material_ids:
-            df.at[index, "material_id"] = str(rng.choice(wrong_material_ids))
+        elif noise_type == 1:
+            _apply_null(df, index, "material_id")
         elif noise_type == 2:
-            df.at[index, "material_id"] = _fake_id("RM", rng)
+            _apply_nulls(df, index, ["supplier_id", "order_date", "quantity"], rng)
         elif noise_type == 3:
-            _apply_nulls(
-                df,
-                index,
-                ["supplier_id", "material_id", "order_date", "quantity"],
-                rng,
-            )
-        elif noise_type == 4:
             df.at[index, "expected_delivery_date"] = _invalid_delivery_date(
                 df.at[index, "order_date"], rng
             )
-        elif noise_type == 5:
+        elif noise_type == 4:
             df.at[index, "status"] = str(rng.choice(INVALID_PURCHASE_STATUSES))
-        elif noise_type == 6:
+        elif noise_type == 5:
             df.at[index, "quantity"] = int(rng.choice([0, -1, -50, 9_999_999]))
-        elif noise_type == 7:
+        elif noise_type == 6:
             df.at[index, "supplier_id"] = _apply_whitespace(str(df.at[index, "supplier_id"]))
-        elif noise_type == 8:
+        elif noise_type == 7:
             df.at[index, "order_date"] = str(rng.choice(BAD_DATE_FORMATS))
 
-    return _append_duplicates(df, settings.duplicate_rate, rng)
+    allowed_material_ids = set(
+        materials.loc[materials["material_type"] == "RAW_MATERIAL", "material_id"].astype(str)
+    )
+    return _append_duplicates(
+        sanitize_material_ids(df, allowed_material_ids),
+        settings.duplicate_rate,
+        rng,
+    )
 
 
 def apply_sales_order_noise(
@@ -129,37 +150,33 @@ def apply_sales_order_noise(
         return sales_orders
 
     df = sales_orders.copy()
-    wrong_material_ids = materials.loc[
-        materials["material_type"] == "RAW_MATERIAL", "material_id"
-    ].tolist()
-
     noisy_indices = _pick_indices(len(df), settings.row_noise_rate, rng)
     for index in noisy_indices:
-        noise_type = int(rng.integers(0, 9))
+        noise_type = int(rng.integers(0, 8))
         if noise_type == 0:
             df.at[index, "customer_id"] = _fake_id("CUS", rng)
-        elif noise_type == 1 and wrong_material_ids:
-            df.at[index, "material_id"] = str(rng.choice(wrong_material_ids))
+        elif noise_type == 1:
+            _apply_null(df, index, "material_id")
         elif noise_type == 2:
-            df.at[index, "material_id"] = _fake_id("FG", rng)
+            _apply_nulls(df, index, ["customer_id", "order_date", "quantity"], rng)
         elif noise_type == 3:
-            _apply_nulls(
-                df,
-                index,
-                ["customer_id", "material_id", "order_date", "quantity"],
-                rng,
-            )
-        elif noise_type == 4:
             df.at[index, "requested_delivery_date"] = _invalid_delivery_date(
                 df.at[index, "order_date"], rng
             )
-        elif noise_type == 5:
+        elif noise_type == 4:
             df.at[index, "status"] = str(rng.choice(INVALID_SALES_STATUSES))
-        elif noise_type == 6:
+        elif noise_type == 5:
             df.at[index, "quantity"] = int(rng.choice([0, -1, -25, 9_999_999]))
-        elif noise_type == 7:
+        elif noise_type == 6:
             df.at[index, "customer_id"] = _apply_whitespace(str(df.at[index, "customer_id"]))
-        elif noise_type == 8:
+        elif noise_type == 7:
             df.at[index, "order_date"] = str(rng.choice(BAD_DATE_FORMATS))
 
-    return _append_duplicates(df, settings.duplicate_rate, rng)
+    allowed_material_ids = set(
+        materials.loc[materials["material_type"] == "FINISHED_GOOD", "material_id"].astype(str)
+    )
+    return _append_duplicates(
+        sanitize_material_ids(df, allowed_material_ids),
+        settings.duplicate_rate,
+        rng,
+    )

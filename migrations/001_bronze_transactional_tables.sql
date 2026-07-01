@@ -11,7 +11,16 @@ ALTER TABLE purchase_orders DROP CONSTRAINT IF EXISTS purchase_orders_pkey;
 
 ALTER TABLE purchase_orders ADD COLUMN IF NOT EXISTS bronze_row_id BIGSERIAL;
 UPDATE purchase_orders SET bronze_row_id = DEFAULT WHERE bronze_row_id IS NULL;
-ALTER TABLE purchase_orders ADD CONSTRAINT purchase_orders_bronze_row_id_pkey PRIMARY KEY (bronze_row_id);
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'purchase_orders_bronze_row_id_pkey'
+    ) THEN
+        ALTER TABLE purchase_orders
+            ADD CONSTRAINT purchase_orders_bronze_row_id_pkey PRIMARY KEY (bronze_row_id);
+    END IF;
+END $$;
 
 ALTER TABLE purchase_orders ALTER COLUMN purchase_order_id DROP NOT NULL;
 ALTER TABLE purchase_orders ALTER COLUMN order_date DROP NOT NULL;
@@ -35,7 +44,16 @@ ALTER TABLE sales_orders DROP CONSTRAINT IF EXISTS sales_orders_pkey;
 
 ALTER TABLE sales_orders ADD COLUMN IF NOT EXISTS bronze_row_id BIGSERIAL;
 UPDATE sales_orders SET bronze_row_id = DEFAULT WHERE bronze_row_id IS NULL;
-ALTER TABLE sales_orders ADD CONSTRAINT sales_orders_bronze_row_id_pkey PRIMARY KEY (bronze_row_id);
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'sales_orders_bronze_row_id_pkey'
+    ) THEN
+        ALTER TABLE sales_orders
+            ADD CONSTRAINT sales_orders_bronze_row_id_pkey PRIMARY KEY (bronze_row_id);
+    END IF;
+END $$;
 
 ALTER TABLE sales_orders ALTER COLUMN sales_order_id DROP NOT NULL;
 ALTER TABLE sales_orders ALTER COLUMN order_date DROP NOT NULL;

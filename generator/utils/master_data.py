@@ -1,10 +1,11 @@
 import pandas as pd
-from sqlalchemy import text
 from sqlalchemy.engine import Engine
 
+from generator.wms.warehouses import dedupe_bronze_orders
+
 # Exact status values from schema/erp — excludes noisy bronze variants (DELIVERD, etc.).
-PURCHASE_ORDER_RECEIPT_STATUSES: tuple[str, ...] = ("DELIVERED",)
-SALES_ORDER_SHIPMENT_STATUSES: tuple[str, ...] = ("SHIPPED", "DELIVERED")
+PURCHASE_ORDER_RECEIPT_STATUSES: frozenset[str] = frozenset({"DELIVERED"})
+SALES_ORDER_SHIPMENT_STATUSES: frozenset[str] = frozenset({"SHIPPED", "DELIVERED"})
 
 
 def load_materials(engine: Engine) -> pd.DataFrame:
@@ -23,15 +24,29 @@ def load_warehouses(engine: Engine) -> pd.DataFrame:
     return pd.read_sql_table("warehouses", con=engine)
 
 
-def load_delivered_purchase_orders(engine: Engine) -> pd.DataFrame:
-    query = text(
-        "SELECT * FROM purchase_orders WHERE status IN :statuses"
-    ).bindparams(statuses=PURCHASE_ORDER_RECEIPT_STATUSES)
-    return pd.read_sql(query, con=engine)
+def load_purchase_orders(engine: Engine) -> pd.DataFrame:
+    return pd.read_sql_table("purchase_orders", con=engine)
 
 
-def load_shipped_sales_orders(engine: Engine) -> pd.DataFrame:
-    query = text(
-        "SELECT * FROM sales_orders WHERE status IN :statuses"
-    ).bindparams(statuses=SALES_ORDER_SHIPMENT_STATUSES)
-    return pd.read_sql(query, con=engine)
+def load_sales_orders(engine: Engine) -> pd.DataFrame:
+    return pd.read_sql_table("sales_orders", con=engine)
+
+
+def load_inventory_transactions(engine: Engine) -> pd.DataFrame:
+    return pd.read_sql_table("inventory_transactions", con=engine)
+
+
+def load_clean_delivered_purchase_orders(engine: Engine) -> pd.DataFrame:
+    purchase_orders = load_purchase_orders(engine)
+    purchase_orders = dedupe_bronze_orders(purchase_orders, "purchase_order_id")
+    return purchase_orders[
+        purchase_orders["status"].isin(PURCHASE_ORDER_RECEIPT_STATUSES)
+    ].reset_index(drop=True)
+
+
+def load_clean_shipped_sales_orders(engine: Engine) -> pd.DataFrame:
+    sales_orders = load_sales_orders(engine)
+    sales_orders = dedupe_bronze_orders(sales_orders, "sales_order_id")
+    return sales_orders[
+        sales_orders["status"].isin(SALES_ORDER_SHIPMENT_STATUSES)
+    ].reset_index(drop=True)

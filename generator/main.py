@@ -10,14 +10,18 @@ from generator.transactional.purchase_orders import generate_purchase_orders
 from generator.transactional.sales_orders import generate_sales_orders
 from generator.utils.db import get_engine
 from generator.utils.db_export import write_dataframe
+from generator.utils.migrations import ensure_migrations_applied
 from generator.utils.master_data import (
+    load_clean_delivered_purchase_orders,
+    load_clean_shipped_sales_orders,
     load_customers,
-    load_delivered_purchase_orders,
+    load_inventory_transactions,
     load_materials,
-    load_shipped_sales_orders,
     load_suppliers,
+    load_warehouses,
 )
 from generator.utils.order_ids import resolve_next_id_start
+from generator.wms.inventory import generate_inventory
 from generator.wms.inventory_transactions import generate_inventory_transactions
 from generator.utils.rng import create_rng
 
@@ -93,29 +97,79 @@ def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> int:
     config = config or GeneratorConfig()
     engine = get_engine()
 
-    purchase_orders = load_delivered_purchase_orders(engine)
-    sales_orders = load_shipped_sales_orders(engine)
+    purchase_orders = load_clean_delivered_purchase_orders(engine)
+    sales_orders = load_clean_shipped_sales_orders(engine)
+    materials = load_materials(engine)
+    warehouses = load_warehouses(engine)
+    id_start = resolve_next_id_start(
+        engine, "inventory_transactions", "transaction_id", "IT"
+    )
+
     inventory_transactions = generate_inventory_transactions(
         purchase_orders,
         sales_orders,
+        materials,
+        warehouses,
+        id_start=id_start,
     )
 
-    return write_dataframe(inventory_transactions, "inventory_transactions", engine)
+    rows_written = write_dataframe(inventory_transactions, "inventory_transactions", engine)
+    if rows_written:
+        last_id = id_start + rows_written - 1
+        goods_receipts = len(
+            inventory_transactions[inventory_transactions["transaction_type"] == "GOODS_RECEIPT"]
+        )
+        sales_shipments = len(
+            inventory_transactions[inventory_transactions["transaction_type"] == "SALES_SHIPMENT"]
+        )
+        print(f"  inventory_transaction_id range: IT{id_start:06d} – IT{last_id:06d}")
+        print(f"  goods receipts linked to purchase orders: {goods_receipts}")
+        print(f"  sales shipments linked to sales orders: {sales_shipments}")
+    return rows_written
+
+
+def generate_wms_inventory_data(config: GeneratorConfig | None = None) -> int:
+    config = config or GeneratorConfig()
+    engine = get_engine()
+
+    inventory_transactions = load_inventory_transactions(engine)
+    inventory = generate_inventory(inventory_transactions)
+
+    rows_written = write_dataframe(inventory, "inventory", engine)
+    print(f"  inventory snapshot rows: {rows_written}")
+    return rows_written
+
+
+def generate_wms_data(config: GeneratorConfig | None = None) -> dict[str, int]:
+    transaction_rows = generate_wms_transaction_data(config)
+    inventory_rows = generate_wms_inventory_data(config)
+    return {
+        "inventory_transactions": transaction_rows,
+        "inventory": inventory_rows,
+    }
 
 
 def main() -> None:
     config = GeneratorConfig()
+
+    applied_migrations = ensure_migrations_applied()
+    if applied_migrations:
+        print("Applied pending database migrations:")
+        for migration_name in applied_migrations:
+            print(f"  - {migration_name}")
+
     master_rows = generate_master_data(config)
     purchase_order_rows = generate_purchase_order_data(config)
     sales_order_rows = generate_sales_order_data(config)
-    wms_transaction_rows = generate_wms_transaction_data(config)
+    wms_rows = generate_wms_data(config)
 
     print(f"Generated data for {config.company_name}")
     for table_name, row_count in master_rows.items():
         print(f"  - {table_name}: {row_count} rows")
     print(f"  - purchase_orders: {purchase_order_rows} rows")
     print(f"  - sales_orders: {sales_order_rows} rows")
-    print(f"  - inventory_transactions: {wms_transaction_rows} rows")
+    print(f"  - inventory_transactions: {wms_rows['inventory_transactions']} rows")
+    print(f"  - inventory: {wms_rows['inventory']} rows")
 
 
 if __name__ == "__main__":

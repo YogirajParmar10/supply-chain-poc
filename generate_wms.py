@@ -1,11 +1,13 @@
-"""Generate WMS inventory transactions from clean ERP orders in Postgres."""
+"""Generate WMS inventory transactions and inventory snapshot from ERP orders in Postgres."""
 
-from generator.main import generate_wms_transaction_data
+from generator.main import generate_wms_data
 
 
 def main() -> None:
-    row_count = generate_wms_transaction_data()
-    print(f"Generated WMS inventory transactions: {row_count} rows")
+    wms_rows = generate_wms_data()
+    print("Generated WMS data")
+    print(f"  - inventory_transactions: {wms_rows['inventory_transactions']} rows")
+    print(f"  - inventory: {wms_rows['inventory']} rows")
 
 
 if __name__ == "__main__":
