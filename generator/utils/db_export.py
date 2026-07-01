@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import inspect, text
+from sqlalchemy import func, inspect, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Engine
 
@@ -12,6 +12,8 @@ TABLE_PRIMARY_KEYS: dict[str, str] = {
     "plants": "plant_id",
     "warehouses": "warehouse_id",
 }
+
+TIMESTAMP_COLUMNS: tuple[str, ...] = ("created_at", "updated_at")
 
 # Transactional bronze tables append raw rows (duplicates allowed).
 BRONZE_APPEND_TABLES: frozenset[str] = frozenset({
@@ -35,7 +37,11 @@ def _upsert_method(conflict_columns: list[str]):
             column.name: stmt.excluded[column.name]
             for column in table.table.columns
             if column.name not in conflict_columns
+            and column.name not in TIMESTAMP_COLUMNS
         }
+        if "updated_at" in table.table.c:
+            update_cols["updated_at"] = func.now()
+
         stmt = stmt.on_conflict_do_update(
             index_elements=conflict_columns,
             set_=update_cols,
@@ -43,6 +49,23 @@ def _upsert_method(conflict_columns: list[str]):
         conn.execute(stmt)
 
     return upsert
+
+
+def _truncate_table(engine: Engine, table_name: str) -> None:
+    with engine.begin() as conn:
+        conn.execute(text(f'TRUNCATE TABLE "{table_name}"'))
+
+
+def _ensure_timestamp_columns(engine: Engine, table_name: str) -> None:
+    with engine.begin() as conn:
+        for column_name in TIMESTAMP_COLUMNS:
+            conn.execute(
+                text(
+                    f'ALTER TABLE "{table_name}" '
+                    f"ADD COLUMN IF NOT EXISTS {column_name} "
+                    f"TIMESTAMPTZ NOT NULL DEFAULT NOW()"
+                )
+            )
 
 
 def _ensure_primary_key(engine: Engine, table_name: str, primary_key: str) -> None:
@@ -73,7 +96,9 @@ def write_dataframe(
     primary_key = conflict_column or TABLE_PRIMARY_KEYS.get(table_name)
 
     if table_name in SNAPSHOT_TABLES:
-        if_exists = "replace"
+        if table_exists:
+            _truncate_table(engine, table_name)
+        if_exists = "append"
         method = None
     elif table_name in BRONZE_APPEND_TABLES:
         if_exists = "append"
@@ -95,6 +120,8 @@ def write_dataframe(
 
     if not table_exists and primary_key and table_name not in BRONZE_APPEND_TABLES:
         _ensure_primary_key(engine, table_name, primary_key)
+
+    _ensure_timestamp_columns(engine, table_name)
 
     return len(df)
 
