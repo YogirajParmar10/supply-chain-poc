@@ -1,3 +1,5 @@
+import pandas as pd
+
 from generator.config.settings import GeneratorConfig
 from generator.master import (
     generate_customers,
@@ -15,13 +17,14 @@ from generator.utils.master_data import (
     load_clean_delivered_purchase_orders,
     load_clean_shipped_sales_orders,
     load_customers,
+    load_inventory_transaction_reference_ids,
+    load_inventory_transactions,
     load_materials,
     load_suppliers,
     load_warehouses,
 )
 from generator.utils.order_ids import resolve_next_id_start
-from generator.wms.inventory import refresh_inventory_snapshot
-from generator.wms.inventory_transactions import generate_inventory_transactions
+from generator.wms.publisher import preview_daily_calendar, publish_wms_from_orders_config
 from generator.utils.rng import create_rng
 
 
@@ -92,7 +95,7 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
     return rows_written
 
 
-def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> int:
+def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> dict[str, int]:
     config = config or GeneratorConfig()
     engine = get_engine()
 
@@ -100,49 +103,49 @@ def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> int:
     sales_orders = load_clean_shipped_sales_orders(engine)
     materials = load_materials(engine)
     warehouses = load_warehouses(engine)
-    id_start = resolve_next_id_start(
-        engine, "inventory_transactions", "transaction_id", "IT"
-    )
+    existing_reference_ids = load_inventory_transaction_reference_ids(engine)
 
-    inventory_transactions = generate_inventory_transactions(
+    publish_stats = publish_wms_from_orders_config(
         purchase_orders,
         sales_orders,
         materials,
         warehouses,
-        id_start=id_start,
+        engine,
+        config,
+        existing_reference_ids=existing_reference_ids,
     )
 
-    rows_written = write_dataframe(inventory_transactions, "inventory_transactions", engine)
-    if rows_written:
-        last_id = id_start + rows_written - 1
-        goods_receipts = len(
-            inventory_transactions[inventory_transactions["transaction_type"] == "GOODS_RECEIPT"]
+    if publish_stats.get("inventory_transactions", 0) or publish_stats.get("transaction_csv_days", 0):
+        preview_start, preview_end, preview_days = preview_daily_calendar(
+            load_inventory_transactions(engine)
         )
-        sales_shipments = len(
-            inventory_transactions[inventory_transactions["transaction_type"] == "SALES_SHIPMENT"]
-        )
-        print(f"  inventory_transaction_id range: IT{id_start:06d} – IT{last_id:06d}")
-        print(f"  goods receipts linked to purchase orders: {goods_receipts}")
-        print(f"  sales shipments linked to sales orders: {sales_shipments}")
-    return rows_written
+        print(f"  goods receipts linked to purchase orders: {publish_stats.get('goods_receipts', 0)}")
+        print(f"  sales shipments linked to sales orders: {publish_stats.get('sales_shipments', 0)}")
+        print(f"  transaction days written: {publish_stats.get('transaction_days', 0)}")
+        print(f"  transaction csv days: {publish_stats.get('transaction_csv_days', 0)}")
+        if preview_start and preview_end:
+            print(
+                f"  inventory calendar: {preview_start.isoformat()} to "
+                f"{preview_end.isoformat()} ({preview_days} days)"
+            )
+
+    return publish_stats
 
 
-def generate_wms_inventory_data(config: GeneratorConfig | None = None) -> int:
+def generate_wms_inventory_data(config: GeneratorConfig | None = None) -> dict[str, int]:
     config = config or GeneratorConfig()
     engine = get_engine()
 
-    rows_written = refresh_inventory_snapshot(engine)
-    print(f"  inventory snapshot rows: {rows_written}")
-    return rows_written
+    from generator.wms.publisher import publish_wms_data_from_config
+
+    publish_stats = publish_wms_data_from_config(pd.DataFrame(), engine, config)
+    print(f"  inventory snapshot rows: {publish_stats.get('inventory', 0)}")
+    print(f"  inventory days: {publish_stats.get('inventory_days', 0)}")
+    return publish_stats
 
 
 def generate_wms_data(config: GeneratorConfig | None = None) -> dict[str, int]:
-    transaction_rows = generate_wms_transaction_data(config)
-    inventory_rows = generate_wms_inventory_data(config)
-    return {
-        "inventory_transactions": transaction_rows,
-        "inventory": inventory_rows,
-    }
+    return generate_wms_transaction_data(config)
 
 
 def main() -> None:
@@ -164,8 +167,10 @@ def main() -> None:
         print(f"  - {table_name}: {row_count} rows")
     print(f"  - purchase_orders: {purchase_order_rows} rows")
     print(f"  - sales_orders: {sales_order_rows} rows")
-    print(f"  - inventory_transactions: {wms_rows['inventory_transactions']} rows")
-    print(f"  - inventory: {wms_rows['inventory']} rows")
+    print(f"  - inventory_transactions: {wms_rows.get('inventory_transactions', 0)} rows")
+    print(f"  - transaction days: {wms_rows.get('transaction_days', 0)}")
+    print(f"  - inventory: {wms_rows.get('inventory', 0)} rows")
+    print(f"  - inventory days: {wms_rows.get('inventory_days', 0)}")
 
 
 if __name__ == "__main__":

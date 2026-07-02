@@ -36,6 +36,14 @@ def load_inventory_transactions(engine: Engine) -> pd.DataFrame:
     return pd.read_sql_table("inventory_transactions", con=engine)
 
 
+def load_inventory_transaction_reference_ids(engine: Engine) -> set[str]:
+    inventory_transactions = load_inventory_transactions(engine)
+    if inventory_transactions.empty:
+        return set()
+
+    return set(inventory_transactions["reference_id"].dropna().astype(str))
+
+
 def load_goods_receipt_reference_ids(engine: Engine) -> set[str]:
     inventory_transactions = load_inventory_transactions(engine)
     if inventory_transactions.empty:

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date, timedelta
+from pathlib import Path
 
 
 def current_month_date_range(reference: date | None = None) -> tuple[date, date]:
@@ -96,6 +97,12 @@ class DatasetSizes:
 
 
 @dataclass(frozen=True)
+class WmsSettings:
+    output_dir: Path = Path("output/wms")
+    export_daily_csv: bool = True
+
+
+@dataclass(frozen=True)
 class GeneratorConfig:
     seed: int = 42
     company_name: str = "FlexiPack Industries Ltd."
@@ -103,3 +110,4 @@ class GeneratorConfig:
     purchase_orders: PurchaseOrderSettings = field(default_factory=default_purchase_order_settings)
     sales_orders: SalesOrderSettings = field(default_factory=default_sales_order_settings)
     noise: NoiseSettings = field(default_factory=NoiseSettings)
+    wms: WmsSettings = field(default_factory=WmsSettings)

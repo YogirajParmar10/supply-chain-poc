@@ -110,15 +110,17 @@ def main() -> None:
         id_start=id_start,
     )
     purchase_order_rows = write_dataframe(purchase_orders, "purchase_orders", engine)
-    wms_rows = sync_goods_receipts_for_purchase_orders(purchase_orders, engine)
+    wms_rows = sync_goods_receipts_for_purchase_orders(purchase_orders, engine, config)
 
     last_id = id_start + config.purchase_orders.count - 1
     print(f"Generated purchase orders for {config.company_name}")
     print(f"  purchase_order_id range: PO{id_start:06d} – PO{last_id:06d}")
     print(f"  - purchase_orders: {purchase_order_rows} rows")
     print(f"  - goods_receipts: {wms_rows['goods_receipts']} rows")
-    print(f"  - inventory_transactions: {wms_rows['inventory_transactions']} rows")
-    print(f"  - inventory: {wms_rows['inventory']} rows")
+    print(f"  - inventory_transactions: {wms_rows.get('inventory_transactions', 0)} rows")
+    print(f"  - transaction days: {wms_rows.get('transaction_days', 0)}")
+    print(f"  - inventory: {wms_rows.get('inventory', 0)} rows")
+    print(f"  - inventory days: {wms_rows.get('inventory_days', 0)}")
 
 
 if __name__ == "__main__":
