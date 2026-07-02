@@ -19,6 +19,8 @@ TIMESTAMP_COLUMNS: tuple[str, ...] = ("created_at", "updated_at")
 BRONZE_APPEND_TABLES: frozenset[str] = frozenset({
     "purchase_orders",
     "sales_orders",
+    "production_orders",
+    "production_output",
     "inventory_transactions",
 })
 

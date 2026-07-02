@@ -79,6 +79,38 @@ def default_sales_order_settings() -> SalesOrderSettings:
 
 
 @dataclass(frozen=True)
+class ProductionOrderSettings:
+    count: int = 1_000
+    start_date: date | None = None
+    end_date: date | None = None
+    min_duration_days: int = 2
+    max_duration_days: int = 14
+    status_weights: tuple[tuple[str, float], ...] = (
+        ("COMPLETED", 0.70),
+        ("IN_PROGRESS", 0.15),
+        ("PLANNED", 0.10),
+        ("CANCELLED", 0.05),
+    )
+
+    @property
+    def resolved_start_date(self) -> date:
+        if self.start_date is not None:
+            return self.start_date
+        return current_month_date_range()[0]
+
+    @property
+    def resolved_end_date(self) -> date:
+        if self.end_date is not None:
+            return self.end_date
+        return current_month_date_range()[1]
+
+
+def default_production_order_settings() -> ProductionOrderSettings:
+    start, end = current_month_date_range()
+    return ProductionOrderSettings(start_date=start, end_date=end)
+
+
+@dataclass(frozen=True)
 class NoiseSettings:
     enabled: bool = True
     row_noise_rate: float = 0.06
@@ -102,4 +134,7 @@ class GeneratorConfig:
     sizes: DatasetSizes = DatasetSizes()
     purchase_orders: PurchaseOrderSettings = field(default_factory=default_purchase_order_settings)
     sales_orders: SalesOrderSettings = field(default_factory=default_sales_order_settings)
+    production_orders: ProductionOrderSettings = field(
+        default_factory=default_production_order_settings
+    )
     noise: NoiseSettings = field(default_factory=NoiseSettings)
