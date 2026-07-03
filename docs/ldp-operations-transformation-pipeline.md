@@ -125,17 +125,26 @@ Chain silver and gold as separate tasks so each stage can be monitored, retried,
 4. Save and run the job.
 
 ```text
-┌─────────────────────────────┐
-│  silver_transformation      │  Task 1
-│  (ldp_silver_transformations)│
-└──────────────┬──────────────┘
-               │ depends on
-               ▼
-┌─────────────────────────────┐
-│  gold_transformation        │  Task 2
-│  (ldp_gold_transformations) │
-└─────────────────────────────┘
+master_ingestion_pipeline
+├── silver_transformation        (operations_silver_transformation_pipeline)
+├── gold_transformation          (operations_gold_transformation_pipeline)
+└── validate_gold_tables         (notebook task — depends on gold)
 ```
+
+---
+
+## Gold validation notebook
+
+Import and wire `notebooks/validate_gold_tables.ipynb` as the final task in the master ingestion workflow.
+
+The notebook:
+
+- Discovers tables in `jm_databricks_learning_ws.serve`
+- Validates existence, row counts, key uniqueness, required columns, and freshness (when a timestamp column exists)
+- Prints a PASS/FAIL summary and calls `dbutils.notebook.exit("SUCCESS")` on success
+- Raises an exception on failure so the job stops immediately
+
+To add a new gold table later, append an entry to `GOLD_TABLE_RULES` in the notebook configuration cell.
 
 ---
 
@@ -269,3 +278,4 @@ SELECT
 | `notebooks/ldp_gold_transformations.ipynb` | Gold pipeline notebook (importable) |
 | `databricks/pipelines/operations_silver_transformation_pipeline.json` | Silver pipeline API template |
 | `databricks/pipelines/operations_gold_transformation_pipeline.json` | Gold pipeline API template |
+| `notebooks/validate_gold_tables.ipynb` | Post-pipeline gold table validation job task |
