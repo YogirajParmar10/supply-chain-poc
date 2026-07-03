@@ -38,10 +38,22 @@ def sync_goods_receipts_for_purchase_orders(
     materials = load_materials(engine)
     warehouses = load_warehouses(engine)
     empty_sales_orders = load_sales_orders(engine).iloc[0:0]
+    empty_production_output = pd.DataFrame(
+        columns=[
+            "production_output_id",
+            "production_order_id",
+            "input_material_id",
+            "input_quantity",
+            "output_material_id",
+            "output_quantity",
+            "end_date",
+        ]
+    )
 
     publish_stats = publish_wms_from_orders_config(
         eligible,
         empty_sales_orders,
+        empty_production_output,
         materials,
         warehouses,
         engine,

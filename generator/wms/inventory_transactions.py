@@ -112,6 +112,72 @@ def _sales_shipment_rows(
     return rows
 
 
+def _production_transaction_rows(
+    production_output: pd.DataFrame,
+    materials: pd.DataFrame,
+    raw_materials_warehouse_id: str,
+    finished_goods_warehouse_ids: list[str],
+    *,
+    id_start: int,
+) -> list[dict[str, object]]:
+    raw_material_ids = _raw_material_ids(materials)
+    finished_good_ids = _finished_good_ids(materials)
+    rows: list[dict[str, object]] = []
+    sequence = id_start
+
+    for _, record in production_output.iterrows():
+        production_order_id = record.get("production_order_id")
+        transaction_date = record.get("end_date")
+        input_material_id = record.get("input_material_id")
+        input_quantity = _positive_quantity(record.get("input_quantity"))
+        output_material_id = record.get("output_material_id")
+        output_quantity = _positive_quantity(record.get("output_quantity"))
+
+        if not production_order_id or not transaction_date:
+            continue
+
+        if (
+            input_material_id
+            and input_quantity is not None
+            and str(input_material_id) in raw_material_ids
+        ):
+            rows.append(
+                {
+                    "transaction_id": format_id("IT", sequence, 6),
+                    "transaction_date": str(transaction_date),
+                    "warehouse_id": raw_materials_warehouse_id,
+                    "material_id": str(input_material_id),
+                    "transaction_type": "PRODUCTION_CONSUMPTION",
+                    "quantity": input_quantity,
+                    "reference_id": str(production_order_id),
+                }
+            )
+            sequence += 1
+
+        if (
+            output_material_id
+            and output_quantity is not None
+            and str(output_material_id) in finished_good_ids
+        ):
+            rows.append(
+                {
+                    "transaction_id": format_id("IT", sequence, 6),
+                    "transaction_date": str(transaction_date),
+                    "warehouse_id": select_finished_goods_warehouse(
+                        str(production_order_id),
+                        finished_goods_warehouse_ids,
+                    ),
+                    "material_id": str(output_material_id),
+                    "transaction_type": "PRODUCTION_RECEIPT",
+                    "quantity": output_quantity,
+                    "reference_id": str(production_order_id),
+                }
+            )
+            sequence += 1
+
+    return rows
+
+
 _EMPTY_TRANSACTION_COLUMNS = [
     "transaction_id",
     "transaction_date",
@@ -147,6 +213,7 @@ def generate_goods_receipt_transactions(
 def generate_inventory_transactions(
     purchase_orders: pd.DataFrame,
     sales_orders: pd.DataFrame,
+    production_output: pd.DataFrame,
     materials: pd.DataFrame,
     warehouses: pd.DataFrame,
     *,
@@ -160,14 +227,23 @@ def generate_inventory_transactions(
         raw_materials_warehouse_id,
         id_start=id_start,
     )
+    next_id = id_start + len(goods_receipt_rows)
     sales_shipment_rows = _sales_shipment_rows(
         sales_orders,
         materials,
         finished_goods_warehouse_ids,
-        id_start=id_start + len(goods_receipt_rows),
+        id_start=next_id,
+    )
+    next_id += len(sales_shipment_rows)
+    production_transaction_rows = _production_transaction_rows(
+        production_output,
+        materials,
+        raw_materials_warehouse_id,
+        finished_goods_warehouse_ids,
+        id_start=next_id,
     )
 
-    rows = goods_receipt_rows + sales_shipment_rows
+    rows = goods_receipt_rows + sales_shipment_rows + production_transaction_rows
     if not rows:
         return pd.DataFrame(columns=_EMPTY_TRANSACTION_COLUMNS)
 

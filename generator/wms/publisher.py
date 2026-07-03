@@ -20,6 +20,7 @@ from generator.wms.simulator import iter_daily_wms_batches
 def publish_wms_from_orders(
     purchase_orders: pd.DataFrame,
     sales_orders: pd.DataFrame,
+    production_output: pd.DataFrame,
     materials: pd.DataFrame,
     warehouses: pd.DataFrame,
     engine: Engine,
@@ -41,10 +42,13 @@ def publish_wms_from_orders(
     transaction_days = 0
     goods_receipts = 0
     sales_shipments = 0
+    production_consumptions = 0
+    production_receipts = 0
 
     for batch in iter_daily_wms_batches(
         purchase_orders,
         sales_orders,
+        production_output,
         materials,
         warehouses,
         id_start=id_start,
@@ -59,6 +63,14 @@ def publish_wms_from_orders(
         )
         sales_shipments += len(
             batch.transactions[batch.transactions["transaction_type"] == "SALES_SHIPMENT"]
+        )
+        production_consumptions += len(
+            batch.transactions[
+                batch.transactions["transaction_type"] == "PRODUCTION_CONSUMPTION"
+            ]
+        )
+        production_receipts += len(
+            batch.transactions[batch.transactions["transaction_type"] == "PRODUCTION_RECEIPT"]
         )
         print(
             f"  {batch.transaction_day.isoformat()}: "
@@ -76,6 +88,8 @@ def publish_wms_from_orders(
         "transaction_csv_days": transaction_csv_days,
         "goods_receipts": goods_receipts,
         "sales_shipments": sales_shipments,
+        "production_consumptions": production_consumptions,
+        "production_receipts": production_receipts,
         "inventory": inventory_stats.get("inventory", 0),
         "inventory_days": inventory_stats.get("inventory_days", 0),
     }
@@ -106,6 +120,7 @@ def publish_wms_data(
 def publish_wms_from_orders_config(
     purchase_orders: pd.DataFrame,
     sales_orders: pd.DataFrame,
+    production_output: pd.DataFrame,
     materials: pd.DataFrame,
     warehouses: pd.DataFrame,
     engine: Engine,
@@ -117,6 +132,7 @@ def publish_wms_from_orders_config(
     return publish_wms_from_orders(
         purchase_orders,
         sales_orders,
+        production_output,
         materials,
         warehouses,
         engine,
