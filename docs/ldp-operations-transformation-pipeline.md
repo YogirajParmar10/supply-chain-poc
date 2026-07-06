@@ -35,7 +35,7 @@ ingest (bronze — streaming tables)              ingest (bronze — Delta via F
                (ldp_gold_transformations.ipynb)
                             │
                             ▼
-                    serve (4 materialized views)
+                    serve (9 materialized views)
 ```
 
 **Architecture:** Bronze (streaming) → Silver (materialized views) → Gold (materialized views)
@@ -229,6 +229,23 @@ Rules are implemented in `ldp_silver_transformations.ipynb`.
 | `customer_summary` | `customer_id` | `total_sales_orders`, `total_quantity` | `refined.sales_orders` + `refined.customers` |
 | `inventory_summary` | `warehouse_id` | `current_stock`, `total_materials` | Latest `refined.inventory` snapshot + `refined.warehouses` |
 | `material_summary` | `material_id` | `purchased_quantity`, `sold_quantity`, `current_inventory` | `refined.purchase_orders`, `refined.sales_orders`, latest `refined.inventory`, `refined.materials` |
+| `business_kpi_summary` | Single row | `total_sales_orders`, `total_purchase_orders`, `inventory_on_hand`, `active_suppliers`, `active_customers`, `inventory_snapshot_date` | `refined` orders + latest `refined.inventory` |
+| `sales_trend_monthly` | `month_start_date` | `year_month`, `order_count`, `total_quantity` | Trailing 12 months of `refined.sales_orders` |
+| `purchase_trend_monthly` | `month_start_date` | `year_month`, `order_count`, `total_quantity` | Trailing 12 months of `refined.purchase_orders` |
+| `top_selling_materials` | `material_id` (top 10) | `sales_rank`, `material_name`, `sold_quantity` | `refined.sales_orders` + `refined.materials` |
+
+### Dashboard mapping
+
+| Dashboard widget | Gold table | Column(s) |
+|------------------|------------|-----------|
+| Total Sales Orders | `business_kpi_summary` | `total_sales_orders` |
+| Total Purchase Orders | `business_kpi_summary` | `total_purchase_orders` |
+| Inventory On Hand | `business_kpi_summary` | `inventory_on_hand` |
+| Active Suppliers | `business_kpi_summary` | `active_suppliers` |
+| Active Customers | `business_kpi_summary` | `active_customers` |
+| Sales Trend (12 months) | `sales_trend_monthly` | `year_month`, `order_count`, `total_quantity` |
+| Purchase Trend | `purchase_trend_monthly` | `year_month`, `order_count`, `total_quantity` |
+| Top Selling Materials | `top_selling_materials` | `material_name`, `sold_quantity`, `sales_rank` |
 
 ---
 

@@ -40,10 +40,13 @@ SERVE = f"{CATALOG}.{SERVE_SCHEMA}"
 from pyspark import pipelines as dp
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import (
+    trunc,
     sum as spark_sum,
     max as spark_max,
+    date_format,
     countDistinct,
     count,
+    add_months,
     coalesce,
     col,
     length,
@@ -637,3 +640,181 @@ def serve_material_summary():
             coalesce(col("current_inventory"), lit(0)).alias("current_inventory"),
         )
     )
+# COMMAND ----------
+# MAGIC ## `serve.business_kpi_summary`
+# MAGIC 
+# MAGIC Single-row headline KPIs for dashboard counter widgets.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.business_kpi_summary",
+    comment="Headline business KPIs for dashboard counter widgets",
+    table_properties={"quality": "gold", "domain": "executive"},
+)
+def serve_business_kpi_summary():
+    purchase_orders = spark.read.table(f"{REFINED}.purchase_orders")
+    sales_orders = spark.read.table(f"{REFINED}.sales_orders")
+    inventory = spark.read.table(f"{REFINED}.inventory")
+
+    active_purchase_orders = purchase_orders.filter(col("status") != "CANCELLED")
+    active_sales_orders = sales_orders.filter(col("status") != "CANCELLED")
+
+    latest_snapshot = inventory.agg(spark_max("snapshot_date").alias("inventory_snapshot_date"))
+    current_inventory = inventory.join(
+        latest_snapshot,
+        inventory.snapshot_date == latest_snapshot.inventory_snapshot_date,
+        how="inner",
+    )
+
+    purchase_stats = active_purchase_orders.agg(
+        count(lit(1)).alias("total_purchase_orders"),
+        countDistinct("supplier_id").alias("active_suppliers"),
+    )
+    sales_stats = active_sales_orders.agg(
+        count(lit(1)).alias("total_sales_orders"),
+        countDistinct("customer_id").alias("active_customers"),
+    )
+    inventory_stats = current_inventory.agg(
+        coalesce(spark_sum("quantity"), lit(0)).alias("inventory_on_hand"),
+    )
+
+    return (
+        purchase_stats.crossJoin(sales_stats)
+        .crossJoin(inventory_stats)
+        .crossJoin(latest_snapshot)
+    )
+# COMMAND ----------
+# MAGIC ## `serve.sales_trend_monthly`
+# MAGIC 
+# MAGIC Monthly sales order volume for the trailing 12 months (line chart).
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.sales_trend_monthly",
+    comment="Monthly sales order count and quantity for dashboard trend charts",
+    table_properties={"quality": "gold", "domain": "sales"},
+)
+def serve_sales_trend_monthly():
+    sales_orders = (
+        spark.read.table(f"{REFINED}.sales_orders")
+        .filter(col("status") != "CANCELLED")
+        .filter(col("order_date").isNotNull())
+    )
+
+    latest_month = sales_orders.agg(
+        spark_max(trunc("order_date", "month")).alias("latest_month")
+    )
+    month_offsets = spark.range(0, TREND_MONTHS)
+    months = latest_month.crossJoin(month_offsets).select(
+        add_months(
+            col("latest_month"),
+            col("id").cast("int") - (TREND_MONTHS - 1),
+        ).alias("month_start_date")
+    )
+
+    monthly_totals = (
+        sales_orders.withColumn("month_start_date", trunc("order_date", "month"))
+        .groupBy("month_start_date")
+        .agg(
+            count(lit(1)).alias("order_count"),
+            spark_sum("quantity").alias("total_quantity"),
+        )
+    )
+
+    return (
+        months.join(monthly_totals, on="month_start_date", how="left")
+        .select(
+            col("month_start_date"),
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            coalesce(col("order_count"), lit(0)).alias("order_count"),
+            coalesce(col("total_quantity"), lit(0)).alias("total_quantity"),
+        )
+        .orderBy("month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.purchase_trend_monthly`
+# MAGIC 
+# MAGIC Monthly purchase order volume for the trailing 12 months (line chart).
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.purchase_trend_monthly",
+    comment="Monthly purchase order count and quantity for dashboard trend charts",
+    table_properties={"quality": "gold", "domain": "procurement"},
+)
+def serve_purchase_trend_monthly():
+    purchase_orders = (
+        spark.read.table(f"{REFINED}.purchase_orders")
+        .filter(col("status") != "CANCELLED")
+        .filter(col("order_date").isNotNull())
+    )
+
+    latest_month = purchase_orders.agg(
+        spark_max(trunc("order_date", "month")).alias("latest_month")
+    )
+    month_offsets = spark.range(0, TREND_MONTHS)
+    months = latest_month.crossJoin(month_offsets).select(
+        add_months(
+            col("latest_month"),
+            col("id").cast("int") - (TREND_MONTHS - 1),
+        ).alias("month_start_date")
+    )
+
+    monthly_totals = (
+        purchase_orders.withColumn("month_start_date", trunc("order_date", "month"))
+        .groupBy("month_start_date")
+        .agg(
+            count(lit(1)).alias("order_count"),
+            spark_sum("quantity").alias("total_quantity"),
+        )
+    )
+
+    return (
+        months.join(monthly_totals, on="month_start_date", how="left")
+        .select(
+            col("month_start_date"),
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            coalesce(col("order_count"), lit(0)).alias("order_count"),
+            coalesce(col("total_quantity"), lit(0)).alias("total_quantity"),
+        )
+        .orderBy("month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.top_selling_materials`
+# MAGIC 
+# MAGIC Top finished goods by sold quantity (bar chart).
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.top_selling_materials",
+    comment="Top finished goods ranked by sold quantity for dashboard bar charts",
+    table_properties={"quality": "gold", "domain": "sales"},
+)
+def serve_top_selling_materials():
+    sales_orders = spark.read.table(f"{REFINED}.sales_orders").filter(
+        col("status") != "CANCELLED"
+    )
+    materials = spark.read.table(f"{REFINED}.materials").filter(
+        col("material_type") == "FINISHED_GOOD"
+    )
+
+    sold_by_material = sales_orders.groupBy("material_id").agg(
+        spark_sum("quantity").alias("sold_quantity"),
+    )
+
+    ranked = (
+        sold_by_material.join(materials, on="material_id", how="inner")
+        .withColumn(
+            "sales_rank",
+            row_number().over(Window.orderBy(col("sold_quantity").desc(), col("material_id"))),
+        )
+        .filter(col("sales_rank") <= TOP_SELLING_MATERIALS_LIMIT)
+    )
+
+    return ranked.select(
+        "sales_rank",
+        "material_id",
+        "material_name",
+        "material_type",
+        "sold_quantity",
+    ).orderBy("sales_rank")
