@@ -183,6 +183,7 @@ Rules are implemented in `ldp_silver_transformations.ipynb`.
 | Trim strings | All identifier and date text columns |
 | Normalize status | Map common variants to canonical values; uppercase |
 | Filter invalid quantities | Parse text qty; drop ≤ 0 or non-numeric |
+| Foreign keys | `purchase_orders` → valid `supplier_id` + `RAW_MATERIAL`; `sales_orders` → valid `customer_id` + `FINISHED_GOOD` |
 | Parse dates | ISO, datetime, EU, and text-month formats |
 | Expectations | `@dp.expect_or_drop` on keys and positive quantity |
 
@@ -193,7 +194,14 @@ Rules are implemented in `ldp_silver_transformations.ipynb`.
 | Remove null identifiers | Required keys must be non-null and non-blank |
 | Trim strings | All text columns |
 | Filter invalid quantities | Positive integers only |
+| Foreign keys | `warehouse_id` and `material_id` must exist in cleaned master tables |
 | Dedupe | By `transaction_id` or `(snapshot_date, warehouse_id, material_id)` using `_fivetran_synced` / `updated_at` when present |
+
+### ERP warehouses
+
+| Rule | Implementation |
+|------|----------------|
+| Foreign keys | `plant_id` must exist in `refined.plants` |
 
 ---
 
