@@ -17,8 +17,22 @@ def load_suppliers(engine: Engine) -> pd.DataFrame:
     return pd.read_sql_table("suppliers", con=engine)
 
 
+def load_active_suppliers(engine: Engine) -> pd.DataFrame:
+    suppliers = load_suppliers(engine)
+    if "active" not in suppliers.columns:
+        return suppliers
+    return suppliers[suppliers["active"].fillna(True)].reset_index(drop=True)
+
+
 def load_customers(engine: Engine) -> pd.DataFrame:
     return pd.read_sql_table("customers", con=engine)
+
+
+def load_active_customers(engine: Engine) -> pd.DataFrame:
+    customers = load_customers(engine)
+    if "active" not in customers.columns:
+        return customers
+    return customers[customers["active"].fillna(True)].reset_index(drop=True)
 
 
 def load_warehouses(engine: Engine) -> pd.DataFrame:

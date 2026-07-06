@@ -122,10 +122,44 @@ class NoiseSettings:
 class DatasetSizes:
     raw_materials: int = 25
     finished_goods: int = 100
-    suppliers: int = 10
-    customers: int = 20
+    suppliers: int = 25
+    customers: int = 45
     plants: int = 2
     warehouses: int = 3
+    active_partner_rate: float = 0.78
+
+
+@dataclass(frozen=True)
+class HistoryBackfillSettings:
+    """Twelve-month FMCG dashboard backfill window and monthly volume caps."""
+
+    month_count: int = 12
+    start_month: date = date(2025, 8, 1)
+    cap_end_date: date | None = None
+    volume_seed: int = 202508
+    purchase_orders_min: int = 85
+    purchase_orders_max: int = 140
+    sales_orders_min: int = 120
+    sales_orders_max: int = 220
+    production_orders_min: int = 45
+    production_orders_max: int = 95
+    production_orders_ratio: float = 0.42
+    seasonality: dict[int, float] = field(
+        default_factory=lambda: {
+            1: 0.92,
+            2: 0.88,
+            3: 1.00,
+            4: 1.02,
+            5: 1.05,
+            6: 1.00,
+            7: 1.08,
+            8: 0.96,
+            9: 1.00,
+            10: 1.04,
+            11: 1.12,
+            12: 1.18,
+        }
+    )
 
 
 @dataclass(frozen=True)
@@ -146,3 +180,4 @@ class GeneratorConfig:
     )
     noise: NoiseSettings = field(default_factory=NoiseSettings)
     wms: WmsSettings = field(default_factory=WmsSettings)
+    history: HistoryBackfillSettings = field(default_factory=HistoryBackfillSettings)

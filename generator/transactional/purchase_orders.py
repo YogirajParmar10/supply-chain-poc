@@ -13,7 +13,7 @@ from generator.transactional.noise import apply_purchase_order_noise
 from generator.utils.db import get_engine
 from generator.utils.db_export import write_dataframe
 from generator.utils.ids import format_id
-from generator.utils.master_data import load_materials, load_suppliers
+from generator.utils.master_data import load_active_suppliers, load_materials, load_suppliers
 from generator.utils.migrations import ensure_migrations_applied
 from generator.utils.order_ids import resolve_next_id_start
 from generator.utils.rng import create_rng
@@ -98,7 +98,7 @@ def main() -> None:
     engine = get_engine()
     rng = create_rng(config.seed)
     materials = load_materials(engine)
-    suppliers = load_suppliers(engine)
+    suppliers = load_active_suppliers(engine)
     id_start = resolve_next_id_start(engine, "purchase_orders", "purchase_order_id", "PO")
 
     purchase_orders = generate_purchase_orders(

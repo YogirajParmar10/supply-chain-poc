@@ -16,16 +16,16 @@ from generator.utils.db import get_engine
 from generator.utils.db_export import write_dataframe
 from generator.utils.migrations import ensure_migrations_applied
 from generator.utils.master_data import (
+    load_active_customers,
+    load_active_suppliers,
     load_clean_completed_production_orders,
     load_clean_delivered_purchase_orders,
     load_clean_production_output,
     load_clean_shipped_sales_orders,
-    load_customers,
     load_inventory_transaction_reference_ids,
     load_inventory_transactions,
     load_materials,
     load_plants,
-    load_suppliers,
     load_warehouses,
 )
 from generator.utils.order_ids import resolve_next_id_start
@@ -60,7 +60,7 @@ def generate_purchase_order_data(config: GeneratorConfig | None = None) -> int:
     rng = create_rng(config.seed)
 
     materials = load_materials(engine)
-    suppliers = load_suppliers(engine)
+    suppliers = load_active_suppliers(engine)
     id_start = resolve_next_id_start(engine, "purchase_orders", "purchase_order_id", "PO")
     purchase_orders = generate_purchase_orders(
         materials,
@@ -83,7 +83,7 @@ def generate_sales_order_data(config: GeneratorConfig | None = None) -> int:
     rng = create_rng(config.seed)
 
     materials = load_materials(engine)
-    customers = load_customers(engine)
+    customers = load_active_customers(engine)
     id_start = resolve_next_id_start(engine, "sales_orders", "sales_order_id", "SO")
     sales_orders = generate_sales_orders(
         materials,

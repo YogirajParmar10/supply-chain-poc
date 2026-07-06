@@ -15,6 +15,21 @@ SUPPLIER_NAMES: tuple[str, ...] = (
     "LabelTech Solutions BV",
     "PackRight Cartons LLC",
     "Prime Resin Partners",
+    "Baltic PET Compounds",
+    "Iberian Plastics Supply",
+    "Danube Chemical Trading",
+    "Scandinavian Film Extrusion",
+    "Rhine Valley Resins",
+    "Adriatic Packaging Materials",
+    "BlackSea Polymer Exports",
+    "Alpine Foil & Laminate AG",
+    "Benelux Closure Systems",
+    "Celtic Corrugated Board",
+    "Mediterranean Ink Solutions",
+    "Central Europe Adhesives",
+    "Nordic Recycled PET Co",
+    "AsiaPac Masterbatch Hub",
+    "Americas Resin Brokers",
 )
 
 SUPPLIER_COUNTRIES: tuple[str, ...] = (
@@ -28,19 +43,41 @@ SUPPLIER_COUNTRIES: tuple[str, ...] = (
     "Netherlands",
     "United Kingdom",
     "India",
+    "Poland",
+    "Spain",
+    "Romania",
+    "Sweden",
+    "Belgium",
+    "Italy",
+    "Turkey",
+    "Switzerland",
+    "Czech Republic",
+    "Ireland",
+    "Portugal",
+    "Hungary",
+    "Denmark",
+    "South Korea",
+    "Brazil",
 )
 
 
 def generate_suppliers(sizes: DatasetSizes, rng: np.random.Generator) -> pd.DataFrame:
+    if sizes.suppliers > len(SUPPLIER_NAMES):
+        raise ValueError(
+            f"Requested {sizes.suppliers} suppliers but only {len(SUPPLIER_NAMES)} names are defined"
+        )
+
     country_pool = list(SUPPLIER_COUNTRIES)
     rng.shuffle(country_pool)
     selected_countries = country_pool[: sizes.suppliers]
+    active_flags = rng.random(sizes.suppliers) < sizes.active_partner_rate
 
     rows = [
         {
             "supplier_id": format_id("SUP", index, 3),
             "supplier_name": SUPPLIER_NAMES[index - 1],
             "country": selected_countries[index - 1],
+            "active": bool(active_flags[index - 1]),
         }
         for index in range(1, sizes.suppliers + 1)
     ]

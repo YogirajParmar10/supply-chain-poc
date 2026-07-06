@@ -63,6 +63,14 @@ python -m generator.main
 
 Output is written to `output/erp/`. Directories are created automatically if they do not exist.
 
+Generate twelve months of dashboard-ready transactional data (orders, production, WMS inventory):
+
+```bash
+python scripts/generate_dashboard_history.py --reset-transactional --clean
+```
+
+Writes to PostgreSQL and exports daily WMS CSVs under `output/wms/`. Re-sync `ingest` in Databricks, then re-run the silver and gold pipelines.
+
 ### Programmatic usage
 
 ```python

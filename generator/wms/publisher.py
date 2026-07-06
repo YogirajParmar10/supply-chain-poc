@@ -27,16 +27,26 @@ def publish_wms_from_orders(
     *,
     wms_settings: WmsSettings | None = None,
     existing_reference_ids: set[str] | None = None,
+    opening_balances: dict[tuple[str, str], int] | None = None,
+    rebuild: bool = False,
 ) -> dict[str, int]:
     """Simulate and publish WMS day by day, then rebuild the full daily inventory calendar."""
     settings = wms_settings or WmsSettings()
-    existing_reference_ids = existing_reference_ids or set()
     prior_transactions = load_inventory_transactions(engine)
+
+    if rebuild:
+        existing_reference_ids = set()
+        opening_balances = {}
+    else:
+        existing_reference_ids = existing_reference_ids or set()
+        if opening_balances is None:
+            opening_balances = compute_balances_through_day(prior_transactions)
 
     id_start = resolve_next_id_start(
         engine, "inventory_transactions", "transaction_id", "IT"
     )
-    opening_balances = compute_balances_through_day(prior_transactions)
+    if opening_balances is None:
+        opening_balances = compute_balances_through_day(prior_transactions)
 
     transaction_rows = 0
     transaction_days = 0
@@ -127,6 +137,7 @@ def publish_wms_from_orders_config(
     config: GeneratorConfig | None = None,
     *,
     existing_reference_ids: set[str] | None = None,
+    rebuild: bool = False,
 ) -> dict[str, int]:
     config = config or GeneratorConfig()
     return publish_wms_from_orders(
@@ -138,6 +149,42 @@ def publish_wms_from_orders_config(
         engine,
         wms_settings=config.wms,
         existing_reference_ids=existing_reference_ids,
+        rebuild=rebuild,
+    )
+
+
+def rebuild_wms_from_scratch(
+    engine: Engine,
+    config: GeneratorConfig | None = None,
+) -> dict[str, int]:
+    """Rebuild inventory transactions and daily snapshots from all ERP/MES orders."""
+    from generator.utils.db_export import truncate_tables
+    from generator.utils.master_data import (
+        load_clean_delivered_purchase_orders,
+        load_clean_production_output,
+        load_clean_shipped_sales_orders,
+        load_materials,
+        load_warehouses,
+    )
+
+    config = config or GeneratorConfig()
+    truncate_tables(engine, ("inventory_transactions", "inventory"))
+
+    purchase_orders = load_clean_delivered_purchase_orders(engine)
+    sales_orders = load_clean_shipped_sales_orders(engine)
+    production_output = load_clean_production_output(engine)
+    materials = load_materials(engine)
+    warehouses = load_warehouses(engine)
+
+    return publish_wms_from_orders(
+        purchase_orders,
+        sales_orders,
+        production_output,
+        materials,
+        warehouses,
+        engine,
+        wms_settings=config.wms,
+        rebuild=True,
     )
 
 
