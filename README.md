@@ -69,6 +69,19 @@ Generate twelve months of dashboard-ready transactional data (orders, production
 python scripts/generate_dashboard_history.py --reset-transactional --clean
 ```
 
+Generate **five years** of clean forecasting history (2021-07-01 → 2026-07-07):
+
+```bash
+python scripts/generate_dashboard_history.py \
+  --reset-transactional \
+  --start-month 2021-07-01 \
+  --months 61 \
+  --end-date 2026-07-07 \
+  --clean
+```
+
+See [`logs/2026-07-07/data-regeneration.md`](logs/2026-07-07/data-regeneration.md) for the latest full regeneration run log.
+
 Writes to PostgreSQL and exports daily WMS CSVs under `output/wms/`. Re-sync `ingest` in Databricks, then re-run the silver and gold pipelines.
 
 Sync existing files to Azure Blob storage (without running generators):
@@ -80,7 +93,7 @@ python scripts/sync_to_azure_blob.py \
   --blob-prefix inventory
 ```
 
-The sync command uploads only blobs that do not already exist, so repeated runs do not duplicate files. See [`docs/azure-blob-sync.md`](docs/azure-blob-sync.md) for full setup and examples.
+The sync command uploads only blobs that do not already exist, so repeated runs do not duplicate files. See [`docs/guides/azure-blob-sync.md`](docs/guides/azure-blob-sync.md) for full setup and examples.
 
 ### Programmatic usage
 
@@ -120,6 +133,8 @@ generator/
 └── main.py          # Entry point and orchestration
 
 schema/              # CSV schema documentation per system
+docs/                # Guides, pipeline docs, and reference
+logs/                # Operational run logs (generation, sync, etc.)
 output/              # Generated CSV files (gitignored)
 ```
 

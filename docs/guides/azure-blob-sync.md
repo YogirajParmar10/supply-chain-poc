@@ -102,3 +102,7 @@ The script prints:
 - `failed`
 
 Use this summary to confirm what changed in each sync run.
+
+## 7) Run logs
+
+Save operational audit logs under `logs/YYYY-MM-DD/` (summary `.md` + console `.log`). See [`logs/README.md`](../../logs/README.md).

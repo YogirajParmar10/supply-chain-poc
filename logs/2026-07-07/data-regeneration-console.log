@@ -1,0 +1,2121 @@
+Resetting transactional tables...
+Updating master data (customers, suppliers, materials, plants, warehouses)...
+  - materials: 125 rows
+  - suppliers: 25 rows
+  - customers: 45 rows
+  - plants: 2 rows
+  - warehouses: 3 rows
+Generating 61 months of orders from 2021-07-01 to 2026-07-07...
+  2021-07: PO=112, SO=152, PR=64
+  purchase_order_id range: PO000001 – PO000112
+  sales_order_id range: SO000001 – SO000152
+  production_order_id range: PR000001 – PR000064
+  2021-08: PO=117, SO=166, PR=70
+  purchase_order_id range: PO000113 – PO000229
+  sales_order_id range: SO000153 – SO000318
+  production_order_id range: PR000065 – PR000134
+  2021-09: PO=135, SO=134, PR=56
+  purchase_order_id range: PO000230 – PO000364
+  sales_order_id range: SO000319 – SO000452
+  production_order_id range: PR000135 – PR000190
+  2021-10: PO=125, SO=136, PR=57
+  purchase_order_id range: PO000365 – PO000489
+  sales_order_id range: SO000453 – SO000588
+  production_order_id range: PR000191 – PR000247
+  2021-11: PO=121, SO=241, PR=95
+  purchase_order_id range: PO000490 – PO000610
+  sales_order_id range: SO000589 – SO000829
+  production_order_id range: PR000248 – PR000342
+  2021-12: PO=117, SO=175, PR=74
+  purchase_order_id range: PO000611 – PO000727
+  sales_order_id range: SO000830 – SO001004
+  production_order_id range: PR000343 – PR000416
+  2022-01: PO=122, SO=170, PR=71
+  purchase_order_id range: PO000728 – PO000849
+  sales_order_id range: SO001005 – SO001174
+  production_order_id range: PR000417 – PR000487
+  2022-02: PO=84, SO=146, PR=61
+  purchase_order_id range: PO000850 – PO000933
+  sales_order_id range: SO001175 – SO001320
+  production_order_id range: PR000488 – PR000548
+  2022-03: PO=111, SO=173, PR=73
+  purchase_order_id range: PO000934 – PO001044
+  sales_order_id range: SO001321 – SO001493
+  production_order_id range: PR000549 – PR000621
+  2022-04: PO=105, SO=191, PR=80
+  purchase_order_id range: PO001045 – PO001149
+  sales_order_id range: SO001494 – SO001684
+  production_order_id range: PR000622 – PR000701
+  2022-05: PO=128, SO=208, PR=87
+  purchase_order_id range: PO001150 – PO001277
+  sales_order_id range: SO001685 – SO001892
+  production_order_id range: PR000702 – PR000788
+  2022-06: PO=90, SO=210, PR=88
+  purchase_order_id range: PO001278 – PO001367
+  sales_order_id range: SO001893 – SO002102
+  production_order_id range: PR000789 – PR000876
+  2022-07: PO=95, SO=218, PR=92
+  purchase_order_id range: PO001368 – PO001462
+  sales_order_id range: SO002103 – SO002320
+  production_order_id range: PR000877 – PR000968
+  2022-08: PO=126, SO=180, PR=76
+  purchase_order_id range: PO001463 – PO001588
+  sales_order_id range: SO002321 – SO002500
+  production_order_id range: PR000969 – PR001044
+  2022-09: PO=135, SO=137, PR=58
+  purchase_order_id range: PO001589 – PO001723
+  sales_order_id range: SO002501 – SO002637
+  production_order_id range: PR001045 – PR001102
+  2022-10: PO=100, SO=228, PR=95
+  purchase_order_id range: PO001724 – PO001823
+  sales_order_id range: SO002638 – SO002865
+  production_order_id range: PR001103 – PR001197
+  2022-11: PO=134, SO=209, PR=88
+  purchase_order_id range: PO001824 – PO001957
+  sales_order_id range: SO002866 – SO003074
+  production_order_id range: PR001198 – PR001285
+  2022-12: PO=103, SO=224, PR=94
+  purchase_order_id range: PO001958 – PO002060
+  sales_order_id range: SO003075 – SO003298
+  production_order_id range: PR001286 – PR001379
+  2023-01: PO=107, SO=167, PR=70
+  purchase_order_id range: PO002061 – PO002167
+  sales_order_id range: SO003299 – SO003465
+  production_order_id range: PR001380 – PR001449
+  2023-02: PO=93, SO=176, PR=74
+  purchase_order_id range: PO002168 – PO002260
+  sales_order_id range: SO003466 – SO003641
+  production_order_id range: PR001450 – PR001523
+  2023-03: PO=86, SO=215, PR=90
+  purchase_order_id range: PO002261 – PO002346
+  sales_order_id range: SO003642 – SO003856
+  production_order_id range: PR001524 – PR001613
+  2023-04: PO=130, SO=126, PR=53
+  purchase_order_id range: PO002347 – PO002476
+  sales_order_id range: SO003857 – SO003982
+  production_order_id range: PR001614 – PR001666
+  2023-05: PO=133, SO=146, PR=61
+  purchase_order_id range: PO002477 – PO002609
+  sales_order_id range: SO003983 – SO004128
+  production_order_id range: PR001667 – PR001727
+  2023-06: PO=116, SO=120, PR=50
+  purchase_order_id range: PO002610 – PO002725
+  sales_order_id range: SO004129 – SO004248
+  production_order_id range: PR001728 – PR001777
+  2023-07: PO=143, SO=235, PR=95
+  purchase_order_id range: PO002726 – PO002868
+  sales_order_id range: SO004249 – SO004483
+  production_order_id range: PR001778 – PR001872
+  2023-08: PO=126, SO=150, PR=63
+  purchase_order_id range: PO002869 – PO002994
+  sales_order_id range: SO004484 – SO004633
+  production_order_id range: PR001873 – PR001935
+  2023-09: PO=97, SO=209, PR=88
+  purchase_order_id range: PO002995 – PO003091
+  sales_order_id range: SO004634 – SO004842
+  production_order_id range: PR001936 – PR002023
+  2023-10: PO=96, SO=202, PR=85
+  purchase_order_id range: PO003092 – PO003187
+  sales_order_id range: SO004843 – SO005044
+  production_order_id range: PR002024 – PR002108
+  2023-11: PO=150, SO=218, PR=92
+  purchase_order_id range: PO003188 – PO003337
+  sales_order_id range: SO005045 – SO005262
+  production_order_id range: PR002109 – PR002200
+  2023-12: PO=155, SO=223, PR=94
+  purchase_order_id range: PO003338 – PO003492
+  sales_order_id range: SO005263 – SO005485
+  production_order_id range: PR002201 – PR002294
+  2024-01: PO=86, SO=132, PR=55
+  purchase_order_id range: PO003493 – PO003578
+  sales_order_id range: SO005486 – SO005617
+  production_order_id range: PR002295 – PR002349
+  2024-02: PO=116, SO=127, PR=53
+  purchase_order_id range: PO003579 – PO003694
+  sales_order_id range: SO005618 – SO005744
+  production_order_id range: PR002350 – PR002402
+  2024-03: PO=98, SO=204, PR=86
+  purchase_order_id range: PO003695 – PO003792
+  sales_order_id range: SO005745 – SO005948
+  production_order_id range: PR002403 – PR002488
+  2024-04: PO=114, SO=151, PR=63
+  purchase_order_id range: PO003793 – PO003906
+  sales_order_id range: SO005949 – SO006099
+  production_order_id range: PR002489 – PR002551
+  2024-05: PO=142, SO=138, PR=58
+  purchase_order_id range: PO003907 – PO004048
+  sales_order_id range: SO006100 – SO006237
+  production_order_id range: PR002552 – PR002609
+  2024-06: PO=131, SO=156, PR=66
+  purchase_order_id range: PO004049 – PO004179
+  sales_order_id range: SO006238 – SO006393
+  production_order_id range: PR002610 – PR002675
+  2024-07: PO=113, SO=174, PR=73
+  purchase_order_id range: PO004180 – PO004292
+  sales_order_id range: SO006394 – SO006567
+  production_order_id range: PR002676 – PR002748
+  2024-08: PO=95, SO=188, PR=79
+  purchase_order_id range: PO004293 – PO004387
+  sales_order_id range: SO006568 – SO006755
+  production_order_id range: PR002749 – PR002827
+  2024-09: PO=107, SO=182, PR=76
+  purchase_order_id range: PO004388 – PO004494
+  sales_order_id range: SO006756 – SO006937
+  production_order_id range: PR002828 – PR002903
+  2024-10: PO=118, SO=176, PR=74
+  purchase_order_id range: PO004495 – PO004612
+  sales_order_id range: SO006938 – SO007113
+  production_order_id range: PR002904 – PR002977
+  2024-11: PO=125, SO=231, PR=95
+  purchase_order_id range: PO004613 – PO004737
+  sales_order_id range: SO007114 – SO007344
+  production_order_id range: PR002978 – PR003072
+  2024-12: PO=162, SO=150, PR=63
+  purchase_order_id range: PO004738 – PO004899
+  sales_order_id range: SO007345 – SO007494
+  production_order_id range: PR003073 – PR003135
+  2025-01: PO=124, SO=176, PR=74
+  purchase_order_id range: PO004900 – PO005023
+  sales_order_id range: SO007495 – SO007670
+  production_order_id range: PR003136 – PR003209
+  2025-02: PO=115, SO=176, PR=74
+  purchase_order_id range: PO005024 – PO005138
+  sales_order_id range: SO007671 – SO007846
+  production_order_id range: PR003210 – PR003283
+  2025-03: PO=111, SO=188, PR=79
+  purchase_order_id range: PO005139 – PO005249
+  sales_order_id range: SO007847 – SO008034
+  production_order_id range: PR003284 – PR003362
+  2025-04: PO=130, SO=123, PR=52
+  purchase_order_id range: PO005250 – PO005379
+  sales_order_id range: SO008035 – SO008157
+  production_order_id range: PR003363 – PR003414
+  2025-05: PO=133, SO=205, PR=86
+  purchase_order_id range: PO005380 – PO005512
+  sales_order_id range: SO008158 – SO008362
+  production_order_id range: PR003415 – PR003500
+  2025-06: PO=119, SO=147, PR=62
+  purchase_order_id range: PO005513 – PO005631
+  sales_order_id range: SO008363 – SO008509
+  production_order_id range: PR003501 – PR003562
+  2025-07: PO=144, SO=176, PR=74
+  purchase_order_id range: PO005632 – PO005775
+  sales_order_id range: SO008510 – SO008685
+  production_order_id range: PR003563 – PR003636
+  2025-08: PO=89, SO=195, PR=82
+  purchase_order_id range: PO005776 – PO005864
+  sales_order_id range: SO008686 – SO008880
+  production_order_id range: PR003637 – PR003718
+  2025-09: PO=88, SO=123, PR=52
+  purchase_order_id range: PO005865 – PO005952
+  sales_order_id range: SO008881 – SO009003
+  production_order_id range: PR003719 – PR003770
+  2025-10: PO=108, SO=159, PR=67
+  purchase_order_id range: PO005953 – PO006060
+  sales_order_id range: SO009004 – SO009162
+  production_order_id range: PR003771 – PR003837
+  2025-11: PO=151, SO=217, PR=91
+  purchase_order_id range: PO006061 – PO006211
+  sales_order_id range: SO009163 – SO009379
+  production_order_id range: PR003838 – PR003928
+  2025-12: PO=164, SO=217, PR=91
+  purchase_order_id range: PO006212 – PO006375
+  sales_order_id range: SO009380 – SO009596
+  production_order_id range: PR003929 – PR004019
+  2026-01: PO=108, SO=147, PR=62
+  purchase_order_id range: PO006376 – PO006483
+  sales_order_id range: SO009597 – SO009743
+  production_order_id range: PR004020 – PR004081
+  2026-02: PO=96, SO=157, PR=66
+  purchase_order_id range: PO006484 – PO006579
+  sales_order_id range: SO009744 – SO009900
+  production_order_id range: PR004082 – PR004147
+  2026-03: PO=128, SO=189, PR=79
+  purchase_order_id range: PO006580 – PO006707
+  sales_order_id range: SO009901 – SO010089
+  production_order_id range: PR004148 – PR004226
+  2026-04: PO=88, SO=124, PR=52
+  purchase_order_id range: PO006708 – PO006795
+  sales_order_id range: SO010090 – SO010213
+  production_order_id range: PR004227 – PR004278
+  2026-05: PO=93, SO=218, PR=92
+  purchase_order_id range: PO006796 – PO006888
+  sales_order_id range: SO010214 – SO010431
+  production_order_id range: PR004279 – PR004370
+  2026-06: PO=109, SO=179, PR=75
+  purchase_order_id range: PO006889 – PO006997
+  sales_order_id range: SO010432 – SO010610
+  production_order_id range: PR004371 – PR004445
+  2026-07: PO=113, SO=220, PR=92
+  purchase_order_id range: PO006998 – PO007110
+  sales_order_id range: SO010611 – SO010830
+  production_order_id range: PR004446 – PR004537
+  production_output_id range: POUT000001 – POUT003204
+  production output rows linked to completed orders: 3204
+Rebuilding WMS inventory transactions and daily snapshots...
+  2021-07-05: 4 transactions, 2 inventory positions
+  2021-07-08: 5 transactions, 6 inventory positions
+  2021-07-09: 6 transactions, 7 inventory positions
+  2021-07-10: 2 transactions, 8 inventory positions
+  2021-07-11: 5 transactions, 9 inventory positions
+  2021-07-13: 1 transactions, 10 inventory positions
+  2021-07-14: 2 transactions, 10 inventory positions
+  2021-07-15: 6 transactions, 13 inventory positions
+  2021-07-16: 7 transactions, 16 inventory positions
+  2021-07-17: 3 transactions, 17 inventory positions
+  2021-07-18: 6 transactions, 17 inventory positions
+  2021-07-19: 4 transactions, 17 inventory positions
+  2021-07-20: 7 transactions, 17 inventory positions
+  2021-07-21: 10 transactions, 21 inventory positions
+  2021-07-22: 9 transactions, 22 inventory positions
+  2021-07-23: 1 transactions, 23 inventory positions
+  2021-07-24: 6 transactions, 25 inventory positions
+  2021-07-25: 4 transactions, 25 inventory positions
+  2021-07-26: 12 transactions, 29 inventory positions
+  2021-07-27: 10 transactions, 35 inventory positions
+  2021-07-28: 8 transactions, 37 inventory positions
+  2021-07-29: 14 transactions, 39 inventory positions
+  2021-07-30: 7 transactions, 40 inventory positions
+  2021-07-31: 10 transactions, 40 inventory positions
+  2021-08-01: 12 transactions, 43 inventory positions
+  2021-08-02: 7 transactions, 46 inventory positions
+  2021-08-03: 7 transactions, 47 inventory positions
+  2021-08-04: 10 transactions, 48 inventory positions
+  2021-08-05: 10 transactions, 47 inventory positions
+  2021-08-06: 8 transactions, 46 inventory positions
+  2021-08-07: 14 transactions, 47 inventory positions
+  2021-08-08: 5 transactions, 48 inventory positions
+  2021-08-09: 11 transactions, 49 inventory positions
+  2021-08-10: 10 transactions, 47 inventory positions
+  2021-08-11: 11 transactions, 50 inventory positions
+  2021-08-12: 3 transactions, 50 inventory positions
+  2021-08-13: 6 transactions, 50 inventory positions
+  2021-08-14: 7 transactions, 51 inventory positions
+  2021-08-15: 13 transactions, 50 inventory positions
+  2021-08-16: 11 transactions, 52 inventory positions
+  2021-08-17: 10 transactions, 53 inventory positions
+  2021-08-18: 7 transactions, 53 inventory positions
+  2021-08-19: 8 transactions, 54 inventory positions
+  2021-08-20: 10 transactions, 56 inventory positions
+  2021-08-21: 7 transactions, 57 inventory positions
+  2021-08-22: 5 transactions, 58 inventory positions
+  2021-08-23: 14 transactions, 58 inventory positions
+  2021-08-24: 10 transactions, 59 inventory positions
+  2021-08-25: 7 transactions, 59 inventory positions
+  2021-08-26: 7 transactions, 60 inventory positions
+  2021-08-27: 10 transactions, 62 inventory positions
+  2021-08-28: 10 transactions, 62 inventory positions
+  2021-08-29: 11 transactions, 62 inventory positions
+  2021-08-30: 6 transactions, 62 inventory positions
+  2021-08-31: 14 transactions, 66 inventory positions
+  2021-09-01: 10 transactions, 67 inventory positions
+  2021-09-02: 12 transactions, 66 inventory positions
+  2021-09-03: 7 transactions, 66 inventory positions
+  2021-09-04: 6 transactions, 67 inventory positions
+  2021-09-05: 11 transactions, 69 inventory positions
+  2021-09-06: 6 transactions, 68 inventory positions
+  2021-09-07: 17 transactions, 69 inventory positions
+  2021-09-08: 11 transactions, 70 inventory positions
+  2021-09-09: 16 transactions, 72 inventory positions
+  2021-09-10: 6 transactions, 72 inventory positions
+  2021-09-11: 5 transactions, 71 inventory positions
+  2021-09-12: 6 transactions, 71 inventory positions
+  2021-09-13: 10 transactions, 71 inventory positions
+  2021-09-14: 13 transactions, 71 inventory positions
+  2021-09-15: 6 transactions, 70 inventory positions
+  2021-09-16: 10 transactions, 70 inventory positions
+  2021-09-17: 10 transactions, 72 inventory positions
+  2021-09-18: 5 transactions, 72 inventory positions
+  2021-09-19: 12 transactions, 73 inventory positions
+  2021-09-20: 6 transactions, 71 inventory positions
+  2021-09-21: 4 transactions, 70 inventory positions
+  2021-09-22: 11 transactions, 71 inventory positions
+  2021-09-23: 3 transactions, 71 inventory positions
+  2021-09-24: 13 transactions, 72 inventory positions
+  2021-09-25: 4 transactions, 72 inventory positions
+  2021-09-26: 13 transactions, 71 inventory positions
+  2021-09-27: 4 transactions, 71 inventory positions
+  2021-09-28: 6 transactions, 72 inventory positions
+  2021-09-29: 7 transactions, 71 inventory positions
+  2021-09-30: 8 transactions, 71 inventory positions
+  2021-10-01: 10 transactions, 71 inventory positions
+  2021-10-02: 16 transactions, 71 inventory positions
+  2021-10-03: 7 transactions, 72 inventory positions
+  2021-10-04: 10 transactions, 72 inventory positions
+  2021-10-05: 11 transactions, 72 inventory positions
+  2021-10-06: 9 transactions, 73 inventory positions
+  2021-10-07: 12 transactions, 71 inventory positions
+  2021-10-08: 15 transactions, 72 inventory positions
+  2021-10-09: 4 transactions, 72 inventory positions
+  2021-10-10: 9 transactions, 71 inventory positions
+  2021-10-11: 8 transactions, 71 inventory positions
+  2021-10-12: 8 transactions, 69 inventory positions
+  2021-10-13: 9 transactions, 69 inventory positions
+  2021-10-14: 7 transactions, 70 inventory positions
+  2021-10-15: 7 transactions, 70 inventory positions
+  2021-10-16: 8 transactions, 70 inventory positions
+  2021-10-17: 5 transactions, 70 inventory positions
+  2021-10-18: 7 transactions, 70 inventory positions
+  2021-10-19: 7 transactions, 70 inventory positions
+  2021-10-20: 11 transactions, 71 inventory positions
+  2021-10-21: 8 transactions, 71 inventory positions
+  2021-10-22: 3 transactions, 71 inventory positions
+  2021-10-23: 11 transactions, 71 inventory positions
+  2021-10-24: 11 transactions, 73 inventory positions
+  2021-10-25: 11 transactions, 73 inventory positions
+  2021-10-26: 4 transactions, 73 inventory positions
+  2021-10-27: 8 transactions, 74 inventory positions
+  2021-10-28: 5 transactions, 73 inventory positions
+  2021-10-29: 5 transactions, 73 inventory positions
+  2021-10-30: 9 transactions, 73 inventory positions
+  2021-10-31: 5 transactions, 73 inventory positions
+  2021-11-01: 8 transactions, 73 inventory positions
+  2021-11-02: 13 transactions, 73 inventory positions
+  2021-11-03: 13 transactions, 73 inventory positions
+  2021-11-04: 11 transactions, 73 inventory positions
+  2021-11-05: 10 transactions, 73 inventory positions
+  2021-11-06: 13 transactions, 74 inventory positions
+  2021-11-07: 13 transactions, 71 inventory positions
+  2021-11-08: 10 transactions, 71 inventory positions
+  2021-11-09: 15 transactions, 70 inventory positions
+  2021-11-10: 15 transactions, 70 inventory positions
+  2021-11-11: 6 transactions, 70 inventory positions
+  2021-11-12: 12 transactions, 70 inventory positions
+  2021-11-13: 12 transactions, 71 inventory positions
+  2021-11-14: 10 transactions, 71 inventory positions
+  2021-11-15: 8 transactions, 71 inventory positions
+  2021-11-16: 7 transactions, 71 inventory positions
+  2021-11-17: 12 transactions, 72 inventory positions
+  2021-11-18: 14 transactions, 72 inventory positions
+  2021-11-19: 8 transactions, 72 inventory positions
+  2021-11-20: 8 transactions, 73 inventory positions
+  2021-11-21: 10 transactions, 74 inventory positions
+  2021-11-22: 10 transactions, 74 inventory positions
+  2021-11-23: 14 transactions, 75 inventory positions
+  2021-11-24: 12 transactions, 75 inventory positions
+  2021-11-25: 13 transactions, 75 inventory positions
+  2021-11-26: 10 transactions, 75 inventory positions
+  2021-11-27: 16 transactions, 74 inventory positions
+  2021-11-28: 13 transactions, 76 inventory positions
+  2021-11-29: 12 transactions, 73 inventory positions
+  2021-11-30: 13 transactions, 72 inventory positions
+  2021-12-01: 10 transactions, 72 inventory positions
+  2021-12-02: 15 transactions, 71 inventory positions
+  2021-12-03: 21 transactions, 71 inventory positions
+  2021-12-04: 6 transactions, 71 inventory positions
+  2021-12-05: 18 transactions, 72 inventory positions
+  2021-12-06: 13 transactions, 71 inventory positions
+  2021-12-07: 11 transactions, 69 inventory positions
+  2021-12-08: 17 transactions, 70 inventory positions
+  2021-12-09: 14 transactions, 68 inventory positions
+  2021-12-10: 5 transactions, 67 inventory positions
+  2021-12-11: 10 transactions, 66 inventory positions
+  2021-12-12: 9 transactions, 65 inventory positions
+  2021-12-13: 16 transactions, 65 inventory positions
+  2021-12-14: 8 transactions, 65 inventory positions
+  2021-12-15: 12 transactions, 66 inventory positions
+  2021-12-16: 13 transactions, 66 inventory positions
+  2021-12-17: 7 transactions, 66 inventory positions
+  2021-12-18: 10 transactions, 66 inventory positions
+  2021-12-19: 14 transactions, 67 inventory positions
+  2021-12-20: 9 transactions, 67 inventory positions
+  2021-12-21: 11 transactions, 68 inventory positions
+  2021-12-22: 5 transactions, 68 inventory positions
+  2021-12-23: 18 transactions, 67 inventory positions
+  2021-12-24: 6 transactions, 67 inventory positions
+  2021-12-25: 13 transactions, 67 inventory positions
+  2021-12-26: 7 transactions, 68 inventory positions
+  2021-12-27: 7 transactions, 68 inventory positions
+  2021-12-28: 4 transactions, 68 inventory positions
+  2021-12-29: 18 transactions, 69 inventory positions
+  2021-12-30: 5 transactions, 69 inventory positions
+  2021-12-31: 8 transactions, 68 inventory positions
+  2022-01-01: 20 transactions, 68 inventory positions
+  2022-01-02: 8 transactions, 68 inventory positions
+  2022-01-03: 12 transactions, 69 inventory positions
+  2022-01-04: 8 transactions, 69 inventory positions
+  2022-01-05: 7 transactions, 68 inventory positions
+  2022-01-06: 11 transactions, 68 inventory positions
+  2022-01-07: 11 transactions, 68 inventory positions
+  2022-01-08: 6 transactions, 68 inventory positions
+  2022-01-09: 9 transactions, 68 inventory positions
+  2022-01-10: 10 transactions, 68 inventory positions
+  2022-01-11: 5 transactions, 67 inventory positions
+  2022-01-12: 12 transactions, 66 inventory positions
+  2022-01-13: 8 transactions, 66 inventory positions
+  2022-01-14: 8 transactions, 66 inventory positions
+  2022-01-15: 6 transactions, 66 inventory positions
+  2022-01-16: 9 transactions, 66 inventory positions
+  2022-01-17: 14 transactions, 66 inventory positions
+  2022-01-18: 13 transactions, 68 inventory positions
+  2022-01-19: 6 transactions, 68 inventory positions
+  2022-01-20: 9 transactions, 67 inventory positions
+  2022-01-21: 8 transactions, 67 inventory positions
+  2022-01-22: 9 transactions, 67 inventory positions
+  2022-01-23: 5 transactions, 67 inventory positions
+  2022-01-24: 8 transactions, 67 inventory positions
+  2022-01-25: 13 transactions, 67 inventory positions
+  2022-01-26: 11 transactions, 67 inventory positions
+  2022-01-27: 12 transactions, 67 inventory positions
+  2022-01-28: 12 transactions, 67 inventory positions
+  2022-01-29: 10 transactions, 67 inventory positions
+  2022-01-30: 9 transactions, 67 inventory positions
+  2022-01-31: 12 transactions, 67 inventory positions
+  2022-02-01: 7 transactions, 67 inventory positions
+  2022-02-02: 9 transactions, 67 inventory positions
+  2022-02-03: 13 transactions, 68 inventory positions
+  2022-02-04: 9 transactions, 68 inventory positions
+  2022-02-05: 8 transactions, 67 inventory positions
+  2022-02-06: 10 transactions, 67 inventory positions
+  2022-02-07: 9 transactions, 67 inventory positions
+  2022-02-08: 9 transactions, 67 inventory positions
+  2022-02-09: 10 transactions, 67 inventory positions
+  2022-02-10: 8 transactions, 67 inventory positions
+  2022-02-11: 14 transactions, 68 inventory positions
+  2022-02-12: 7 transactions, 68 inventory positions
+  2022-02-13: 10 transactions, 68 inventory positions
+  2022-02-14: 16 transactions, 68 inventory positions
+  2022-02-15: 10 transactions, 67 inventory positions
+  2022-02-16: 6 transactions, 67 inventory positions
+  2022-02-17: 5 transactions, 67 inventory positions
+  2022-02-18: 7 transactions, 66 inventory positions
+  2022-02-19: 11 transactions, 66 inventory positions
+  2022-02-20: 7 transactions, 66 inventory positions
+  2022-02-21: 4 transactions, 66 inventory positions
+  2022-02-22: 13 transactions, 66 inventory positions
+  2022-02-23: 7 transactions, 66 inventory positions
+  2022-02-24: 7 transactions, 66 inventory positions
+  2022-02-25: 5 transactions, 66 inventory positions
+  2022-02-26: 2 transactions, 65 inventory positions
+  2022-02-27: 6 transactions, 65 inventory positions
+  2022-02-28: 8 transactions, 66 inventory positions
+  2022-03-01: 14 transactions, 66 inventory positions
+  2022-03-02: 13 transactions, 67 inventory positions
+  2022-03-03: 8 transactions, 67 inventory positions
+  2022-03-04: 4 transactions, 67 inventory positions
+  2022-03-05: 18 transactions, 67 inventory positions
+  2022-03-06: 17 transactions, 68 inventory positions
+  2022-03-07: 18 transactions, 68 inventory positions
+  2022-03-08: 12 transactions, 68 inventory positions
+  2022-03-09: 8 transactions, 68 inventory positions
+  2022-03-10: 5 transactions, 68 inventory positions
+  2022-03-11: 14 transactions, 68 inventory positions
+  2022-03-12: 7 transactions, 68 inventory positions
+  2022-03-13: 12 transactions, 69 inventory positions
+  2022-03-14: 11 transactions, 71 inventory positions
+  2022-03-15: 4 transactions, 71 inventory positions
+  2022-03-16: 6 transactions, 71 inventory positions
+  2022-03-17: 12 transactions, 72 inventory positions
+  2022-03-18: 5 transactions, 72 inventory positions
+  2022-03-19: 8 transactions, 71 inventory positions
+  2022-03-20: 12 transactions, 71 inventory positions
+  2022-03-21: 10 transactions, 71 inventory positions
+  2022-03-22: 7 transactions, 71 inventory positions
+  2022-03-23: 8 transactions, 71 inventory positions
+  2022-03-24: 5 transactions, 71 inventory positions
+  2022-03-25: 4 transactions, 71 inventory positions
+  2022-03-26: 14 transactions, 71 inventory positions
+  2022-03-27: 9 transactions, 71 inventory positions
+  2022-03-28: 6 transactions, 71 inventory positions
+  2022-03-29: 16 transactions, 71 inventory positions
+  2022-03-30: 12 transactions, 71 inventory positions
+  2022-03-31: 2 transactions, 71 inventory positions
+  2022-04-01: 14 transactions, 71 inventory positions
+  2022-04-02: 9 transactions, 71 inventory positions
+  2022-04-03: 11 transactions, 71 inventory positions
+  2022-04-04: 13 transactions, 71 inventory positions
+  2022-04-05: 16 transactions, 71 inventory positions
+  2022-04-06: 13 transactions, 71 inventory positions
+  2022-04-07: 9 transactions, 72 inventory positions
+  2022-04-08: 8 transactions, 72 inventory positions
+  2022-04-09: 7 transactions, 72 inventory positions
+  2022-04-10: 6 transactions, 72 inventory positions
+  2022-04-11: 10 transactions, 72 inventory positions
+  2022-04-12: 10 transactions, 72 inventory positions
+  2022-04-13: 8 transactions, 71 inventory positions
+  2022-04-14: 5 transactions, 71 inventory positions
+  2022-04-15: 13 transactions, 69 inventory positions
+  2022-04-16: 13 transactions, 69 inventory positions
+  2022-04-17: 14 transactions, 69 inventory positions
+  2022-04-18: 11 transactions, 71 inventory positions
+  2022-04-19: 13 transactions, 71 inventory positions
+  2022-04-20: 7 transactions, 71 inventory positions
+  2022-04-21: 5 transactions, 71 inventory positions
+  2022-04-22: 4 transactions, 71 inventory positions
+  2022-04-23: 10 transactions, 72 inventory positions
+  2022-04-24: 16 transactions, 72 inventory positions
+  2022-04-25: 15 transactions, 71 inventory positions
+  2022-04-26: 9 transactions, 71 inventory positions
+  2022-04-27: 11 transactions, 71 inventory positions
+  2022-04-28: 14 transactions, 72 inventory positions
+  2022-04-29: 10 transactions, 71 inventory positions
+  2022-04-30: 15 transactions, 71 inventory positions
+  2022-05-01: 6 transactions, 70 inventory positions
+  2022-05-02: 12 transactions, 70 inventory positions
+  2022-05-03: 19 transactions, 70 inventory positions
+  2022-05-04: 9 transactions, 70 inventory positions
+  2022-05-05: 15 transactions, 70 inventory positions
+  2022-05-06: 10 transactions, 70 inventory positions
+  2022-05-07: 15 transactions, 71 inventory positions
+  2022-05-08: 9 transactions, 72 inventory positions
+  2022-05-09: 9 transactions, 72 inventory positions
+  2022-05-10: 9 transactions, 71 inventory positions
+  2022-05-11: 4 transactions, 70 inventory positions
+  2022-05-12: 12 transactions, 70 inventory positions
+  2022-05-13: 12 transactions, 68 inventory positions
+  2022-05-14: 10 transactions, 68 inventory positions
+  2022-05-15: 9 transactions, 69 inventory positions
+  2022-05-16: 9 transactions, 69 inventory positions
+  2022-05-17: 9 transactions, 69 inventory positions
+  2022-05-18: 14 transactions, 69 inventory positions
+  2022-05-19: 13 transactions, 69 inventory positions
+  2022-05-20: 16 transactions, 69 inventory positions
+  2022-05-21: 7 transactions, 70 inventory positions
+  2022-05-22: 12 transactions, 69 inventory positions
+  2022-05-23: 7 transactions, 68 inventory positions
+  2022-05-24: 10 transactions, 67 inventory positions
+  2022-05-25: 7 transactions, 67 inventory positions
+  2022-05-26: 17 transactions, 68 inventory positions
+  2022-05-27: 19 transactions, 68 inventory positions
+  2022-05-28: 7 transactions, 68 inventory positions
+  2022-05-29: 10 transactions, 68 inventory positions
+  2022-05-30: 10 transactions, 68 inventory positions
+  2022-05-31: 11 transactions, 67 inventory positions
+  2022-06-01: 12 transactions, 67 inventory positions
+  2022-06-02: 16 transactions, 67 inventory positions
+  2022-06-03: 20 transactions, 68 inventory positions
+  2022-06-04: 11 transactions, 68 inventory positions
+  2022-06-05: 11 transactions, 68 inventory positions
+  2022-06-06: 16 transactions, 69 inventory positions
+  2022-06-07: 12 transactions, 69 inventory positions
+  2022-06-08: 9 transactions, 68 inventory positions
+  2022-06-09: 10 transactions, 67 inventory positions
+  2022-06-10: 12 transactions, 67 inventory positions
+  2022-06-11: 7 transactions, 67 inventory positions
+  2022-06-12: 12 transactions, 66 inventory positions
+  2022-06-13: 18 transactions, 65 inventory positions
+  2022-06-14: 9 transactions, 65 inventory positions
+  2022-06-15: 8 transactions, 65 inventory positions
+  2022-06-16: 7 transactions, 65 inventory positions
+  2022-06-17: 7 transactions, 65 inventory positions
+  2022-06-18: 14 transactions, 65 inventory positions
+  2022-06-19: 8 transactions, 65 inventory positions
+  2022-06-20: 9 transactions, 65 inventory positions
+  2022-06-21: 6 transactions, 65 inventory positions
+  2022-06-22: 13 transactions, 65 inventory positions
+  2022-06-23: 7 transactions, 64 inventory positions
+  2022-06-24: 11 transactions, 64 inventory positions
+  2022-06-25: 17 transactions, 64 inventory positions
+  2022-06-26: 19 transactions, 65 inventory positions
+  2022-06-27: 11 transactions, 66 inventory positions
+  2022-06-28: 17 transactions, 66 inventory positions
+  2022-06-29: 5 transactions, 66 inventory positions
+  2022-06-30: 16 transactions, 65 inventory positions
+  2022-07-01: 9 transactions, 65 inventory positions
+  2022-07-02: 7 transactions, 65 inventory positions
+  2022-07-03: 23 transactions, 65 inventory positions
+  2022-07-04: 12 transactions, 66 inventory positions
+  2022-07-05: 9 transactions, 66 inventory positions
+  2022-07-06: 10 transactions, 66 inventory positions
+  2022-07-07: 10 transactions, 66 inventory positions
+  2022-07-08: 12 transactions, 66 inventory positions
+  2022-07-09: 7 transactions, 66 inventory positions
+  2022-07-10: 11 transactions, 66 inventory positions
+  2022-07-11: 15 transactions, 66 inventory positions
+  2022-07-12: 10 transactions, 66 inventory positions
+  2022-07-13: 11 transactions, 66 inventory positions
+  2022-07-14: 14 transactions, 65 inventory positions
+  2022-07-15: 15 transactions, 65 inventory positions
+  2022-07-16: 15 transactions, 65 inventory positions
+  2022-07-17: 11 transactions, 65 inventory positions
+  2022-07-18: 13 transactions, 63 inventory positions
+  2022-07-19: 16 transactions, 62 inventory positions
+  2022-07-20: 6 transactions, 62 inventory positions
+  2022-07-21: 6 transactions, 61 inventory positions
+  2022-07-22: 9 transactions, 61 inventory positions
+  2022-07-23: 7 transactions, 61 inventory positions
+  2022-07-24: 14 transactions, 61 inventory positions
+  2022-07-25: 10 transactions, 61 inventory positions
+  2022-07-26: 12 transactions, 60 inventory positions
+  2022-07-27: 13 transactions, 60 inventory positions
+  2022-07-28: 10 transactions, 58 inventory positions
+  2022-07-29: 22 transactions, 59 inventory positions
+  2022-07-30: 6 transactions, 59 inventory positions
+  2022-07-31: 16 transactions, 59 inventory positions
+  2022-08-01: 9 transactions, 59 inventory positions
+  2022-08-02: 13 transactions, 59 inventory positions
+  2022-08-03: 8 transactions, 59 inventory positions
+  2022-08-04: 10 transactions, 59 inventory positions
+  2022-08-05: 12 transactions, 59 inventory positions
+  2022-08-06: 11 transactions, 59 inventory positions
+  2022-08-07: 15 transactions, 59 inventory positions
+  2022-08-08: 7 transactions, 59 inventory positions
+  2022-08-09: 7 transactions, 59 inventory positions
+  2022-08-10: 9 transactions, 59 inventory positions
+  2022-08-11: 17 transactions, 60 inventory positions
+  2022-08-12: 5 transactions, 60 inventory positions
+  2022-08-13: 12 transactions, 59 inventory positions
+  2022-08-14: 16 transactions, 59 inventory positions
+  2022-08-15: 9 transactions, 59 inventory positions
+  2022-08-16: 4 transactions, 59 inventory positions
+  2022-08-17: 8 transactions, 59 inventory positions
+  2022-08-18: 12 transactions, 60 inventory positions
+  2022-08-19: 9 transactions, 60 inventory positions
+  2022-08-20: 12 transactions, 60 inventory positions
+  2022-08-21: 16 transactions, 60 inventory positions
+  2022-08-22: 4 transactions, 60 inventory positions
+  2022-08-23: 3 transactions, 60 inventory positions
+  2022-08-24: 15 transactions, 60 inventory positions
+  2022-08-25: 10 transactions, 60 inventory positions
+  2022-08-26: 9 transactions, 60 inventory positions
+  2022-08-27: 10 transactions, 60 inventory positions
+  2022-08-28: 12 transactions, 59 inventory positions
+  2022-08-29: 9 transactions, 59 inventory positions
+  2022-08-30: 6 transactions, 59 inventory positions
+  2022-08-31: 10 transactions, 59 inventory positions
+  2022-09-01: 6 transactions, 59 inventory positions
+  2022-09-02: 12 transactions, 59 inventory positions
+  2022-09-03: 14 transactions, 59 inventory positions
+  2022-09-04: 11 transactions, 59 inventory positions
+  2022-09-05: 14 transactions, 57 inventory positions
+  2022-09-06: 12 transactions, 57 inventory positions
+  2022-09-07: 10 transactions, 57 inventory positions
+  2022-09-08: 7 transactions, 57 inventory positions
+  2022-09-09: 22 transactions, 57 inventory positions
+  2022-09-10: 12 transactions, 57 inventory positions
+  2022-09-11: 5 transactions, 57 inventory positions
+  2022-09-12: 12 transactions, 56 inventory positions
+  2022-09-13: 9 transactions, 56 inventory positions
+  2022-09-14: 12 transactions, 56 inventory positions
+  2022-09-15: 6 transactions, 56 inventory positions
+  2022-09-16: 7 transactions, 56 inventory positions
+  2022-09-17: 7 transactions, 56 inventory positions
+  2022-09-18: 3 transactions, 56 inventory positions
+  2022-09-19: 7 transactions, 56 inventory positions
+  2022-09-20: 9 transactions, 57 inventory positions
+  2022-09-21: 6 transactions, 57 inventory positions
+  2022-09-22: 5 transactions, 57 inventory positions
+  2022-09-23: 9 transactions, 57 inventory positions
+  2022-09-24: 12 transactions, 56 inventory positions
+  2022-09-25: 10 transactions, 56 inventory positions
+  2022-09-26: 8 transactions, 56 inventory positions
+  2022-09-27: 9 transactions, 56 inventory positions
+  2022-09-28: 7 transactions, 56 inventory positions
+  2022-09-29: 10 transactions, 56 inventory positions
+  2022-09-30: 11 transactions, 56 inventory positions
+  2022-10-01: 11 transactions, 56 inventory positions
+  2022-10-02: 12 transactions, 56 inventory positions
+  2022-10-03: 10 transactions, 56 inventory positions
+  2022-10-04: 9 transactions, 55 inventory positions
+  2022-10-05: 11 transactions, 55 inventory positions
+  2022-10-06: 8 transactions, 55 inventory positions
+  2022-10-07: 12 transactions, 55 inventory positions
+  2022-10-08: 12 transactions, 55 inventory positions
+  2022-10-09: 20 transactions, 56 inventory positions
+  2022-10-10: 15 transactions, 56 inventory positions
+  2022-10-11: 15 transactions, 56 inventory positions
+  2022-10-12: 3 transactions, 56 inventory positions
+  2022-10-13: 7 transactions, 57 inventory positions
+  2022-10-14: 13 transactions, 57 inventory positions
+  2022-10-15: 8 transactions, 57 inventory positions
+  2022-10-16: 7 transactions, 57 inventory positions
+  2022-10-17: 9 transactions, 57 inventory positions
+  2022-10-18: 16 transactions, 57 inventory positions
+  2022-10-19: 10 transactions, 57 inventory positions
+  2022-10-20: 8 transactions, 57 inventory positions
+  2022-10-21: 13 transactions, 57 inventory positions
+  2022-10-22: 10 transactions, 57 inventory positions
+  2022-10-23: 10 transactions, 57 inventory positions
+  2022-10-24: 9 transactions, 57 inventory positions
+  2022-10-25: 12 transactions, 57 inventory positions
+  2022-10-26: 9 transactions, 57 inventory positions
+  2022-10-27: 21 transactions, 57 inventory positions
+  2022-10-28: 11 transactions, 56 inventory positions
+  2022-10-29: 16 transactions, 56 inventory positions
+  2022-10-30: 9 transactions, 56 inventory positions
+  2022-10-31: 6 transactions, 55 inventory positions
+  2022-11-01: 9 transactions, 55 inventory positions
+  2022-11-02: 12 transactions, 55 inventory positions
+  2022-11-03: 15 transactions, 54 inventory positions
+  2022-11-04: 10 transactions, 53 inventory positions
+  2022-11-05: 8 transactions, 53 inventory positions
+  2022-11-06: 13 transactions, 53 inventory positions
+  2022-11-07: 11 transactions, 52 inventory positions
+  2022-11-08: 16 transactions, 53 inventory positions
+  2022-11-09: 11 transactions, 53 inventory positions
+  2022-11-10: 12 transactions, 53 inventory positions
+  2022-11-11: 5 transactions, 53 inventory positions
+  2022-11-12: 12 transactions, 53 inventory positions
+  2022-11-13: 11 transactions, 53 inventory positions
+  2022-11-14: 8 transactions, 51 inventory positions
+  2022-11-15: 16 transactions, 51 inventory positions
+  2022-11-16: 14 transactions, 49 inventory positions
+  2022-11-17: 15 transactions, 48 inventory positions
+  2022-11-18: 10 transactions, 48 inventory positions
+  2022-11-19: 13 transactions, 48 inventory positions
+  2022-11-20: 13 transactions, 47 inventory positions
+  2022-11-21: 4 transactions, 46 inventory positions
+  2022-11-22: 9 transactions, 46 inventory positions
+  2022-11-23: 12 transactions, 46 inventory positions
+  2022-11-24: 12 transactions, 46 inventory positions
+  2022-11-25: 17 transactions, 46 inventory positions
+  2022-11-26: 22 transactions, 46 inventory positions
+  2022-11-27: 11 transactions, 47 inventory positions
+  2022-11-28: 21 transactions, 47 inventory positions
+  2022-11-29: 14 transactions, 47 inventory positions
+  2022-11-30: 13 transactions, 47 inventory positions
+  2022-12-01: 13 transactions, 47 inventory positions
+  2022-12-02: 16 transactions, 47 inventory positions
+  2022-12-03: 23 transactions, 47 inventory positions
+  2022-12-04: 12 transactions, 47 inventory positions
+  2022-12-05: 18 transactions, 47 inventory positions
+  2022-12-06: 10 transactions, 47 inventory positions
+  2022-12-07: 10 transactions, 47 inventory positions
+  2022-12-08: 9 transactions, 47 inventory positions
+  2022-12-09: 10 transactions, 47 inventory positions
+  2022-12-10: 11 transactions, 47 inventory positions
+  2022-12-11: 4 transactions, 47 inventory positions
+  2022-12-12: 7 transactions, 47 inventory positions
+  2022-12-13: 4 transactions, 47 inventory positions
+  2022-12-14: 10 transactions, 46 inventory positions
+  2022-12-15: 8 transactions, 45 inventory positions
+  2022-12-16: 16 transactions, 45 inventory positions
+  2022-12-17: 7 transactions, 45 inventory positions
+  2022-12-18: 9 transactions, 45 inventory positions
+  2022-12-19: 9 transactions, 45 inventory positions
+  2022-12-20: 11 transactions, 44 inventory positions
+  2022-12-21: 12 transactions, 44 inventory positions
+  2022-12-22: 20 transactions, 45 inventory positions
+  2022-12-23: 10 transactions, 45 inventory positions
+  2022-12-24: 11 transactions, 45 inventory positions
+  2022-12-25: 9 transactions, 45 inventory positions
+  2022-12-26: 12 transactions, 45 inventory positions
+  2022-12-27: 12 transactions, 45 inventory positions
+  2022-12-28: 15 transactions, 45 inventory positions
+  2022-12-29: 18 transactions, 45 inventory positions
+  2022-12-30: 19 transactions, 45 inventory positions
+  2022-12-31: 7 transactions, 45 inventory positions
+  2023-01-01: 25 transactions, 46 inventory positions
+  2023-01-02: 11 transactions, 46 inventory positions
+  2023-01-03: 11 transactions, 46 inventory positions
+  2023-01-04: 3 transactions, 46 inventory positions
+  2023-01-05: 14 transactions, 46 inventory positions
+  2023-01-06: 8 transactions, 47 inventory positions
+  2023-01-07: 8 transactions, 47 inventory positions
+  2023-01-08: 9 transactions, 47 inventory positions
+  2023-01-09: 7 transactions, 47 inventory positions
+  2023-01-10: 7 transactions, 47 inventory positions
+  2023-01-11: 14 transactions, 47 inventory positions
+  2023-01-12: 6 transactions, 47 inventory positions
+  2023-01-13: 8 transactions, 47 inventory positions
+  2023-01-14: 12 transactions, 47 inventory positions
+  2023-01-15: 14 transactions, 47 inventory positions
+  2023-01-16: 10 transactions, 47 inventory positions
+  2023-01-17: 8 transactions, 47 inventory positions
+  2023-01-18: 14 transactions, 47 inventory positions
+  2023-01-19: 9 transactions, 47 inventory positions
+  2023-01-20: 10 transactions, 46 inventory positions
+  2023-01-21: 12 transactions, 46 inventory positions
+  2023-01-22: 9 transactions, 46 inventory positions
+  2023-01-23: 11 transactions, 46 inventory positions
+  2023-01-24: 6 transactions, 46 inventory positions
+  2023-01-25: 8 transactions, 46 inventory positions
+  2023-01-26: 13 transactions, 46 inventory positions
+  2023-01-27: 14 transactions, 47 inventory positions
+  2023-01-28: 8 transactions, 47 inventory positions
+  2023-01-29: 6 transactions, 47 inventory positions
+  2023-01-30: 4 transactions, 46 inventory positions
+  2023-01-31: 19 transactions, 46 inventory positions
+  2023-02-01: 13 transactions, 46 inventory positions
+  2023-02-02: 9 transactions, 46 inventory positions
+  2023-02-03: 5 transactions, 46 inventory positions
+  2023-02-04: 7 transactions, 46 inventory positions
+  2023-02-05: 10 transactions, 46 inventory positions
+  2023-02-06: 7 transactions, 46 inventory positions
+  2023-02-07: 16 transactions, 47 inventory positions
+  2023-02-08: 9 transactions, 47 inventory positions
+  2023-02-09: 5 transactions, 47 inventory positions
+  2023-02-10: 4 transactions, 47 inventory positions
+  2023-02-11: 8 transactions, 47 inventory positions
+  2023-02-12: 7 transactions, 47 inventory positions
+  2023-02-13: 12 transactions, 47 inventory positions
+  2023-02-14: 8 transactions, 47 inventory positions
+  2023-02-15: 12 transactions, 47 inventory positions
+  2023-02-16: 12 transactions, 47 inventory positions
+  2023-02-17: 13 transactions, 47 inventory positions
+  2023-02-18: 6 transactions, 47 inventory positions
+  2023-02-19: 9 transactions, 47 inventory positions
+  2023-02-20: 14 transactions, 47 inventory positions
+  2023-02-21: 9 transactions, 47 inventory positions
+  2023-02-22: 12 transactions, 47 inventory positions
+  2023-02-23: 7 transactions, 47 inventory positions
+  2023-02-24: 12 transactions, 47 inventory positions
+  2023-02-25: 11 transactions, 47 inventory positions
+  2023-02-26: 9 transactions, 47 inventory positions
+  2023-02-27: 7 transactions, 47 inventory positions
+  2023-02-28: 12 transactions, 47 inventory positions
+  2023-03-01: 10 transactions, 47 inventory positions
+  2023-03-02: 14 transactions, 48 inventory positions
+  2023-03-03: 14 transactions, 48 inventory positions
+  2023-03-04: 11 transactions, 49 inventory positions
+  2023-03-05: 6 transactions, 49 inventory positions
+  2023-03-06: 4 transactions, 49 inventory positions
+  2023-03-07: 15 transactions, 49 inventory positions
+  2023-03-08: 14 transactions, 49 inventory positions
+  2023-03-09: 8 transactions, 49 inventory positions
+  2023-03-10: 14 transactions, 49 inventory positions
+  2023-03-11: 11 transactions, 49 inventory positions
+  2023-03-12: 16 transactions, 49 inventory positions
+  2023-03-13: 7 transactions, 49 inventory positions
+  2023-03-14: 10 transactions, 49 inventory positions
+  2023-03-15: 13 transactions, 49 inventory positions
+  2023-03-16: 7 transactions, 48 inventory positions
+  2023-03-17: 13 transactions, 48 inventory positions
+  2023-03-18: 8 transactions, 48 inventory positions
+  2023-03-19: 9 transactions, 48 inventory positions
+  2023-03-20: 7 transactions, 48 inventory positions
+  2023-03-21: 10 transactions, 48 inventory positions
+  2023-03-22: 10 transactions, 49 inventory positions
+  2023-03-23: 8 transactions, 49 inventory positions
+  2023-03-24: 9 transactions, 49 inventory positions
+  2023-03-25: 12 transactions, 49 inventory positions
+  2023-03-26: 13 transactions, 49 inventory positions
+  2023-03-27: 6 transactions, 49 inventory positions
+  2023-03-28: 9 transactions, 49 inventory positions
+  2023-03-29: 8 transactions, 49 inventory positions
+  2023-03-30: 17 transactions, 49 inventory positions
+  2023-03-31: 9 transactions, 49 inventory positions
+  2023-04-01: 15 transactions, 50 inventory positions
+  2023-04-02: 9 transactions, 50 inventory positions
+  2023-04-03: 9 transactions, 50 inventory positions
+  2023-04-04: 16 transactions, 50 inventory positions
+  2023-04-05: 12 transactions, 50 inventory positions
+  2023-04-06: 16 transactions, 50 inventory positions
+  2023-04-07: 10 transactions, 50 inventory positions
+  2023-04-08: 6 transactions, 50 inventory positions
+  2023-04-09: 9 transactions, 50 inventory positions
+  2023-04-10: 11 transactions, 50 inventory positions
+  2023-04-11: 8 transactions, 50 inventory positions
+  2023-04-12: 7 transactions, 50 inventory positions
+  2023-04-13: 11 transactions, 52 inventory positions
+  2023-04-14: 15 transactions, 52 inventory positions
+  2023-04-15: 8 transactions, 52 inventory positions
+  2023-04-16: 9 transactions, 52 inventory positions
+  2023-04-17: 13 transactions, 52 inventory positions
+  2023-04-18: 8 transactions, 52 inventory positions
+  2023-04-19: 6 transactions, 52 inventory positions
+  2023-04-20: 9 transactions, 52 inventory positions
+  2023-04-21: 5 transactions, 52 inventory positions
+  2023-04-22: 7 transactions, 52 inventory positions
+  2023-04-23: 11 transactions, 52 inventory positions
+  2023-04-24: 11 transactions, 52 inventory positions
+  2023-04-25: 10 transactions, 52 inventory positions
+  2023-04-26: 12 transactions, 52 inventory positions
+  2023-04-27: 6 transactions, 52 inventory positions
+  2023-04-28: 7 transactions, 52 inventory positions
+  2023-04-29: 7 transactions, 52 inventory positions
+  2023-04-30: 7 transactions, 52 inventory positions
+  2023-05-01: 9 transactions, 52 inventory positions
+  2023-05-02: 10 transactions, 52 inventory positions
+  2023-05-03: 5 transactions, 52 inventory positions
+  2023-05-04: 9 transactions, 52 inventory positions
+  2023-05-05: 11 transactions, 52 inventory positions
+  2023-05-06: 13 transactions, 52 inventory positions
+  2023-05-07: 13 transactions, 52 inventory positions
+  2023-05-08: 6 transactions, 52 inventory positions
+  2023-05-09: 16 transactions, 52 inventory positions
+  2023-05-10: 9 transactions, 52 inventory positions
+  2023-05-11: 9 transactions, 52 inventory positions
+  2023-05-12: 7 transactions, 52 inventory positions
+  2023-05-13: 7 transactions, 52 inventory positions
+  2023-05-14: 10 transactions, 52 inventory positions
+  2023-05-15: 15 transactions, 52 inventory positions
+  2023-05-16: 5 transactions, 52 inventory positions
+  2023-05-17: 4 transactions, 52 inventory positions
+  2023-05-18: 7 transactions, 52 inventory positions
+  2023-05-19: 5 transactions, 52 inventory positions
+  2023-05-20: 11 transactions, 52 inventory positions
+  2023-05-21: 9 transactions, 52 inventory positions
+  2023-05-22: 3 transactions, 52 inventory positions
+  2023-05-23: 14 transactions, 52 inventory positions
+  2023-05-24: 8 transactions, 52 inventory positions
+  2023-05-25: 4 transactions, 52 inventory positions
+  2023-05-26: 9 transactions, 52 inventory positions
+  2023-05-27: 8 transactions, 52 inventory positions
+  2023-05-28: 5 transactions, 52 inventory positions
+  2023-05-29: 5 transactions, 52 inventory positions
+  2023-05-30: 9 transactions, 52 inventory positions
+  2023-05-31: 13 transactions, 52 inventory positions
+  2023-06-01: 7 transactions, 52 inventory positions
+  2023-06-02: 10 transactions, 52 inventory positions
+  2023-06-03: 13 transactions, 52 inventory positions
+  2023-06-04: 11 transactions, 52 inventory positions
+  2023-06-05: 14 transactions, 52 inventory positions
+  2023-06-06: 13 transactions, 52 inventory positions
+  2023-06-07: 11 transactions, 52 inventory positions
+  2023-06-08: 10 transactions, 53 inventory positions
+  2023-06-09: 6 transactions, 53 inventory positions
+  2023-06-10: 11 transactions, 52 inventory positions
+  2023-06-11: 6 transactions, 52 inventory positions
+  2023-06-12: 13 transactions, 52 inventory positions
+  2023-06-13: 5 transactions, 52 inventory positions
+  2023-06-14: 5 transactions, 52 inventory positions
+  2023-06-15: 3 transactions, 52 inventory positions
+  2023-06-16: 6 transactions, 52 inventory positions
+  2023-06-17: 2 transactions, 52 inventory positions
+  2023-06-18: 4 transactions, 52 inventory positions
+  2023-06-19: 10 transactions, 52 inventory positions
+  2023-06-20: 6 transactions, 52 inventory positions
+  2023-06-21: 10 transactions, 52 inventory positions
+  2023-06-22: 8 transactions, 52 inventory positions
+  2023-06-23: 3 transactions, 52 inventory positions
+  2023-06-24: 6 transactions, 52 inventory positions
+  2023-06-25: 8 transactions, 52 inventory positions
+  2023-06-26: 8 transactions, 52 inventory positions
+  2023-06-27: 6 transactions, 52 inventory positions
+  2023-06-28: 14 transactions, 52 inventory positions
+  2023-06-29: 15 transactions, 51 inventory positions
+  2023-06-30: 9 transactions, 51 inventory positions
+  2023-07-01: 11 transactions, 51 inventory positions
+  2023-07-02: 2 transactions, 51 inventory positions
+  2023-07-03: 6 transactions, 51 inventory positions
+  2023-07-04: 8 transactions, 51 inventory positions
+  2023-07-05: 11 transactions, 51 inventory positions
+  2023-07-06: 5 transactions, 51 inventory positions
+  2023-07-07: 12 transactions, 51 inventory positions
+  2023-07-08: 9 transactions, 51 inventory positions
+  2023-07-09: 10 transactions, 51 inventory positions
+  2023-07-10: 12 transactions, 51 inventory positions
+  2023-07-11: 12 transactions, 51 inventory positions
+  2023-07-12: 5 transactions, 51 inventory positions
+  2023-07-13: 9 transactions, 51 inventory positions
+  2023-07-14: 14 transactions, 51 inventory positions
+  2023-07-15: 8 transactions, 51 inventory positions
+  2023-07-16: 10 transactions, 51 inventory positions
+  2023-07-17: 15 transactions, 51 inventory positions
+  2023-07-18: 13 transactions, 51 inventory positions
+  2023-07-19: 8 transactions, 51 inventory positions
+  2023-07-20: 8 transactions, 51 inventory positions
+  2023-07-21: 16 transactions, 51 inventory positions
+  2023-07-22: 10 transactions, 51 inventory positions
+  2023-07-23: 15 transactions, 51 inventory positions
+  2023-07-24: 19 transactions, 50 inventory positions
+  2023-07-25: 14 transactions, 50 inventory positions
+  2023-07-26: 6 transactions, 50 inventory positions
+  2023-07-27: 14 transactions, 50 inventory positions
+  2023-07-28: 13 transactions, 50 inventory positions
+  2023-07-29: 13 transactions, 50 inventory positions
+  2023-07-30: 6 transactions, 50 inventory positions
+  2023-07-31: 7 transactions, 50 inventory positions
+  2023-08-01: 11 transactions, 50 inventory positions
+  2023-08-02: 13 transactions, 50 inventory positions
+  2023-08-03: 24 transactions, 50 inventory positions
+  2023-08-04: 13 transactions, 50 inventory positions
+  2023-08-05: 17 transactions, 50 inventory positions
+  2023-08-06: 10 transactions, 50 inventory positions
+  2023-08-07: 21 transactions, 50 inventory positions
+  2023-08-08: 17 transactions, 50 inventory positions
+  2023-08-10: 6 transactions, 50 inventory positions
+  2023-08-11: 13 transactions, 50 inventory positions
+  2023-08-12: 9 transactions, 50 inventory positions
+  2023-08-13: 13 transactions, 50 inventory positions
+  2023-08-14: 9 transactions, 50 inventory positions
+  2023-08-15: 9 transactions, 50 inventory positions
+  2023-08-16: 7 transactions, 50 inventory positions
+  2023-08-17: 10 transactions, 50 inventory positions
+  2023-08-18: 9 transactions, 50 inventory positions
+  2023-08-19: 14 transactions, 50 inventory positions
+  2023-08-20: 9 transactions, 50 inventory positions
+  2023-08-21: 14 transactions, 50 inventory positions
+  2023-08-22: 6 transactions, 50 inventory positions
+  2023-08-23: 6 transactions, 49 inventory positions
+  2023-08-24: 12 transactions, 48 inventory positions
+  2023-08-25: 4 transactions, 48 inventory positions
+  2023-08-26: 7 transactions, 48 inventory positions
+  2023-08-27: 10 transactions, 48 inventory positions
+  2023-08-28: 10 transactions, 48 inventory positions
+  2023-08-29: 10 transactions, 49 inventory positions
+  2023-08-30: 8 transactions, 49 inventory positions
+  2023-08-31: 9 transactions, 49 inventory positions
+  2023-09-01: 13 transactions, 49 inventory positions
+  2023-09-02: 9 transactions, 49 inventory positions
+  2023-09-03: 18 transactions, 49 inventory positions
+  2023-09-04: 12 transactions, 49 inventory positions
+  2023-09-05: 12 transactions, 49 inventory positions
+  2023-09-06: 15 transactions, 49 inventory positions
+  2023-09-07: 15 transactions, 49 inventory positions
+  2023-09-08: 3 transactions, 49 inventory positions
+  2023-09-09: 8 transactions, 48 inventory positions
+  2023-09-10: 7 transactions, 48 inventory positions
+  2023-09-11: 6 transactions, 48 inventory positions
+  2023-09-12: 9 transactions, 48 inventory positions
+  2023-09-13: 10 transactions, 48 inventory positions
+  2023-09-14: 10 transactions, 48 inventory positions
+  2023-09-15: 12 transactions, 48 inventory positions
+  2023-09-16: 19 transactions, 48 inventory positions
+  2023-09-17: 11 transactions, 48 inventory positions
+  2023-09-18: 15 transactions, 48 inventory positions
+  2023-09-19: 10 transactions, 48 inventory positions
+  2023-09-20: 9 transactions, 48 inventory positions
+  2023-09-21: 4 transactions, 47 inventory positions
+  2023-09-22: 7 transactions, 47 inventory positions
+  2023-09-23: 6 transactions, 47 inventory positions
+  2023-09-24: 11 transactions, 47 inventory positions
+  2023-09-25: 18 transactions, 47 inventory positions
+  2023-09-26: 17 transactions, 47 inventory positions
+  2023-09-27: 11 transactions, 48 inventory positions
+  2023-09-28: 20 transactions, 48 inventory positions
+  2023-09-29: 7 transactions, 48 inventory positions
+  2023-09-30: 10 transactions, 48 inventory positions
+  2023-10-01: 12 transactions, 48 inventory positions
+  2023-10-02: 12 transactions, 48 inventory positions
+  2023-10-03: 20 transactions, 48 inventory positions
+  2023-10-04: 8 transactions, 48 inventory positions
+  2023-10-05: 14 transactions, 48 inventory positions
+  2023-10-06: 7 transactions, 48 inventory positions
+  2023-10-07: 7 transactions, 48 inventory positions
+  2023-10-08: 13 transactions, 48 inventory positions
+  2023-10-09: 14 transactions, 48 inventory positions
+  2023-10-10: 11 transactions, 48 inventory positions
+  2023-10-11: 7 transactions, 48 inventory positions
+  2023-10-12: 2 transactions, 47 inventory positions
+  2023-10-13: 10 transactions, 47 inventory positions
+  2023-10-14: 9 transactions, 47 inventory positions
+  2023-10-15: 10 transactions, 47 inventory positions
+  2023-10-16: 13 transactions, 47 inventory positions
+  2023-10-17: 13 transactions, 47 inventory positions
+  2023-10-18: 4 transactions, 47 inventory positions
+  2023-10-19: 10 transactions, 47 inventory positions
+  2023-10-20: 12 transactions, 47 inventory positions
+  2023-10-21: 10 transactions, 47 inventory positions
+  2023-10-22: 11 transactions, 47 inventory positions
+  2023-10-23: 15 transactions, 47 inventory positions
+  2023-10-24: 11 transactions, 47 inventory positions
+  2023-10-25: 17 transactions, 47 inventory positions
+  2023-10-26: 13 transactions, 47 inventory positions
+  2023-10-27: 10 transactions, 47 inventory positions
+  2023-10-28: 8 transactions, 47 inventory positions
+  2023-10-29: 9 transactions, 47 inventory positions
+  2023-10-30: 7 transactions, 47 inventory positions
+  2023-10-31: 14 transactions, 47 inventory positions
+  2023-11-01: 8 transactions, 47 inventory positions
+  2023-11-02: 4 transactions, 47 inventory positions
+  2023-11-03: 22 transactions, 47 inventory positions
+  2023-11-04: 7 transactions, 47 inventory positions
+  2023-11-05: 9 transactions, 47 inventory positions
+  2023-11-06: 12 transactions, 47 inventory positions
+  2023-11-07: 11 transactions, 47 inventory positions
+  2023-11-08: 13 transactions, 47 inventory positions
+  2023-11-09: 9 transactions, 47 inventory positions
+  2023-11-10: 6 transactions, 47 inventory positions
+  2023-11-11: 12 transactions, 47 inventory positions
+  2023-11-12: 6 transactions, 47 inventory positions
+  2023-11-13: 18 transactions, 47 inventory positions
+  2023-11-14: 6 transactions, 47 inventory positions
+  2023-11-15: 17 transactions, 47 inventory positions
+  2023-11-16: 20 transactions, 48 inventory positions
+  2023-11-17: 4 transactions, 48 inventory positions
+  2023-11-18: 23 transactions, 47 inventory positions
+  2023-11-19: 10 transactions, 47 inventory positions
+  2023-11-20: 8 transactions, 47 inventory positions
+  2023-11-21: 8 transactions, 47 inventory positions
+  2023-11-22: 9 transactions, 47 inventory positions
+  2023-11-23: 11 transactions, 47 inventory positions
+  2023-11-24: 22 transactions, 49 inventory positions
+  2023-11-25: 10 transactions, 49 inventory positions
+  2023-11-26: 18 transactions, 50 inventory positions
+  2023-11-27: 11 transactions, 49 inventory positions
+  2023-11-28: 21 transactions, 50 inventory positions
+  2023-11-29: 12 transactions, 49 inventory positions
+  2023-11-30: 13 transactions, 49 inventory positions
+  2023-12-01: 20 transactions, 49 inventory positions
+  2023-12-02: 16 transactions, 49 inventory positions
+  2023-12-03: 7 transactions, 49 inventory positions
+  2023-12-04: 16 transactions, 49 inventory positions
+  2023-12-05: 17 transactions, 49 inventory positions
+  2023-12-06: 14 transactions, 48 inventory positions
+  2023-12-07: 11 transactions, 48 inventory positions
+  2023-12-08: 10 transactions, 48 inventory positions
+  2023-12-09: 9 transactions, 48 inventory positions
+  2023-12-10: 6 transactions, 48 inventory positions
+  2023-12-11: 19 transactions, 48 inventory positions
+  2023-12-12: 12 transactions, 48 inventory positions
+  2023-12-13: 13 transactions, 48 inventory positions
+  2023-12-14: 16 transactions, 48 inventory positions
+  2023-12-15: 12 transactions, 48 inventory positions
+  2023-12-16: 12 transactions, 48 inventory positions
+  2023-12-17: 9 transactions, 48 inventory positions
+  2023-12-18: 23 transactions, 48 inventory positions
+  2023-12-19: 10 transactions, 49 inventory positions
+  2023-12-20: 14 transactions, 49 inventory positions
+  2023-12-21: 10 transactions, 51 inventory positions
+  2023-12-22: 17 transactions, 51 inventory positions
+  2023-12-23: 8 transactions, 51 inventory positions
+  2023-12-24: 14 transactions, 51 inventory positions
+  2023-12-25: 4 transactions, 51 inventory positions
+  2023-12-26: 13 transactions, 51 inventory positions
+  2023-12-27: 15 transactions, 51 inventory positions
+  2023-12-28: 7 transactions, 51 inventory positions
+  2023-12-29: 22 transactions, 51 inventory positions
+  2023-12-30: 19 transactions, 51 inventory positions
+  2023-12-31: 9 transactions, 51 inventory positions
+  2024-01-01: 25 transactions, 50 inventory positions
+  2024-01-02: 18 transactions, 50 inventory positions
+  2024-01-03: 10 transactions, 50 inventory positions
+  2024-01-04: 7 transactions, 50 inventory positions
+  2024-01-05: 13 transactions, 50 inventory positions
+  2024-01-06: 16 transactions, 50 inventory positions
+  2024-01-07: 17 transactions, 50 inventory positions
+  2024-01-08: 9 transactions, 50 inventory positions
+  2024-01-09: 11 transactions, 50 inventory positions
+  2024-01-10: 13 transactions, 50 inventory positions
+  2024-01-11: 11 transactions, 50 inventory positions
+  2024-01-12: 11 transactions, 50 inventory positions
+  2024-01-13: 5 transactions, 50 inventory positions
+  2024-01-14: 6 transactions, 50 inventory positions
+  2024-01-15: 7 transactions, 50 inventory positions
+  2024-01-16: 8 transactions, 50 inventory positions
+  2024-01-17: 9 transactions, 50 inventory positions
+  2024-01-18: 9 transactions, 50 inventory positions
+  2024-01-19: 5 transactions, 50 inventory positions
+  2024-01-20: 6 transactions, 50 inventory positions
+  2024-01-21: 6 transactions, 50 inventory positions
+  2024-01-22: 9 transactions, 50 inventory positions
+  2024-01-23: 7 transactions, 51 inventory positions
+  2024-01-24: 6 transactions, 52 inventory positions
+  2024-01-25: 10 transactions, 52 inventory positions
+  2024-01-26: 7 transactions, 52 inventory positions
+  2024-01-27: 8 transactions, 52 inventory positions
+  2024-01-28: 5 transactions, 52 inventory positions
+  2024-01-29: 14 transactions, 52 inventory positions
+  2024-01-30: 8 transactions, 52 inventory positions
+  2024-01-31: 9 transactions, 52 inventory positions
+  2024-02-01: 8 transactions, 52 inventory positions
+  2024-02-02: 6 transactions, 52 inventory positions
+  2024-02-03: 3 transactions, 51 inventory positions
+  2024-02-04: 3 transactions, 51 inventory positions
+  2024-02-05: 1 transactions, 51 inventory positions
+  2024-02-06: 7 transactions, 51 inventory positions
+  2024-02-07: 9 transactions, 51 inventory positions
+  2024-02-08: 3 transactions, 51 inventory positions
+  2024-02-09: 12 transactions, 51 inventory positions
+  2024-02-10: 8 transactions, 51 inventory positions
+  2024-02-11: 6 transactions, 51 inventory positions
+  2024-02-12: 15 transactions, 51 inventory positions
+  2024-02-13: 11 transactions, 51 inventory positions
+  2024-02-14: 8 transactions, 51 inventory positions
+  2024-02-15: 8 transactions, 51 inventory positions
+  2024-02-16: 8 transactions, 51 inventory positions
+  2024-02-17: 6 transactions, 51 inventory positions
+  2024-02-18: 7 transactions, 51 inventory positions
+  2024-02-19: 4 transactions, 51 inventory positions
+  2024-02-20: 10 transactions, 51 inventory positions
+  2024-02-21: 4 transactions, 51 inventory positions
+  2024-02-22: 6 transactions, 51 inventory positions
+  2024-02-23: 14 transactions, 51 inventory positions
+  2024-02-24: 7 transactions, 50 inventory positions
+  2024-02-25: 9 transactions, 50 inventory positions
+  2024-02-26: 9 transactions, 50 inventory positions
+  2024-02-27: 4 transactions, 50 inventory positions
+  2024-02-28: 8 transactions, 50 inventory positions
+  2024-02-29: 4 transactions, 50 inventory positions
+  2024-03-01: 4 transactions, 50 inventory positions
+  2024-03-02: 8 transactions, 50 inventory positions
+  2024-03-03: 10 transactions, 50 inventory positions
+  2024-03-04: 7 transactions, 50 inventory positions
+  2024-03-05: 7 transactions, 50 inventory positions
+  2024-03-06: 13 transactions, 50 inventory positions
+  2024-03-07: 11 transactions, 50 inventory positions
+  2024-03-08: 8 transactions, 50 inventory positions
+  2024-03-09: 15 transactions, 50 inventory positions
+  2024-03-10: 7 transactions, 50 inventory positions
+  2024-03-11: 12 transactions, 50 inventory positions
+  2024-03-12: 12 transactions, 50 inventory positions
+  2024-03-13: 2 transactions, 50 inventory positions
+  2024-03-14: 10 transactions, 50 inventory positions
+  2024-03-15: 12 transactions, 50 inventory positions
+  2024-03-16: 10 transactions, 50 inventory positions
+  2024-03-17: 11 transactions, 50 inventory positions
+  2024-03-18: 11 transactions, 50 inventory positions
+  2024-03-19: 5 transactions, 50 inventory positions
+  2024-03-20: 8 transactions, 50 inventory positions
+  2024-03-21: 12 transactions, 50 inventory positions
+  2024-03-22: 15 transactions, 49 inventory positions
+  2024-03-23: 12 transactions, 49 inventory positions
+  2024-03-24: 6 transactions, 49 inventory positions
+  2024-03-25: 12 transactions, 49 inventory positions
+  2024-03-26: 10 transactions, 49 inventory positions
+  2024-03-27: 5 transactions, 49 inventory positions
+  2024-03-28: 9 transactions, 49 inventory positions
+  2024-03-29: 9 transactions, 49 inventory positions
+  2024-03-30: 15 transactions, 49 inventory positions
+  2024-03-31: 15 transactions, 48 inventory positions
+  2024-04-01: 18 transactions, 48 inventory positions
+  2024-04-02: 9 transactions, 48 inventory positions
+  2024-04-03: 8 transactions, 48 inventory positions
+  2024-04-04: 13 transactions, 48 inventory positions
+  2024-04-05: 10 transactions, 48 inventory positions
+  2024-04-06: 6 transactions, 48 inventory positions
+  2024-04-07: 10 transactions, 48 inventory positions
+  2024-04-08: 16 transactions, 47 inventory positions
+  2024-04-09: 9 transactions, 47 inventory positions
+  2024-04-10: 10 transactions, 47 inventory positions
+  2024-04-11: 10 transactions, 47 inventory positions
+  2024-04-12: 8 transactions, 47 inventory positions
+  2024-04-13: 11 transactions, 46 inventory positions
+  2024-04-14: 12 transactions, 46 inventory positions
+  2024-04-15: 8 transactions, 45 inventory positions
+  2024-04-16: 9 transactions, 45 inventory positions
+  2024-04-17: 11 transactions, 45 inventory positions
+  2024-04-18: 10 transactions, 45 inventory positions
+  2024-04-19: 5 transactions, 45 inventory positions
+  2024-04-20: 10 transactions, 45 inventory positions
+  2024-04-21: 6 transactions, 45 inventory positions
+  2024-04-22: 14 transactions, 46 inventory positions
+  2024-04-23: 6 transactions, 46 inventory positions
+  2024-04-24: 5 transactions, 45 inventory positions
+  2024-04-25: 5 transactions, 45 inventory positions
+  2024-04-26: 15 transactions, 45 inventory positions
+  2024-04-27: 6 transactions, 45 inventory positions
+  2024-04-28: 10 transactions, 45 inventory positions
+  2024-04-29: 14 transactions, 45 inventory positions
+  2024-04-30: 4 transactions, 45 inventory positions
+  2024-05-01: 18 transactions, 45 inventory positions
+  2024-05-02: 11 transactions, 45 inventory positions
+  2024-05-03: 15 transactions, 45 inventory positions
+  2024-05-04: 10 transactions, 45 inventory positions
+  2024-05-05: 12 transactions, 45 inventory positions
+  2024-05-06: 10 transactions, 45 inventory positions
+  2024-05-07: 7 transactions, 45 inventory positions
+  2024-05-08: 8 transactions, 45 inventory positions
+  2024-05-09: 9 transactions, 45 inventory positions
+  2024-05-10: 8 transactions, 45 inventory positions
+  2024-05-11: 6 transactions, 45 inventory positions
+  2024-05-12: 6 transactions, 45 inventory positions
+  2024-05-13: 10 transactions, 45 inventory positions
+  2024-05-14: 9 transactions, 45 inventory positions
+  2024-05-15: 7 transactions, 45 inventory positions
+  2024-05-16: 8 transactions, 45 inventory positions
+  2024-05-17: 9 transactions, 45 inventory positions
+  2024-05-18: 6 transactions, 45 inventory positions
+  2024-05-19: 7 transactions, 45 inventory positions
+  2024-05-20: 13 transactions, 45 inventory positions
+  2024-05-21: 9 transactions, 45 inventory positions
+  2024-05-22: 8 transactions, 45 inventory positions
+  2024-05-23: 10 transactions, 45 inventory positions
+  2024-05-24: 5 transactions, 44 inventory positions
+  2024-05-25: 15 transactions, 44 inventory positions
+  2024-05-26: 12 transactions, 44 inventory positions
+  2024-05-27: 6 transactions, 44 inventory positions
+  2024-05-28: 9 transactions, 44 inventory positions
+  2024-05-29: 8 transactions, 44 inventory positions
+  2024-05-30: 6 transactions, 44 inventory positions
+  2024-05-31: 8 transactions, 44 inventory positions
+  2024-06-01: 8 transactions, 44 inventory positions
+  2024-06-02: 12 transactions, 44 inventory positions
+  2024-06-03: 19 transactions, 44 inventory positions
+  2024-06-04: 6 transactions, 44 inventory positions
+  2024-06-05: 6 transactions, 44 inventory positions
+  2024-06-06: 9 transactions, 44 inventory positions
+  2024-06-07: 10 transactions, 44 inventory positions
+  2024-06-08: 15 transactions, 44 inventory positions
+  2024-06-09: 10 transactions, 44 inventory positions
+  2024-06-10: 7 transactions, 44 inventory positions
+  2024-06-11: 16 transactions, 44 inventory positions
+  2024-06-12: 6 transactions, 44 inventory positions
+  2024-06-13: 10 transactions, 44 inventory positions
+  2024-06-14: 5 transactions, 44 inventory positions
+  2024-06-15: 7 transactions, 44 inventory positions
+  2024-06-16: 10 transactions, 44 inventory positions
+  2024-06-17: 13 transactions, 44 inventory positions
+  2024-06-18: 10 transactions, 44 inventory positions
+  2024-06-19: 8 transactions, 44 inventory positions
+  2024-06-20: 9 transactions, 44 inventory positions
+  2024-06-21: 12 transactions, 44 inventory positions
+  2024-06-22: 14 transactions, 44 inventory positions
+  2024-06-23: 12 transactions, 44 inventory positions
+  2024-06-24: 4 transactions, 44 inventory positions
+  2024-06-25: 12 transactions, 44 inventory positions
+  2024-06-26: 8 transactions, 44 inventory positions
+  2024-06-27: 14 transactions, 43 inventory positions
+  2024-06-28: 10 transactions, 43 inventory positions
+  2024-06-29: 7 transactions, 43 inventory positions
+  2024-06-30: 16 transactions, 43 inventory positions
+  2024-07-01: 13 transactions, 43 inventory positions
+  2024-07-02: 9 transactions, 43 inventory positions
+  2024-07-03: 10 transactions, 43 inventory positions
+  2024-07-04: 13 transactions, 43 inventory positions
+  2024-07-05: 5 transactions, 43 inventory positions
+  2024-07-06: 11 transactions, 43 inventory positions
+  2024-07-07: 8 transactions, 43 inventory positions
+  2024-07-08: 8 transactions, 43 inventory positions
+  2024-07-09: 6 transactions, 43 inventory positions
+  2024-07-10: 10 transactions, 43 inventory positions
+  2024-07-11: 9 transactions, 43 inventory positions
+  2024-07-12: 8 transactions, 43 inventory positions
+  2024-07-13: 7 transactions, 43 inventory positions
+  2024-07-14: 11 transactions, 43 inventory positions
+  2024-07-15: 8 transactions, 43 inventory positions
+  2024-07-16: 7 transactions, 43 inventory positions
+  2024-07-17: 13 transactions, 43 inventory positions
+  2024-07-18: 9 transactions, 43 inventory positions
+  2024-07-19: 11 transactions, 43 inventory positions
+  2024-07-20: 14 transactions, 43 inventory positions
+  2024-07-21: 10 transactions, 43 inventory positions
+  2024-07-22: 6 transactions, 43 inventory positions
+  2024-07-23: 10 transactions, 42 inventory positions
+  2024-07-24: 5 transactions, 42 inventory positions
+  2024-07-25: 4 transactions, 42 inventory positions
+  2024-07-26: 13 transactions, 42 inventory positions
+  2024-07-27: 10 transactions, 42 inventory positions
+  2024-07-28: 8 transactions, 42 inventory positions
+  2024-07-29: 17 transactions, 42 inventory positions
+  2024-07-30: 9 transactions, 42 inventory positions
+  2024-07-31: 3 transactions, 42 inventory positions
+  2024-08-01: 18 transactions, 42 inventory positions
+  2024-08-02: 4 transactions, 42 inventory positions
+  2024-08-03: 12 transactions, 42 inventory positions
+  2024-08-04: 14 transactions, 42 inventory positions
+  2024-08-05: 16 transactions, 42 inventory positions
+  2024-08-06: 8 transactions, 42 inventory positions
+  2024-08-07: 11 transactions, 42 inventory positions
+  2024-08-08: 9 transactions, 42 inventory positions
+  2024-08-09: 11 transactions, 42 inventory positions
+  2024-08-10: 11 transactions, 42 inventory positions
+  2024-08-11: 11 transactions, 42 inventory positions
+  2024-08-12: 9 transactions, 42 inventory positions
+  2024-08-13: 6 transactions, 42 inventory positions
+  2024-08-14: 11 transactions, 42 inventory positions
+  2024-08-15: 10 transactions, 42 inventory positions
+  2024-08-16: 9 transactions, 42 inventory positions
+  2024-08-17: 5 transactions, 42 inventory positions
+  2024-08-18: 3 transactions, 42 inventory positions
+  2024-08-19: 12 transactions, 42 inventory positions
+  2024-08-20: 10 transactions, 43 inventory positions
+  2024-08-21: 15 transactions, 43 inventory positions
+  2024-08-22: 13 transactions, 43 inventory positions
+  2024-08-23: 8 transactions, 43 inventory positions
+  2024-08-24: 6 transactions, 43 inventory positions
+  2024-08-25: 21 transactions, 44 inventory positions
+  2024-08-26: 3 transactions, 44 inventory positions
+  2024-08-27: 15 transactions, 44 inventory positions
+  2024-08-28: 9 transactions, 44 inventory positions
+  2024-08-29: 9 transactions, 44 inventory positions
+  2024-08-30: 10 transactions, 44 inventory positions
+  2024-08-31: 9 transactions, 44 inventory positions
+  2024-09-01: 9 transactions, 44 inventory positions
+  2024-09-02: 5 transactions, 44 inventory positions
+  2024-09-03: 11 transactions, 44 inventory positions
+  2024-09-04: 9 transactions, 44 inventory positions
+  2024-09-05: 11 transactions, 44 inventory positions
+  2024-09-06: 9 transactions, 44 inventory positions
+  2024-09-07: 16 transactions, 44 inventory positions
+  2024-09-08: 4 transactions, 44 inventory positions
+  2024-09-09: 8 transactions, 44 inventory positions
+  2024-09-10: 12 transactions, 44 inventory positions
+  2024-09-11: 12 transactions, 44 inventory positions
+  2024-09-12: 8 transactions, 44 inventory positions
+  2024-09-13: 8 transactions, 44 inventory positions
+  2024-09-14: 19 transactions, 44 inventory positions
+  2024-09-15: 5 transactions, 44 inventory positions
+  2024-09-16: 6 transactions, 44 inventory positions
+  2024-09-17: 8 transactions, 44 inventory positions
+  2024-09-18: 4 transactions, 44 inventory positions
+  2024-09-19: 14 transactions, 44 inventory positions
+  2024-09-20: 13 transactions, 44 inventory positions
+  2024-09-21: 9 transactions, 44 inventory positions
+  2024-09-22: 10 transactions, 44 inventory positions
+  2024-09-23: 8 transactions, 44 inventory positions
+  2024-09-24: 14 transactions, 44 inventory positions
+  2024-09-25: 9 transactions, 44 inventory positions
+  2024-09-26: 14 transactions, 44 inventory positions
+  2024-09-27: 6 transactions, 44 inventory positions
+  2024-09-28: 13 transactions, 44 inventory positions
+  2024-09-29: 9 transactions, 44 inventory positions
+  2024-09-30: 13 transactions, 44 inventory positions
+  2024-10-01: 2 transactions, 44 inventory positions
+  2024-10-02: 8 transactions, 44 inventory positions
+  2024-10-03: 12 transactions, 44 inventory positions
+  2024-10-04: 10 transactions, 44 inventory positions
+  2024-10-05: 12 transactions, 44 inventory positions
+  2024-10-06: 17 transactions, 44 inventory positions
+  2024-10-07: 13 transactions, 44 inventory positions
+  2024-10-08: 7 transactions, 44 inventory positions
+  2024-10-09: 9 transactions, 44 inventory positions
+  2024-10-10: 6 transactions, 44 inventory positions
+  2024-10-11: 11 transactions, 44 inventory positions
+  2024-10-12: 11 transactions, 44 inventory positions
+  2024-10-13: 10 transactions, 44 inventory positions
+  2024-10-14: 16 transactions, 44 inventory positions
+  2024-10-15: 7 transactions, 44 inventory positions
+  2024-10-16: 11 transactions, 44 inventory positions
+  2024-10-17: 11 transactions, 44 inventory positions
+  2024-10-18: 9 transactions, 44 inventory positions
+  2024-10-19: 7 transactions, 44 inventory positions
+  2024-10-20: 8 transactions, 44 inventory positions
+  2024-10-21: 11 transactions, 45 inventory positions
+  2024-10-22: 9 transactions, 45 inventory positions
+  2024-10-23: 10 transactions, 46 inventory positions
+  2024-10-24: 7 transactions, 46 inventory positions
+  2024-10-25: 10 transactions, 46 inventory positions
+  2024-10-26: 6 transactions, 46 inventory positions
+  2024-10-27: 10 transactions, 45 inventory positions
+  2024-10-28: 1 transactions, 45 inventory positions
+  2024-10-29: 18 transactions, 45 inventory positions
+  2024-10-30: 8 transactions, 45 inventory positions
+  2024-10-31: 10 transactions, 45 inventory positions
+  2024-11-01: 14 transactions, 45 inventory positions
+  2024-11-02: 16 transactions, 45 inventory positions
+  2024-11-03: 8 transactions, 45 inventory positions
+  2024-11-04: 7 transactions, 45 inventory positions
+  2024-11-05: 8 transactions, 45 inventory positions
+  2024-11-06: 15 transactions, 45 inventory positions
+  2024-11-07: 18 transactions, 45 inventory positions
+  2024-11-08: 8 transactions, 45 inventory positions
+  2024-11-09: 12 transactions, 45 inventory positions
+  2024-11-10: 23 transactions, 46 inventory positions
+  2024-11-11: 5 transactions, 46 inventory positions
+  2024-11-12: 8 transactions, 46 inventory positions
+  2024-11-13: 10 transactions, 46 inventory positions
+  2024-11-14: 11 transactions, 46 inventory positions
+  2024-11-15: 6 transactions, 46 inventory positions
+  2024-11-16: 8 transactions, 46 inventory positions
+  2024-11-17: 8 transactions, 46 inventory positions
+  2024-11-18: 13 transactions, 46 inventory positions
+  2024-11-19: 11 transactions, 46 inventory positions
+  2024-11-20: 12 transactions, 46 inventory positions
+  2024-11-21: 10 transactions, 46 inventory positions
+  2024-11-22: 11 transactions, 46 inventory positions
+  2024-11-23: 16 transactions, 46 inventory positions
+  2024-11-24: 14 transactions, 46 inventory positions
+  2024-11-25: 11 transactions, 47 inventory positions
+  2024-11-26: 10 transactions, 47 inventory positions
+  2024-11-27: 14 transactions, 47 inventory positions
+  2024-11-28: 15 transactions, 47 inventory positions
+  2024-11-29: 15 transactions, 47 inventory positions
+  2024-11-30: 10 transactions, 47 inventory positions
+  2024-12-01: 7 transactions, 47 inventory positions
+  2024-12-02: 17 transactions, 47 inventory positions
+  2024-12-03: 15 transactions, 47 inventory positions
+  2024-12-04: 5 transactions, 47 inventory positions
+  2024-12-05: 15 transactions, 47 inventory positions
+  2024-12-06: 13 transactions, 47 inventory positions
+  2024-12-07: 18 transactions, 46 inventory positions
+  2024-12-08: 15 transactions, 46 inventory positions
+  2024-12-09: 14 transactions, 46 inventory positions
+  2024-12-10: 6 transactions, 46 inventory positions
+  2024-12-11: 10 transactions, 46 inventory positions
+  2024-12-12: 13 transactions, 46 inventory positions
+  2024-12-13: 10 transactions, 46 inventory positions
+  2024-12-14: 11 transactions, 46 inventory positions
+  2024-12-15: 8 transactions, 46 inventory positions
+  2024-12-16: 8 transactions, 46 inventory positions
+  2024-12-17: 11 transactions, 47 inventory positions
+  2024-12-18: 13 transactions, 47 inventory positions
+  2024-12-19: 9 transactions, 47 inventory positions
+  2024-12-20: 11 transactions, 47 inventory positions
+  2024-12-21: 9 transactions, 47 inventory positions
+  2024-12-22: 9 transactions, 46 inventory positions
+  2024-12-23: 7 transactions, 46 inventory positions
+  2024-12-24: 8 transactions, 46 inventory positions
+  2024-12-25: 7 transactions, 46 inventory positions
+  2024-12-26: 9 transactions, 46 inventory positions
+  2024-12-27: 15 transactions, 46 inventory positions
+  2024-12-28: 10 transactions, 46 inventory positions
+  2024-12-29: 10 transactions, 46 inventory positions
+  2024-12-30: 10 transactions, 46 inventory positions
+  2024-12-31: 8 transactions, 46 inventory positions
+  2025-01-01: 14 transactions, 46 inventory positions
+  2025-01-02: 9 transactions, 46 inventory positions
+  2025-01-03: 22 transactions, 46 inventory positions
+  2025-01-04: 12 transactions, 46 inventory positions
+  2025-01-05: 9 transactions, 46 inventory positions
+  2025-01-06: 12 transactions, 46 inventory positions
+  2025-01-07: 11 transactions, 46 inventory positions
+  2025-01-08: 6 transactions, 46 inventory positions
+  2025-01-09: 6 transactions, 46 inventory positions
+  2025-01-10: 8 transactions, 46 inventory positions
+  2025-01-11: 10 transactions, 46 inventory positions
+  2025-01-12: 7 transactions, 46 inventory positions
+  2025-01-13: 7 transactions, 46 inventory positions
+  2025-01-14: 18 transactions, 46 inventory positions
+  2025-01-15: 12 transactions, 47 inventory positions
+  2025-01-16: 18 transactions, 47 inventory positions
+  2025-01-17: 8 transactions, 47 inventory positions
+  2025-01-18: 11 transactions, 47 inventory positions
+  2025-01-19: 13 transactions, 47 inventory positions
+  2025-01-20: 7 transactions, 47 inventory positions
+  2025-01-21: 10 transactions, 47 inventory positions
+  2025-01-22: 10 transactions, 47 inventory positions
+  2025-01-23: 8 transactions, 47 inventory positions
+  2025-01-24: 9 transactions, 47 inventory positions
+  2025-01-25: 9 transactions, 47 inventory positions
+  2025-01-26: 8 transactions, 47 inventory positions
+  2025-01-27: 7 transactions, 47 inventory positions
+  2025-01-28: 4 transactions, 47 inventory positions
+  2025-01-29: 13 transactions, 47 inventory positions
+  2025-01-30: 8 transactions, 47 inventory positions
+  2025-01-31: 12 transactions, 47 inventory positions
+  2025-02-01: 13 transactions, 47 inventory positions
+  2025-02-02: 15 transactions, 47 inventory positions
+  2025-02-03: 8 transactions, 47 inventory positions
+  2025-02-04: 5 transactions, 47 inventory positions
+  2025-02-05: 9 transactions, 47 inventory positions
+  2025-02-06: 17 transactions, 47 inventory positions
+  2025-02-07: 16 transactions, 47 inventory positions
+  2025-02-08: 8 transactions, 47 inventory positions
+  2025-02-09: 8 transactions, 47 inventory positions
+  2025-02-10: 14 transactions, 47 inventory positions
+  2025-02-11: 9 transactions, 48 inventory positions
+  2025-02-12: 13 transactions, 48 inventory positions
+  2025-02-13: 11 transactions, 48 inventory positions
+  2025-02-14: 7 transactions, 47 inventory positions
+  2025-02-15: 11 transactions, 47 inventory positions
+  2025-02-16: 10 transactions, 47 inventory positions
+  2025-02-17: 11 transactions, 47 inventory positions
+  2025-02-18: 7 transactions, 47 inventory positions
+  2025-02-19: 8 transactions, 47 inventory positions
+  2025-02-20: 13 transactions, 47 inventory positions
+  2025-02-21: 14 transactions, 47 inventory positions
+  2025-02-22: 11 transactions, 48 inventory positions
+  2025-02-23: 10 transactions, 47 inventory positions
+  2025-02-24: 8 transactions, 47 inventory positions
+  2025-02-25: 10 transactions, 47 inventory positions
+  2025-02-26: 7 transactions, 47 inventory positions
+  2025-02-27: 5 transactions, 47 inventory positions
+  2025-02-28: 13 transactions, 47 inventory positions
+  2025-03-01: 13 transactions, 47 inventory positions
+  2025-03-02: 14 transactions, 47 inventory positions
+  2025-03-03: 14 transactions, 47 inventory positions
+  2025-03-04: 12 transactions, 46 inventory positions
+  2025-03-05: 7 transactions, 46 inventory positions
+  2025-03-06: 6 transactions, 46 inventory positions
+  2025-03-07: 15 transactions, 46 inventory positions
+  2025-03-08: 15 transactions, 46 inventory positions
+  2025-03-09: 12 transactions, 46 inventory positions
+  2025-03-10: 10 transactions, 46 inventory positions
+  2025-03-11: 9 transactions, 46 inventory positions
+  2025-03-12: 14 transactions, 46 inventory positions
+  2025-03-13: 7 transactions, 46 inventory positions
+  2025-03-14: 12 transactions, 46 inventory positions
+  2025-03-15: 8 transactions, 46 inventory positions
+  2025-03-16: 10 transactions, 46 inventory positions
+  2025-03-17: 7 transactions, 46 inventory positions
+  2025-03-18: 4 transactions, 46 inventory positions
+  2025-03-19: 12 transactions, 46 inventory positions
+  2025-03-20: 9 transactions, 46 inventory positions
+  2025-03-21: 17 transactions, 47 inventory positions
+  2025-03-22: 12 transactions, 47 inventory positions
+  2025-03-23: 7 transactions, 47 inventory positions
+  2025-03-24: 8 transactions, 47 inventory positions
+  2025-03-25: 16 transactions, 47 inventory positions
+  2025-03-26: 6 transactions, 47 inventory positions
+  2025-03-27: 18 transactions, 47 inventory positions
+  2025-03-28: 10 transactions, 47 inventory positions
+  2025-03-29: 11 transactions, 47 inventory positions
+  2025-03-30: 10 transactions, 47 inventory positions
+  2025-03-31: 7 transactions, 47 inventory positions
+  2025-04-01: 10 transactions, 47 inventory positions
+  2025-04-02: 5 transactions, 47 inventory positions
+  2025-04-03: 12 transactions, 47 inventory positions
+  2025-04-04: 13 transactions, 47 inventory positions
+  2025-04-05: 12 transactions, 47 inventory positions
+  2025-04-06: 7 transactions, 47 inventory positions
+  2025-04-07: 13 transactions, 47 inventory positions
+  2025-04-08: 8 transactions, 47 inventory positions
+  2025-04-09: 6 transactions, 47 inventory positions
+  2025-04-10: 8 transactions, 47 inventory positions
+  2025-04-11: 8 transactions, 47 inventory positions
+  2025-04-12: 3 transactions, 47 inventory positions
+  2025-04-13: 9 transactions, 47 inventory positions
+  2025-04-14: 10 transactions, 47 inventory positions
+  2025-04-15: 3 transactions, 47 inventory positions
+  2025-04-16: 9 transactions, 47 inventory positions
+  2025-04-17: 5 transactions, 47 inventory positions
+  2025-04-18: 12 transactions, 47 inventory positions
+  2025-04-19: 14 transactions, 47 inventory positions
+  2025-04-20: 10 transactions, 47 inventory positions
+  2025-04-21: 7 transactions, 47 inventory positions
+  2025-04-22: 8 transactions, 47 inventory positions
+  2025-04-23: 5 transactions, 47 inventory positions
+  2025-04-24: 13 transactions, 47 inventory positions
+  2025-04-25: 4 transactions, 47 inventory positions
+  2025-04-26: 7 transactions, 47 inventory positions
+  2025-04-27: 8 transactions, 47 inventory positions
+  2025-04-28: 10 transactions, 47 inventory positions
+  2025-04-29: 8 transactions, 47 inventory positions
+  2025-04-30: 15 transactions, 47 inventory positions
+  2025-05-01: 8 transactions, 47 inventory positions
+  2025-05-02: 4 transactions, 47 inventory positions
+  2025-05-03: 11 transactions, 47 inventory positions
+  2025-05-04: 7 transactions, 47 inventory positions
+  2025-05-05: 19 transactions, 47 inventory positions
+  2025-05-06: 15 transactions, 47 inventory positions
+  2025-05-07: 8 transactions, 47 inventory positions
+  2025-05-08: 14 transactions, 47 inventory positions
+  2025-05-09: 11 transactions, 47 inventory positions
+  2025-05-10: 5 transactions, 47 inventory positions
+  2025-05-11: 12 transactions, 47 inventory positions
+  2025-05-12: 10 transactions, 47 inventory positions
+  2025-05-13: 7 transactions, 47 inventory positions
+  2025-05-14: 6 transactions, 47 inventory positions
+  2025-05-15: 11 transactions, 47 inventory positions
+  2025-05-16: 9 transactions, 47 inventory positions
+  2025-05-17: 11 transactions, 47 inventory positions
+  2025-05-18: 6 transactions, 47 inventory positions
+  2025-05-19: 6 transactions, 47 inventory positions
+  2025-05-20: 9 transactions, 47 inventory positions
+  2025-05-21: 10 transactions, 47 inventory positions
+  2025-05-22: 13 transactions, 47 inventory positions
+  2025-05-23: 10 transactions, 47 inventory positions
+  2025-05-24: 10 transactions, 47 inventory positions
+  2025-05-25: 15 transactions, 47 inventory positions
+  2025-05-26: 15 transactions, 47 inventory positions
+  2025-05-27: 9 transactions, 47 inventory positions
+  2025-05-28: 8 transactions, 47 inventory positions
+  2025-05-29: 9 transactions, 47 inventory positions
+  2025-05-30: 16 transactions, 47 inventory positions
+  2025-05-31: 13 transactions, 47 inventory positions
+  2025-06-01: 12 transactions, 47 inventory positions
+  2025-06-02: 18 transactions, 47 inventory positions
+  2025-06-03: 10 transactions, 47 inventory positions
+  2025-06-04: 11 transactions, 48 inventory positions
+  2025-06-05: 12 transactions, 48 inventory positions
+  2025-06-06: 10 transactions, 48 inventory positions
+  2025-06-07: 13 transactions, 48 inventory positions
+  2025-06-08: 13 transactions, 48 inventory positions
+  2025-06-09: 11 transactions, 48 inventory positions
+  2025-06-10: 8 transactions, 48 inventory positions
+  2025-06-11: 13 transactions, 48 inventory positions
+  2025-06-12: 7 transactions, 48 inventory positions
+  2025-06-13: 5 transactions, 48 inventory positions
+  2025-06-14: 9 transactions, 48 inventory positions
+  2025-06-15: 6 transactions, 48 inventory positions
+  2025-06-16: 14 transactions, 48 inventory positions
+  2025-06-17: 7 transactions, 48 inventory positions
+  2025-06-18: 7 transactions, 48 inventory positions
+  2025-06-19: 11 transactions, 48 inventory positions
+  2025-06-20: 10 transactions, 48 inventory positions
+  2025-06-21: 12 transactions, 48 inventory positions
+  2025-06-22: 11 transactions, 48 inventory positions
+  2025-06-23: 6 transactions, 48 inventory positions
+  2025-06-24: 13 transactions, 48 inventory positions
+  2025-06-25: 10 transactions, 48 inventory positions
+  2025-06-26: 10 transactions, 48 inventory positions
+  2025-06-27: 6 transactions, 48 inventory positions
+  2025-06-28: 7 transactions, 47 inventory positions
+  2025-06-29: 7 transactions, 47 inventory positions
+  2025-06-30: 8 transactions, 47 inventory positions
+  2025-07-01: 12 transactions, 47 inventory positions
+  2025-07-02: 12 transactions, 47 inventory positions
+  2025-07-03: 9 transactions, 47 inventory positions
+  2025-07-04: 6 transactions, 47 inventory positions
+  2025-07-05: 13 transactions, 47 inventory positions
+  2025-07-06: 9 transactions, 47 inventory positions
+  2025-07-07: 7 transactions, 47 inventory positions
+  2025-07-08: 12 transactions, 47 inventory positions
+  2025-07-09: 4 transactions, 47 inventory positions
+  2025-07-10: 9 transactions, 47 inventory positions
+  2025-07-11: 19 transactions, 47 inventory positions
+  2025-07-12: 11 transactions, 47 inventory positions
+  2025-07-13: 9 transactions, 47 inventory positions
+  2025-07-14: 14 transactions, 46 inventory positions
+  2025-07-15: 11 transactions, 46 inventory positions
+  2025-07-16: 12 transactions, 46 inventory positions
+  2025-07-17: 9 transactions, 46 inventory positions
+  2025-07-18: 8 transactions, 46 inventory positions
+  2025-07-19: 15 transactions, 46 inventory positions
+  2025-07-20: 7 transactions, 46 inventory positions
+  2025-07-21: 13 transactions, 46 inventory positions
+  2025-07-22: 9 transactions, 46 inventory positions
+  2025-07-23: 12 transactions, 46 inventory positions
+  2025-07-24: 10 transactions, 46 inventory positions
+  2025-07-25: 9 transactions, 46 inventory positions
+  2025-07-26: 10 transactions, 46 inventory positions
+  2025-07-27: 9 transactions, 46 inventory positions
+  2025-07-28: 6 transactions, 46 inventory positions
+  2025-07-29: 14 transactions, 46 inventory positions
+  2025-07-30: 11 transactions, 46 inventory positions
+  2025-07-31: 11 transactions, 46 inventory positions
+  2025-08-01: 16 transactions, 46 inventory positions
+  2025-08-02: 15 transactions, 46 inventory positions
+  2025-08-03: 10 transactions, 46 inventory positions
+  2025-08-04: 10 transactions, 46 inventory positions
+  2025-08-05: 10 transactions, 46 inventory positions
+  2025-08-06: 12 transactions, 46 inventory positions
+  2025-08-07: 17 transactions, 46 inventory positions
+  2025-08-08: 4 transactions, 46 inventory positions
+  2025-08-09: 8 transactions, 46 inventory positions
+  2025-08-10: 12 transactions, 46 inventory positions
+  2025-08-11: 13 transactions, 46 inventory positions
+  2025-08-12: 8 transactions, 46 inventory positions
+  2025-08-13: 4 transactions, 46 inventory positions
+  2025-08-14: 14 transactions, 46 inventory positions
+  2025-08-15: 13 transactions, 46 inventory positions
+  2025-08-16: 15 transactions, 46 inventory positions
+  2025-08-17: 5 transactions, 46 inventory positions
+  2025-08-18: 8 transactions, 47 inventory positions
+  2025-08-19: 8 transactions, 47 inventory positions
+  2025-08-20: 16 transactions, 47 inventory positions
+  2025-08-21: 12 transactions, 47 inventory positions
+  2025-08-22: 10 transactions, 47 inventory positions
+  2025-08-23: 11 transactions, 47 inventory positions
+  2025-08-24: 7 transactions, 47 inventory positions
+  2025-08-25: 6 transactions, 47 inventory positions
+  2025-08-26: 16 transactions, 46 inventory positions
+  2025-08-27: 6 transactions, 46 inventory positions
+  2025-08-28: 11 transactions, 46 inventory positions
+  2025-08-29: 15 transactions, 46 inventory positions
+  2025-08-30: 11 transactions, 46 inventory positions
+  2025-08-31: 10 transactions, 46 inventory positions
+  2025-09-01: 10 transactions, 46 inventory positions
+  2025-09-02: 8 transactions, 46 inventory positions
+  2025-09-03: 8 transactions, 45 inventory positions
+  2025-09-04: 7 transactions, 45 inventory positions
+  2025-09-05: 12 transactions, 45 inventory positions
+  2025-09-06: 13 transactions, 45 inventory positions
+  2025-09-07: 11 transactions, 45 inventory positions
+  2025-09-08: 13 transactions, 45 inventory positions
+  2025-09-09: 5 transactions, 45 inventory positions
+  2025-09-10: 7 transactions, 45 inventory positions
+  2025-09-11: 9 transactions, 45 inventory positions
+  2025-09-12: 8 transactions, 45 inventory positions
+  2025-09-13: 8 transactions, 45 inventory positions
+  2025-09-14: 10 transactions, 45 inventory positions
+  2025-09-15: 3 transactions, 45 inventory positions
+  2025-09-16: 7 transactions, 45 inventory positions
+  2025-09-17: 5 transactions, 45 inventory positions
+  2025-09-18: 9 transactions, 45 inventory positions
+  2025-09-19: 6 transactions, 45 inventory positions
+  2025-09-20: 5 transactions, 45 inventory positions
+  2025-09-21: 8 transactions, 45 inventory positions
+  2025-09-22: 7 transactions, 45 inventory positions
+  2025-09-23: 6 transactions, 45 inventory positions
+  2025-09-24: 11 transactions, 45 inventory positions
+  2025-09-25: 1 transactions, 45 inventory positions
+  2025-09-26: 5 transactions, 45 inventory positions
+  2025-09-27: 10 transactions, 45 inventory positions
+  2025-09-28: 11 transactions, 45 inventory positions
+  2025-09-29: 10 transactions, 45 inventory positions
+  2025-09-30: 10 transactions, 45 inventory positions
+  2025-10-01: 10 transactions, 45 inventory positions
+  2025-10-02: 7 transactions, 45 inventory positions
+  2025-10-03: 8 transactions, 45 inventory positions
+  2025-10-04: 6 transactions, 45 inventory positions
+  2025-10-05: 16 transactions, 45 inventory positions
+  2025-10-06: 10 transactions, 45 inventory positions
+  2025-10-07: 6 transactions, 45 inventory positions
+  2025-10-08: 14 transactions, 45 inventory positions
+  2025-10-09: 4 transactions, 45 inventory positions
+  2025-10-10: 6 transactions, 45 inventory positions
+  2025-10-11: 3 transactions, 45 inventory positions
+  2025-10-12: 9 transactions, 45 inventory positions
+  2025-10-13: 5 transactions, 45 inventory positions
+  2025-10-14: 8 transactions, 45 inventory positions
+  2025-10-15: 7 transactions, 45 inventory positions
+  2025-10-16: 6 transactions, 45 inventory positions
+  2025-10-17: 5 transactions, 45 inventory positions
+  2025-10-18: 6 transactions, 45 inventory positions
+  2025-10-19: 10 transactions, 45 inventory positions
+  2025-10-20: 4 transactions, 45 inventory positions
+  2025-10-21: 9 transactions, 45 inventory positions
+  2025-10-22: 15 transactions, 45 inventory positions
+  2025-10-23: 10 transactions, 45 inventory positions
+  2025-10-24: 6 transactions, 45 inventory positions
+  2025-10-25: 10 transactions, 46 inventory positions
+  2025-10-26: 9 transactions, 46 inventory positions
+  2025-10-27: 7 transactions, 46 inventory positions
+  2025-10-28: 6 transactions, 46 inventory positions
+  2025-10-29: 12 transactions, 46 inventory positions
+  2025-10-30: 6 transactions, 46 inventory positions
+  2025-10-31: 12 transactions, 46 inventory positions
+  2025-11-01: 10 transactions, 46 inventory positions
+  2025-11-02: 13 transactions, 46 inventory positions
+  2025-11-03: 15 transactions, 46 inventory positions
+  2025-11-04: 11 transactions, 46 inventory positions
+  2025-11-05: 12 transactions, 46 inventory positions
+  2025-11-06: 3 transactions, 46 inventory positions
+  2025-11-07: 21 transactions, 46 inventory positions
+  2025-11-08: 8 transactions, 46 inventory positions
+  2025-11-09: 9 transactions, 46 inventory positions
+  2025-11-10: 6 transactions, 46 inventory positions
+  2025-11-11: 13 transactions, 46 inventory positions
+  2025-11-12: 6 transactions, 46 inventory positions
+  2025-11-13: 9 transactions, 46 inventory positions
+  2025-11-14: 14 transactions, 46 inventory positions
+  2025-11-15: 11 transactions, 46 inventory positions
+  2025-11-16: 12 transactions, 46 inventory positions
+  2025-11-17: 8 transactions, 45 inventory positions
+  2025-11-18: 10 transactions, 44 inventory positions
+  2025-11-19: 17 transactions, 44 inventory positions
+  2025-11-20: 16 transactions, 44 inventory positions
+  2025-11-21: 11 transactions, 44 inventory positions
+  2025-11-22: 12 transactions, 44 inventory positions
+  2025-11-23: 7 transactions, 44 inventory positions
+  2025-11-24: 11 transactions, 44 inventory positions
+  2025-11-25: 6 transactions, 44 inventory positions
+  2025-11-26: 17 transactions, 44 inventory positions
+  2025-11-27: 10 transactions, 44 inventory positions
+  2025-11-28: 21 transactions, 44 inventory positions
+  2025-11-29: 15 transactions, 44 inventory positions
+  2025-11-30: 9 transactions, 44 inventory positions
+  2025-12-01: 12 transactions, 45 inventory positions
+  2025-12-02: 18 transactions, 45 inventory positions
+  2025-12-03: 11 transactions, 45 inventory positions
+  2025-12-04: 17 transactions, 45 inventory positions
+  2025-12-05: 11 transactions, 45 inventory positions
+  2025-12-06: 17 transactions, 45 inventory positions
+  2025-12-07: 13 transactions, 45 inventory positions
+  2025-12-08: 15 transactions, 45 inventory positions
+  2025-12-09: 13 transactions, 45 inventory positions
+  2025-12-10: 11 transactions, 45 inventory positions
+  2025-12-11: 10 transactions, 45 inventory positions
+  2025-12-12: 11 transactions, 45 inventory positions
+  2025-12-13: 7 transactions, 45 inventory positions
+  2025-12-14: 16 transactions, 45 inventory positions
+  2025-12-15: 15 transactions, 45 inventory positions
+  2025-12-16: 11 transactions, 45 inventory positions
+  2025-12-17: 14 transactions, 46 inventory positions
+  2025-12-18: 8 transactions, 46 inventory positions
+  2025-12-19: 15 transactions, 46 inventory positions
+  2025-12-20: 14 transactions, 46 inventory positions
+  2025-12-21: 17 transactions, 46 inventory positions
+  2025-12-22: 10 transactions, 46 inventory positions
+  2025-12-23: 12 transactions, 46 inventory positions
+  2025-12-24: 12 transactions, 46 inventory positions
+  2025-12-25: 7 transactions, 46 inventory positions
+  2025-12-26: 13 transactions, 46 inventory positions
+  2025-12-27: 14 transactions, 46 inventory positions
+  2025-12-28: 17 transactions, 46 inventory positions
+  2025-12-29: 18 transactions, 46 inventory positions
+  2025-12-30: 13 transactions, 46 inventory positions
+  2025-12-31: 10 transactions, 46 inventory positions
+  2026-01-01: 15 transactions, 46 inventory positions
+  2026-01-02: 11 transactions, 46 inventory positions
+  2026-01-03: 9 transactions, 46 inventory positions
+  2026-01-04: 12 transactions, 46 inventory positions
+  2026-01-05: 16 transactions, 46 inventory positions
+  2026-01-06: 11 transactions, 46 inventory positions
+  2026-01-07: 11 transactions, 46 inventory positions
+  2026-01-08: 12 transactions, 46 inventory positions
+  2026-01-09: 12 transactions, 46 inventory positions
+  2026-01-10: 8 transactions, 46 inventory positions
+  2026-01-11: 7 transactions, 46 inventory positions
+  2026-01-12: 9 transactions, 47 inventory positions
+  2026-01-13: 6 transactions, 47 inventory positions
+  2026-01-14: 11 transactions, 47 inventory positions
+  2026-01-15: 13 transactions, 46 inventory positions
+  2026-01-16: 6 transactions, 46 inventory positions
+  2026-01-17: 4 transactions, 46 inventory positions
+  2026-01-18: 8 transactions, 45 inventory positions
+  2026-01-19: 12 transactions, 45 inventory positions
+  2026-01-20: 12 transactions, 45 inventory positions
+  2026-01-21: 9 transactions, 45 inventory positions
+  2026-01-22: 4 transactions, 45 inventory positions
+  2026-01-23: 14 transactions, 45 inventory positions
+  2026-01-24: 13 transactions, 46 inventory positions
+  2026-01-25: 8 transactions, 46 inventory positions
+  2026-01-26: 10 transactions, 46 inventory positions
+  2026-01-27: 8 transactions, 46 inventory positions
+  2026-01-28: 9 transactions, 46 inventory positions
+  2026-01-29: 6 transactions, 46 inventory positions
+  2026-01-30: 4 transactions, 46 inventory positions
+  2026-01-31: 11 transactions, 46 inventory positions
+  2026-02-01: 9 transactions, 46 inventory positions
+  2026-02-02: 12 transactions, 46 inventory positions
+  2026-02-03: 11 transactions, 46 inventory positions
+  2026-02-04: 6 transactions, 46 inventory positions
+  2026-02-05: 10 transactions, 46 inventory positions
+  2026-02-06: 8 transactions, 46 inventory positions
+  2026-02-07: 14 transactions, 46 inventory positions
+  2026-02-08: 5 transactions, 46 inventory positions
+  2026-02-09: 9 transactions, 46 inventory positions
+  2026-02-10: 10 transactions, 46 inventory positions
+  2026-02-11: 10 transactions, 46 inventory positions
+  2026-02-12: 8 transactions, 46 inventory positions
+  2026-02-13: 5 transactions, 46 inventory positions
+  2026-02-14: 5 transactions, 46 inventory positions
+  2026-02-15: 7 transactions, 46 inventory positions
+  2026-02-16: 12 transactions, 46 inventory positions
+  2026-02-17: 14 transactions, 46 inventory positions
+  2026-02-18: 9 transactions, 46 inventory positions
+  2026-02-19: 11 transactions, 46 inventory positions
+  2026-02-20: 9 transactions, 46 inventory positions
+  2026-02-21: 10 transactions, 46 inventory positions
+  2026-02-22: 6 transactions, 46 inventory positions
+  2026-02-23: 7 transactions, 46 inventory positions
+  2026-02-24: 13 transactions, 46 inventory positions
+  2026-02-25: 11 transactions, 46 inventory positions
+  2026-02-26: 14 transactions, 46 inventory positions
+  2026-02-27: 8 transactions, 46 inventory positions
+  2026-02-28: 6 transactions, 46 inventory positions
+  2026-03-01: 15 transactions, 46 inventory positions
+  2026-03-02: 8 transactions, 46 inventory positions
+  2026-03-03: 9 transactions, 46 inventory positions
+  2026-03-04: 14 transactions, 46 inventory positions
+  2026-03-05: 5 transactions, 46 inventory positions
+  2026-03-06: 8 transactions, 45 inventory positions
+  2026-03-07: 11 transactions, 45 inventory positions
+  2026-03-08: 13 transactions, 45 inventory positions
+  2026-03-09: 8 transactions, 45 inventory positions
+  2026-03-10: 17 transactions, 45 inventory positions
+  2026-03-11: 7 transactions, 45 inventory positions
+  2026-03-12: 12 transactions, 45 inventory positions
+  2026-03-13: 9 transactions, 45 inventory positions
+  2026-03-14: 10 transactions, 45 inventory positions
+  2026-03-15: 15 transactions, 45 inventory positions
+  2026-03-16: 11 transactions, 45 inventory positions
+  2026-03-17: 4 transactions, 45 inventory positions
+  2026-03-18: 8 transactions, 46 inventory positions
+  2026-03-19: 9 transactions, 46 inventory positions
+  2026-03-20: 13 transactions, 46 inventory positions
+  2026-03-21: 15 transactions, 46 inventory positions
+  2026-03-22: 10 transactions, 46 inventory positions
+  2026-03-23: 7 transactions, 46 inventory positions
+  2026-03-24: 11 transactions, 46 inventory positions
+  2026-03-25: 22 transactions, 46 inventory positions
+  2026-03-26: 5 transactions, 46 inventory positions
+  2026-03-27: 20 transactions, 46 inventory positions
+  2026-03-28: 7 transactions, 46 inventory positions
+  2026-03-29: 7 transactions, 46 inventory positions
+  2026-03-30: 7 transactions, 46 inventory positions
+  2026-03-31: 12 transactions, 46 inventory positions
+  2026-04-01: 9 transactions, 46 inventory positions
+  2026-04-02: 10 transactions, 46 inventory positions
+  2026-04-03: 9 transactions, 46 inventory positions
+  2026-04-04: 7 transactions, 46 inventory positions
+  2026-04-05: 8 transactions, 46 inventory positions
+  2026-04-06: 13 transactions, 46 inventory positions
+  2026-04-07: 13 transactions, 46 inventory positions
+  2026-04-08: 12 transactions, 46 inventory positions
+  2026-04-09: 5 transactions, 46 inventory positions
+  2026-04-10: 13 transactions, 46 inventory positions
+  2026-04-11: 10 transactions, 46 inventory positions
+  2026-04-12: 1 transactions, 46 inventory positions
+  2026-04-13: 13 transactions, 46 inventory positions
+  2026-04-14: 12 transactions, 46 inventory positions
+  2026-04-15: 3 transactions, 46 inventory positions
+  2026-04-16: 7 transactions, 46 inventory positions
+  2026-04-17: 5 transactions, 46 inventory positions
+  2026-04-18: 12 transactions, 46 inventory positions
+  2026-04-19: 9 transactions, 46 inventory positions
+  2026-04-20: 8 transactions, 46 inventory positions
+  2026-04-21: 7 transactions, 46 inventory positions
+  2026-04-22: 8 transactions, 46 inventory positions
+  2026-04-23: 4 transactions, 46 inventory positions
+  2026-04-24: 10 transactions, 46 inventory positions
+  2026-04-25: 6 transactions, 46 inventory positions
+  2026-04-26: 5 transactions, 46 inventory positions
+  2026-04-27: 7 transactions, 46 inventory positions
+  2026-04-28: 7 transactions, 46 inventory positions
+  2026-04-29: 9 transactions, 46 inventory positions
+  2026-04-30: 9 transactions, 46 inventory positions
+  2026-05-01: 9 transactions, 46 inventory positions
+  2026-05-02: 6 transactions, 46 inventory positions
+  2026-05-03: 7 transactions, 46 inventory positions
+  2026-05-04: 4 transactions, 46 inventory positions
+  2026-05-05: 16 transactions, 46 inventory positions
+  2026-05-06: 5 transactions, 46 inventory positions
+  2026-05-07: 10 transactions, 46 inventory positions
+  2026-05-08: 10 transactions, 46 inventory positions
+  2026-05-09: 6 transactions, 46 inventory positions
+  2026-05-10: 3 transactions, 46 inventory positions
+  2026-05-11: 5 transactions, 46 inventory positions
+  2026-05-12: 4 transactions, 46 inventory positions
+  2026-05-13: 15 transactions, 46 inventory positions
+  2026-05-14: 8 transactions, 46 inventory positions
+  2026-05-15: 14 transactions, 45 inventory positions
+  2026-05-16: 20 transactions, 45 inventory positions
+  2026-05-17: 13 transactions, 45 inventory positions
+  2026-05-18: 14 transactions, 45 inventory positions
+  2026-05-19: 14 transactions, 45 inventory positions
+  2026-05-20: 5 transactions, 45 inventory positions
+  2026-05-21: 6 transactions, 45 inventory positions
+  2026-05-22: 6 transactions, 45 inventory positions
+  2026-05-23: 6 transactions, 45 inventory positions
+  2026-05-24: 17 transactions, 45 inventory positions
+  2026-05-25: 9 transactions, 45 inventory positions
+  2026-05-26: 14 transactions, 45 inventory positions
+  2026-05-27: 14 transactions, 45 inventory positions
+  2026-05-28: 9 transactions, 45 inventory positions
+  2026-05-29: 24 transactions, 45 inventory positions
+  2026-05-30: 4 transactions, 45 inventory positions
+  2026-05-31: 14 transactions, 45 inventory positions
+  2026-06-01: 9 transactions, 45 inventory positions
+  2026-06-02: 12 transactions, 45 inventory positions
+  2026-06-03: 8 transactions, 45 inventory positions
+  2026-06-04: 12 transactions, 45 inventory positions
+  2026-06-05: 9 transactions, 45 inventory positions
+  2026-06-06: 12 transactions, 45 inventory positions
+  2026-06-07: 14 transactions, 45 inventory positions
+  2026-06-08: 5 transactions, 45 inventory positions
+  2026-06-09: 7 transactions, 45 inventory positions
+  2026-06-10: 11 transactions, 45 inventory positions
+  2026-06-11: 19 transactions, 45 inventory positions
+  2026-06-12: 3 transactions, 45 inventory positions
+  2026-06-13: 17 transactions, 45 inventory positions
+  2026-06-14: 11 transactions, 45 inventory positions
+  2026-06-15: 2 transactions, 45 inventory positions
+  2026-06-16: 15 transactions, 45 inventory positions
+  2026-06-17: 6 transactions, 45 inventory positions
+  2026-06-18: 9 transactions, 45 inventory positions
+  2026-06-19: 14 transactions, 45 inventory positions
+  2026-06-20: 9 transactions, 45 inventory positions
+  2026-06-21: 7 transactions, 45 inventory positions
+  2026-06-22: 4 transactions, 45 inventory positions
+  2026-06-23: 9 transactions, 45 inventory positions
+  2026-06-24: 13 transactions, 45 inventory positions
+  2026-06-25: 12 transactions, 45 inventory positions
+  2026-06-26: 11 transactions, 45 inventory positions
+  2026-06-27: 7 transactions, 45 inventory positions
+  2026-06-28: 8 transactions, 45 inventory positions
+  2026-06-29: 11 transactions, 45 inventory positions
+  2026-06-30: 7 transactions, 45 inventory positions
+  2026-07-01: 4 transactions, 45 inventory positions
+  2026-07-02: 14 transactions, 45 inventory positions
+  2026-07-03: 10 transactions, 45 inventory positions
+  2026-07-04: 18 transactions, 45 inventory positions
+  2026-07-05: 7 transactions, 45 inventory positions
+  2026-07-06: 14 transactions, 45 inventory positions
+  2026-07-07: 22 transactions, 45 inventory positions
+  2026-07-08: 24 transactions, 45 inventory positions
+  2026-07-09: 35 transactions, 45 inventory positions
+  2026-07-10: 33 transactions, 45 inventory positions
+  2026-07-11: 25 transactions, 45 inventory positions
+  2026-07-12: 18 transactions, 45 inventory positions
+  2026-07-13: 23 transactions, 45 inventory positions
+  2026-07-14: 32 transactions, 45 inventory positions
+  2026-07-15: 18 transactions, 45 inventory positions
+  2026-07-16: 20 transactions, 45 inventory positions
+  2026-07-17: 28 transactions, 45 inventory positions
+  2026-07-18: 13 transactions, 45 inventory positions
+  2026-07-19: 19 transactions, 45 inventory positions
+  2026-07-20: 12 transactions, 45 inventory positions
+  2026-07-21: 11 transactions, 45 inventory positions
+  2026-07-22: 9 transactions, 45 inventory positions
+  2026-07-23: 12 transactions, 45 inventory positions
+  2026-07-24: 6 transactions, 45 inventory positions
+  2026-07-25: 13 transactions, 45 inventory positions
+  2026-07-26: 8 transactions, 45 inventory positions
+  2026-07-27: 6 transactions, 45 inventory positions
+  2026-07-28: 6 transactions, 45 inventory positions
+  2026-07-29: 5 transactions, 45 inventory positions
+  2026-07-30: 5 transactions, 45 inventory positions
+  2026-07-31: 6 transactions, 45 inventory positions
+  2026-08-01: 3 transactions, 45 inventory positions
+  2026-08-02: 2 transactions, 45 inventory positions
+  2026-08-03: 4 transactions, 45 inventory positions
+  2026-08-04: 2 transactions, 45 inventory positions
+  2026-08-05: 1 transactions, 45 inventory positions
+  2026-08-06: 1 transactions, 45 inventory positions
+
+Generated dashboard history for FlexiPack Industries Ltd.
+  - purchase_orders: 7110 rows
+  - sales_orders: 10830 rows
+  - production_orders: 4537 rows
+  - production_output: 3204 rows
+  - inventory_transactions: 18813 rows
+  - transaction days: 1855
+  - inventory snapshot rows: 94896 rows
+  - inventory days: 1859
+  - inventory calendar: 2021-07-05 to 2026-08-06 (1859 days)
