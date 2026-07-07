@@ -71,6 +71,17 @@ python scripts/generate_dashboard_history.py --reset-transactional --clean
 
 Writes to PostgreSQL and exports daily WMS CSVs under `output/wms/`. Re-sync `ingest` in Databricks, then re-run the silver and gold pipelines.
 
+Sync existing files to Azure Blob storage (without running generators):
+
+```bash
+python scripts/sync_to_azure_blob.py \
+  --glob "output/wms/inventory/*.csv" \
+  --container databricks \
+  --blob-prefix inventory
+```
+
+The sync command uploads only blobs that do not already exist, so repeated runs do not duplicate files. See [`docs/azure-blob-sync.md`](docs/azure-blob-sync.md) for full setup and examples.
+
 ### Programmatic usage
 
 ```python
