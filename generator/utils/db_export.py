@@ -27,6 +27,15 @@ BRONZE_APPEND_TABLES: frozenset[str] = frozenset({
 # Snapshot tables are fully replaced on each generation run.
 SNAPSHOT_TABLES: frozenset[str] = frozenset({"inventory"})
 
+TRANSACTIONAL_RESET_TABLES: tuple[str, ...] = (
+    "inventory",
+    "inventory_transactions",
+    "production_output",
+    "production_orders",
+    "sales_orders",
+    "purchase_orders",
+)
+
 
 def _upsert_method(conflict_columns: list[str]):
     def upsert(table, conn, keys, data_iter):
@@ -51,6 +60,16 @@ def _upsert_method(conflict_columns: list[str]):
         conn.execute(stmt)
 
     return upsert
+
+
+def truncate_tables(engine: Engine, table_names: tuple[str, ...] | list[str]) -> None:
+    for table_name in table_names:
+        if inspect(engine).has_table(table_name):
+            _truncate_table(engine, table_name)
+
+
+def truncate_transactional_tables(engine: Engine) -> None:
+    truncate_tables(engine, TRANSACTIONAL_RESET_TABLES)
 
 
 def _truncate_table(engine: Engine, table_name: str) -> None:
