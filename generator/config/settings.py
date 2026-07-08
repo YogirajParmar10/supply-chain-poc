@@ -112,6 +112,47 @@ def default_production_order_settings() -> ProductionOrderSettings:
 
 
 @dataclass(frozen=True)
+class MachineDowntimeSettings:
+    count: int = 300
+    start_date: date | None = None
+    end_date: date | None = None
+    min_duration_minutes: int = 15
+    max_duration_minutes: int = 480
+    machine_types: tuple[str, ...] = (
+        "Extruder",
+        "Injection Molder",
+        "Blow Molder",
+        "Labeling Machine",
+        "Palletizer",
+    )
+    machines_per_plant: int = 4
+    reason_weights: tuple[tuple[str, float], ...] = (
+        ("MAINTENANCE", 0.35),
+        ("MACHINE_FAILURE", 0.25),
+        ("MATERIAL_SHORTAGE", 0.15),
+        ("QUALITY_CHECK", 0.15),
+        ("POWER_FAILURE", 0.10),
+    )
+
+    @property
+    def resolved_start_date(self) -> date:
+        if self.start_date is not None:
+            return self.start_date
+        return current_month_date_range()[0]
+
+    @property
+    def resolved_end_date(self) -> date:
+        if self.end_date is not None:
+            return self.end_date
+        return current_month_date_range()[1]
+
+
+def default_machine_downtime_settings() -> MachineDowntimeSettings:
+    start, end = current_month_date_range()
+    return MachineDowntimeSettings(start_date=start, end_date=end)
+
+
+@dataclass(frozen=True)
 class NoiseSettings:
     enabled: bool = True
     row_noise_rate: float = 0.06
@@ -177,6 +218,9 @@ class GeneratorConfig:
     sales_orders: SalesOrderSettings = field(default_factory=default_sales_order_settings)
     production_orders: ProductionOrderSettings = field(
         default_factory=default_production_order_settings
+    )
+    machine_downtime: MachineDowntimeSettings = field(
+        default_factory=default_machine_downtime_settings
     )
     noise: NoiseSettings = field(default_factory=NoiseSettings)
     wms: WmsSettings = field(default_factory=WmsSettings)

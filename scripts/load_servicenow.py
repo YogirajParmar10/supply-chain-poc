@@ -1,9 +1,9 @@
 """
 Load MES data from PostgreSQL into ServiceNow via the REST Table API.
 
-Reads production_orders and production_output from the local database and
-inserts them into the custom tables u_production_order / u_production_output.
-Safe to re-run: existing records (matched on the business key) are skipped.
+Reads machine_downtime from the local database and inserts it into the
+custom table u_machine_downtime. Safe to re-run: existing records (matched
+on the business key) are skipped.
 
 Required .env additions:
     SN_INSTANCE=https://dev404273.service-now.com
@@ -29,31 +29,16 @@ PAGE_SIZE = 1000
 # (postgres table, servicenow table, business key, postgres column -> u_ field)
 LOADS = [
     (
-        "production_orders",
-        "u_production_order",
-        "u_production_order_id",
+        "machine_downtime",
+        "u_machine_downtime",
+        "u_downtime_id",
         {
-            "production_order_id": "u_production_order_id",
+            "downtime_id": "u_downtime_id",
             "plant_id": "u_plant_id",
-            "material_id": "u_material_id",
-            "planned_quantity": "u_planned_quantity",
-            "actual_quantity": "u_actual_quantity",
-            "start_date": "u_start_date",
-            "end_date": "u_end_date",
-            "status": "u_status",
-        },
-    ),
-    (
-        "production_output",
-        "u_production_output",
-        "u_production_output_id",
-        {
-            "production_output_id": "u_production_output_id",
-            "production_order_id": "u_production_order_id",
-            "input_material_id": "u_input_material_id",
-            "input_quantity": "u_input_quantity",
-            "output_material_id": "u_output_material_id",
-            "output_quantity": "u_output_quantity",
+            "machine_name": "u_machine_name",
+            "start_time": "u_start_time",
+            "end_time": "u_end_time",
+            "reason": "u_reason",
         },
     ),
 ]
