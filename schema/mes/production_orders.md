@@ -1,5 +1,9 @@
 production_orders
 
+Canonical silver/gold schema. Snowflake ingest arrives with quoted lowercase
+column names (for example `"production_order_id"`); silver normalizes these
+before cleansing.
+
 | Header                | Description                                |
 | --------------------- | ------------------------------------------ |
 | `production_order_id` | Unique identifier for the production order |

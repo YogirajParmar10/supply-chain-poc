@@ -1,3 +1,7 @@
+Canonical silver/gold schema. Snowflake ingest arrives with quoted lowercase
+column names (for example `"production_output_id"`); silver normalizes these
+before cleansing.
+
 | Header                 | Description                                        |
 | ---------------------- | -------------------------------------------------- |
 | `production_output_id` | Unique identifier for the production output record |

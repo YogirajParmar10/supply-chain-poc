@@ -34,13 +34,17 @@ COMBINED_HEADER = """# Databricks notebook source
 """
 
 GOLD_ONLY_IMPORTS = [
-    "add_months",
     "count",
     "countDistinct",
     "date_format",
+    "explode",
+    "expr",
     "max as spark_max",
+    "min as spark_min",
+    "sequence",
     "sum as spark_sum",
     "trunc",
+    "unix_timestamp",
 ]
 
 # Gold notebook cells before the first materialized view (title, config, imports).

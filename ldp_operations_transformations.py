@@ -40,13 +40,17 @@ SERVE = f"{CATALOG}.{SERVE_SCHEMA}"
 from pyspark import pipelines as dp
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import (
+    unix_timestamp,
     trunc,
     sum as spark_sum,
+    sequence,
+    min as spark_min,
     max as spark_max,
+    expr,
+    explode,
     date_format,
     countDistinct,
     count,
-    add_months,
     coalesce,
     col,
     length,
@@ -54,6 +58,7 @@ from pyspark.sql.functions import (
     regexp_extract,
     row_number,
     to_date,
+    to_timestamp,
     trim,
     upper,
     when,
@@ -63,6 +68,14 @@ from pyspark.sql.window import Window
 
 VALID_PURCHASE_ORDER_STATUSES = ("CREATED", "CONFIRMED", "DELIVERED", "CANCELLED")
 VALID_SALES_ORDER_STATUSES = ("CREATED", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED")
+VALID_PRODUCTION_ORDER_STATUSES = ("PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED")
+VALID_DOWNTIME_REASONS = (
+    "MAINTENANCE",
+    "POWER_FAILURE",
+    "MATERIAL_SHORTAGE",
+    "MACHINE_FAILURE",
+    "QUALITY_CHECK",
+)
 # COMMAND ----------
 # MAGIC ## Shared transformation helpers
 # MAGIC 
@@ -77,7 +90,14 @@ def _dedupe_order_columns(df: DataFrame) -> list:
     sales_orders). Other sources use updated_at, Fivetran sync metadata, or dropDuplicates.
     """
     order_cols = []
-    for column_name in ("bronze_row_id", "updated_at", "_fivetran_synced", "created_at"):
+    for column_name in (
+        "bronze_row_id",
+        "sys_updated_on",
+        "updated_at",
+        "_fivetran_synced",
+        "created_at",
+        "sys_created_on",
+    ):
         if column_name in df.columns:
             order_cols.append(col(column_name).desc_nulls_last())
     return order_cols
@@ -350,6 +370,203 @@ def _clean_inventory_transactions_batch(source_df: DataFrame) -> DataFrame:
     cleaned = cleaned.filter(col("quantity").isNotNull())
     cleaned = _dedupe_exact_rows(cleaned, ["transaction_id"])
     return cleaned
+
+
+def _normalize_ingest_column_names(df: DataFrame) -> DataFrame:
+    """Rename quoted or case-variant ingest columns to canonical lowercase names."""
+    if not df.columns:
+        return df
+    return df.select(
+        *[
+            col(field.name).alias(field.name.strip('"').strip("`").lower())
+            for field in df.schema.fields
+        ]
+    )
+
+
+def _apply_column_aliases(df: DataFrame, aliases: dict[str, list[str]]) -> DataFrame:
+    """Map connector-specific column names onto canonical schema fields."""
+    normalized = _normalize_ingest_column_names(df)
+    for canonical, candidates in aliases.items():
+        existing = [name for name in candidates if name in normalized.columns]
+        if not existing:
+            continue
+        normalized = normalized.withColumn(
+            canonical,
+            coalesce(*[col(name) for name in existing]),
+        )
+    return normalized
+
+
+def _parse_bronze_timestamp(column_name: str):
+    """Parse source timestamp strings; invalid values become NULL."""
+    raw = trim(col(column_name))
+    return coalesce(
+        when(raw.rlike(r"^\d{4}-\d{2}-\d{2}T"), to_timestamp(raw, "yyyy-MM-dd'T'HH:mm:ss")),
+        when(raw.rlike(r"^\d{4}-\d{2}-\d{2} "), to_timestamp(raw, "yyyy-MM-dd HH:mm:ss")),
+        when(raw.rlike(r"^\d{4}-\d{2}-\d{2}$"), to_timestamp(raw, "yyyy-MM-dd")),
+        when(raw.rlike(r"^\d{2}/\d{2}/\d{4}"), to_timestamp(raw, "dd/MM/yyyy HH:mm:ss")),
+    )
+
+
+def _parse_optional_positive_quantity(column_name: str):
+    """Cast optional quantity values and retain only strictly positive integers."""
+    parsed = when(
+        trim(col(column_name)).rlike(r"^-?\d+(\.\d+)?$"),
+        trim(col(column_name)).cast("double").cast(LongType()),
+    )
+    return when(parsed > 0, parsed)
+
+
+def _clean_production_orders(
+    source_df: DataFrame,
+    plants_df: DataFrame,
+    materials_df: DataFrame,
+) -> DataFrame:
+    """Clean production orders from Snowflake ingest.
+
+    Snowflake ingest may expose quoted lowercase columns such as
+    `"production_order_id"`; these are normalized before cleansing.
+    """
+    source_df = _normalize_ingest_column_names(source_df)
+    aliases = {
+        "production_order_id": ["production_order_id", "PRODUCTION_ORDER_ID"],
+        "plant_id": ["plant_id", "PLANT_ID"],
+        "material_id": ["material_id", "MATERIAL_ID"],
+        "planned_quantity": ["planned_quantity", "PLANNED_QUANTITY"],
+        "actual_quantity": ["actual_quantity", "ACTUAL_QUANTITY"],
+        "start_date": ["start_date", "START_DATE"],
+        "end_date": ["end_date", "END_DATE"],
+        "status": ["status", "STATUS"],
+    }
+    cleaned = _apply_column_aliases(source_df, aliases)
+    cleaned = _trim_string_columns(
+        cleaned,
+        [
+            "production_order_id",
+            "plant_id",
+            "material_id",
+            "status",
+            "start_date",
+            "end_date",
+            "planned_quantity",
+            "actual_quantity",
+        ],
+    )
+    cleaned = _filter_non_null_key(cleaned, "production_order_id")
+    cleaned = _dedupe_latest(cleaned, "production_order_id")
+    cleaned = (
+        cleaned.withColumn("status", _normalize_status("status"))
+        .withColumn("start_date", _parse_bronze_date("start_date"))
+        .withColumn("end_date", _parse_bronze_date("end_date"))
+        .withColumn("planned_quantity", _parse_positive_quantity("planned_quantity"))
+        .withColumn("actual_quantity", _parse_optional_positive_quantity("actual_quantity"))
+    )
+    cleaned = cleaned.filter(col("planned_quantity").isNotNull())
+    cleaned = cleaned.withColumn(
+        "status",
+        when(col("status").isin(*VALID_PRODUCTION_ORDER_STATUSES), col("status")).otherwise(
+            upper(col("status"))
+        ),
+    )
+    cleaned = _enforce_foreign_key(cleaned, "plant_id", plants_df, "plant_id")
+    return _enforce_material_type(cleaned, materials_df, material_type="FINISHED_GOOD")
+
+
+def _clean_production_output(
+    source_df: DataFrame,
+    production_orders_df: DataFrame,
+    materials_df: DataFrame,
+) -> DataFrame:
+    """Clean production output from Snowflake ingest.
+
+    Snowflake ingest may expose quoted lowercase columns such as
+    `"production_output_id"`; these are normalized before cleansing.
+    """
+    source_df = _normalize_ingest_column_names(source_df)
+    aliases = {
+        "production_output_id": ["production_output_id", "PRODUCTION_OUTPUT_ID"],
+        "production_order_id": ["production_order_id", "PRODUCTION_ORDER_ID"],
+        "input_material_id": ["input_material_id", "INPUT_MATERIAL_ID"],
+        "input_quantity": ["input_quantity", "INPUT_QUANTITY"],
+        "output_material_id": ["output_material_id", "OUTPUT_MATERIAL_ID"],
+        "output_quantity": ["output_quantity", "OUTPUT_QUANTITY"],
+    }
+    cleaned = _apply_column_aliases(source_df, aliases)
+    cleaned = _trim_string_columns(
+        cleaned,
+        [
+            "production_output_id",
+            "production_order_id",
+            "input_material_id",
+            "input_quantity",
+            "output_material_id",
+            "output_quantity",
+        ],
+    )
+    cleaned = _filter_non_null_key(cleaned, "production_output_id")
+    cleaned = _dedupe_latest(cleaned, "production_output_id")
+    cleaned = (
+        cleaned.withColumn("input_quantity", _parse_positive_quantity("input_quantity"))
+        .withColumn("output_quantity", _parse_positive_quantity("output_quantity"))
+    )
+    cleaned = cleaned.filter(
+        col("input_quantity").isNotNull() & col("output_quantity").isNotNull()
+    )
+    cleaned = _enforce_foreign_key(
+        cleaned, "production_order_id", production_orders_df, "production_order_id"
+    )
+    valid_raw_materials = (
+        materials_df.filter(col("material_type") == "RAW_MATERIAL")
+        .select(col("material_id").alias("input_material_id"))
+        .distinct()
+    )
+    valid_finished_goods = (
+        materials_df.filter(col("material_type") == "FINISHED_GOOD")
+        .select(col("material_id").alias("output_material_id"))
+        .distinct()
+    )
+    cleaned = cleaned.join(valid_raw_materials, on="input_material_id", how="inner")
+    return cleaned.join(valid_finished_goods, on="output_material_id", how="inner")
+
+
+def _clean_machine_downtime(source_df: DataFrame, plants_df: DataFrame) -> DataFrame:
+    """Clean machine downtime events from ServiceNow ingest."""
+    cleaned = source_df
+    if "_databricks_deleted" in cleaned.columns:
+        cleaned = cleaned.filter(
+            col("_databricks_deleted").isNull() | (col("_databricks_deleted") == lit(False))
+        )
+
+    aliases = {
+        "downtime_id": ["u_downtime_id", "downtime_id"],
+        "plant_id": ["u_plant_id", "plant_id"],
+        "machine_name": ["u_machine_name", "machine_name"],
+        "start_time": ["u_start_time", "start_time"],
+        "end_time": ["u_end_time", "end_time"],
+        "reason": ["u_reason", "reason"],
+    }
+    cleaned = _apply_column_aliases(cleaned, aliases)
+    cleaned = _trim_string_columns(
+        cleaned,
+        ["downtime_id", "plant_id", "machine_name", "reason"],
+    )
+    cleaned = _filter_non_null_key(cleaned, "downtime_id")
+    cleaned = _dedupe_latest(cleaned, "downtime_id")
+    cleaned = (
+        cleaned.withColumn("machine_name", trim(col("machine_name")))
+        .withColumn("reason", upper(trim(col("reason"))))
+        .withColumn("start_time", to_timestamp(col("start_time")))
+        .withColumn("end_time", to_timestamp(col("end_time")))
+    )
+    cleaned = cleaned.filter(col("start_time").isNotNull() & col("end_time").isNotNull())
+    cleaned = cleaned.withColumn(
+        "reason",
+        when(col("reason").isin(*VALID_DOWNTIME_REASONS), col("reason")).otherwise(
+            upper(col("reason"))
+        ),
+    )
+    return _enforce_foreign_key(cleaned, "plant_id", plants_df, "plant_id")
 # COMMAND ----------
 # MAGIC ## ERP master data (materialized views)
 # COMMAND ----------
@@ -507,8 +724,81 @@ def refined_inventory_transactions():
         materials,
     )
 # COMMAND ----------
+# MAGIC ## MES data (Snowflake + ServiceNow)
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{REFINED}.production_orders",
+    comment="Cleaned production orders from ingest.production_orders (Snowflake)",
+    table_properties={"quality": "silver", "domain": "mes"},
+)
+@dp.expect_or_drop(
+    "valid_production_order_id",
+    "production_order_id IS NOT NULL AND length(trim(production_order_id)) > 0",
+)
+@dp.expect_or_drop("positive_planned_quantity", "planned_quantity IS NOT NULL AND planned_quantity > 0")
+def refined_production_orders():
+    plants = spark.read.table(f"{REFINED}.plants")
+    materials = spark.read.table(f"{REFINED}.materials")
+    return _clean_production_orders(
+        spark.read.table(f"{INGEST}.production_orders"),
+        plants,
+        materials,
+    )
+
+
+@dp.materialized_view(
+    name=f"{REFINED}.production_output",
+    comment="Cleaned production output from ingest.production_output (Snowflake)",
+    table_properties={"quality": "silver", "domain": "mes"},
+)
+@dp.expect_or_drop(
+    "valid_production_output_id",
+    "production_output_id IS NOT NULL AND length(trim(production_output_id)) > 0",
+)
+@dp.expect_or_drop("positive_input_quantity", "input_quantity IS NOT NULL AND input_quantity > 0")
+@dp.expect_or_drop("positive_output_quantity", "output_quantity IS NOT NULL AND output_quantity > 0")
+def refined_production_output():
+    production_orders = spark.read.table(f"{REFINED}.production_orders")
+    materials = spark.read.table(f"{REFINED}.materials")
+    return _clean_production_output(
+        spark.read.table(f"{INGEST}.production_output"),
+        production_orders,
+        materials,
+    )
+
+
+@dp.materialized_view(
+    name=f"{REFINED}.machine_downtime",
+    comment="Cleaned machine downtime events from ingest.machine_downtime (ServiceNow)",
+    table_properties={"quality": "silver", "domain": "mes"},
+)
+@dp.expect_or_drop(
+    "valid_downtime_id",
+    "downtime_id IS NOT NULL AND length(trim(downtime_id)) > 0",
+)
+def refined_machine_downtime():
+    plants = spark.read.table(f"{REFINED}.plants")
+    return _clean_machine_downtime(
+        spark.read.table(f"{INGEST}.machine_downtime"),
+        plants,
+    )
+# COMMAND ----------
 # MAGIC %md
 # MAGIC ## Gold layer — `serve` schema
+# COMMAND ----------
+# MAGIC ## Helpers
+# COMMAND ----------
+
+def _full_month_spine(bounds_df, min_col="min_month", max_col="max_month"):
+    """Build a continuous month spine from inclusive min/max month columns."""
+    return bounds_df.filter(
+        col(min_col).isNotNull() & col(max_col).isNotNull()
+    ).select(
+        explode(sequence(col(min_col), col(max_col), expr("interval 1 month"))).alias(
+            "month_start_date"
+        )
+    )
 # COMMAND ----------
 # MAGIC ## `serve.supplier_summary`
 # COMMAND ----------
@@ -686,7 +976,7 @@ def serve_business_kpi_summary():
 # COMMAND ----------
 # MAGIC ## `serve.sales_trend_monthly`
 # MAGIC 
-# MAGIC Monthly sales order volume for the trailing 12 months (line chart).
+# MAGIC Monthly sales order volume across the full order history (line chart).
 # COMMAND ----------
 
 @dp.materialized_view(
@@ -701,16 +991,11 @@ def serve_sales_trend_monthly():
         .filter(col("order_date").isNotNull())
     )
 
-    latest_month = sales_orders.agg(
-        spark_max(trunc("order_date", "month")).alias("latest_month")
+    bounds = sales_orders.agg(
+        spark_min(trunc("order_date", "month")).alias("min_month"),
+        spark_max(trunc("order_date", "month")).alias("max_month"),
     )
-    month_offsets = spark.range(0, TREND_MONTHS)
-    months = latest_month.crossJoin(month_offsets).select(
-        add_months(
-            col("latest_month"),
-            col("id").cast("int") - (TREND_MONTHS - 1),
-        ).alias("month_start_date")
-    )
+    months = _full_month_spine(bounds)
 
     monthly_totals = (
         sales_orders.withColumn("month_start_date", trunc("order_date", "month"))
@@ -734,7 +1019,7 @@ def serve_sales_trend_monthly():
 # COMMAND ----------
 # MAGIC ## `serve.purchase_trend_monthly`
 # MAGIC 
-# MAGIC Monthly purchase order volume for the trailing 12 months (line chart).
+# MAGIC Monthly purchase order volume across the full order history (line chart).
 # COMMAND ----------
 
 @dp.materialized_view(
@@ -749,16 +1034,11 @@ def serve_purchase_trend_monthly():
         .filter(col("order_date").isNotNull())
     )
 
-    latest_month = purchase_orders.agg(
-        spark_max(trunc("order_date", "month")).alias("latest_month")
+    bounds = purchase_orders.agg(
+        spark_min(trunc("order_date", "month")).alias("min_month"),
+        spark_max(trunc("order_date", "month")).alias("max_month"),
     )
-    month_offsets = spark.range(0, TREND_MONTHS)
-    months = latest_month.crossJoin(month_offsets).select(
-        add_months(
-            col("latest_month"),
-            col("id").cast("int") - (TREND_MONTHS - 1),
-        ).alias("month_start_date")
-    )
+    months = _full_month_spine(bounds)
 
     monthly_totals = (
         purchase_orders.withColumn("month_start_date", trunc("order_date", "month"))
@@ -818,3 +1098,257 @@ def serve_top_selling_materials():
         "material_type",
         "sold_quantity",
     ).orderBy("sales_rank")
+# COMMAND ----------
+# MAGIC ## `serve.material_procurement_trend_monthly`
+# MAGIC 
+# MAGIC Monthly material-level procurement, sales, and production consumption metrics for the material procurement dashboard.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.material_procurement_trend_monthly",
+    comment="Monthly PO/SO and production quantities by material for procurement dashboards",
+    table_properties={"quality": "gold", "domain": "procurement"},
+)
+def serve_material_procurement_trend_monthly():
+    purchase_orders = (
+        spark.read.table(f"{REFINED}.purchase_orders")
+        .filter(col("status") != "CANCELLED")
+        .filter(col("order_date").isNotNull())
+    )
+    sales_orders = (
+        spark.read.table(f"{REFINED}.sales_orders")
+        .filter(col("status") != "CANCELLED")
+        .filter(col("order_date").isNotNull())
+    )
+    production_output = spark.read.table(f"{REFINED}.production_output")
+    production_orders = (
+        spark.read.table(f"{REFINED}.production_orders")
+        .filter(col("status") != "CANCELLED")
+    )
+    materials = spark.read.table(f"{REFINED}.materials")
+
+    po_monthly = (
+        purchase_orders.withColumn("month_start_date", trunc("order_date", "month"))
+        .groupBy("material_id", "month_start_date")
+        .agg(
+            count(lit(1)).alias("purchase_order_count"),
+            spark_sum("quantity").alias("purchase_quantity"),
+        )
+    )
+
+    so_monthly = (
+        sales_orders.withColumn("month_start_date", trunc("order_date", "month"))
+        .groupBy("material_id", "month_start_date")
+        .agg(
+            count(lit(1)).alias("sales_order_count"),
+            spark_sum("quantity").alias("sales_quantity"),
+        )
+    )
+
+    production_with_month = (
+        production_output.join(
+            production_orders.select("production_order_id", "start_date", "end_date"),
+            on="production_order_id",
+            how="inner",
+        )
+        .withColumn(
+            "month_start_date",
+            trunc(coalesce(col("end_date"), col("start_date")), "month"),
+        )
+        .filter(col("month_start_date").isNotNull())
+    )
+
+    input_monthly = production_with_month.groupBy(
+        col("input_material_id").alias("material_id"),
+        "month_start_date",
+    ).agg(spark_sum("input_quantity").alias("production_input_quantity"))
+
+    output_monthly = production_with_month.groupBy(
+        col("output_material_id").alias("material_id"),
+        "month_start_date",
+    ).agg(spark_sum("output_quantity").alias("production_output_quantity"))
+
+    material_months = (
+        po_monthly.select("material_id", "month_start_date")
+        .union(so_monthly.select("material_id", "month_start_date"))
+        .union(input_monthly.select("material_id", "month_start_date"))
+        .union(output_monthly.select("material_id", "month_start_date"))
+        .distinct()
+    )
+
+    return (
+        material_months.join(
+            materials.select("material_id", "material_name", "material_type"),
+            on="material_id",
+            how="inner",
+        )
+        .join(po_monthly, on=["material_id", "month_start_date"], how="left")
+        .join(so_monthly, on=["material_id", "month_start_date"], how="left")
+        .join(input_monthly, on=["material_id", "month_start_date"], how="left")
+        .join(output_monthly, on=["material_id", "month_start_date"], how="left")
+        .select(
+            "material_id",
+            "material_name",
+            "material_type",
+            "month_start_date",
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            coalesce(col("purchase_order_count"), lit(0)).alias("purchase_order_count"),
+            coalesce(col("purchase_quantity"), lit(0)).alias("purchase_quantity"),
+            coalesce(col("sales_order_count"), lit(0)).alias("sales_order_count"),
+            coalesce(col("sales_quantity"), lit(0)).alias("sales_quantity"),
+            coalesce(col("production_input_quantity"), lit(0)).alias("production_input_quantity"),
+            coalesce(col("production_output_quantity"), lit(0)).alias("production_output_quantity"),
+        )
+        .orderBy("material_id", "month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.production_order_summary`
+# MAGIC 
+# MAGIC Production order counts and quantities by plant and status.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.production_order_summary",
+    comment="Production order volume and quantities by plant and status",
+    table_properties={"quality": "gold", "domain": "mes"},
+)
+def serve_production_order_summary():
+    production_orders = spark.read.table(f"{REFINED}.production_orders")
+    plants = spark.read.table(f"{REFINED}.plants")
+
+    return (
+        production_orders.join(plants, on="plant_id", how="inner")
+        .groupBy(
+            col("plant_id"),
+            col("plant_name"),
+            col("status"),
+        )
+        .agg(
+            count(lit(1)).alias("order_count"),
+            spark_sum("planned_quantity").alias("planned_quantity"),
+            coalesce(spark_sum("actual_quantity"), lit(0)).alias("actual_quantity"),
+        )
+    )
+# COMMAND ----------
+# MAGIC ## `serve.production_trend_monthly`
+# MAGIC 
+# MAGIC Monthly production order volume across the full production history.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.production_trend_monthly",
+    comment="Monthly production order count and planned/actual quantities",
+    table_properties={"quality": "gold", "domain": "mes"},
+)
+def serve_production_trend_monthly():
+    production_orders = (
+        spark.read.table(f"{REFINED}.production_orders")
+        .filter(col("status") != "CANCELLED")
+        .withColumn(
+            "production_month",
+            trunc(coalesce(col("end_date"), col("start_date")), "month"),
+        )
+        .filter(col("production_month").isNotNull())
+    )
+
+    bounds = production_orders.agg(
+        spark_min("production_month").alias("min_month"),
+        spark_max("production_month").alias("max_month"),
+    )
+    months = _full_month_spine(bounds)
+
+    monthly_totals = production_orders.groupBy(
+        col("production_month").alias("month_start_date")
+    ).agg(
+        count(lit(1)).alias("order_count"),
+        spark_sum("planned_quantity").alias("planned_quantity"),
+        coalesce(spark_sum("actual_quantity"), lit(0)).alias("actual_quantity"),
+    )
+
+    return (
+        months.join(monthly_totals, on="month_start_date", how="left")
+        .select(
+            col("month_start_date"),
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            coalesce(col("order_count"), lit(0)).alias("order_count"),
+            coalesce(col("planned_quantity"), lit(0)).alias("planned_quantity"),
+            coalesce(col("actual_quantity"), lit(0)).alias("actual_quantity"),
+        )
+        .orderBy("month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.machine_downtime_summary`
+# MAGIC 
+# MAGIC Machine downtime event counts and hours by plant, machine, and reason.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.machine_downtime_summary",
+    comment="Downtime event counts and total hours by plant, machine, and reason",
+    table_properties={"quality": "gold", "domain": "mes"},
+)
+def serve_machine_downtime_summary():
+    machine_downtime = spark.read.table(f"{REFINED}.machine_downtime")
+    plants = spark.read.table(f"{REFINED}.plants")
+
+    enriched = machine_downtime.withColumn(
+        "downtime_hours",
+        (unix_timestamp("end_time") - unix_timestamp("start_time")) / lit(3600.0),
+    ).filter(col("downtime_hours") > 0)
+
+    return (
+        enriched.join(plants, on="plant_id", how="inner")
+        .groupBy(
+            col("plant_id"),
+            col("plant_name"),
+            col("machine_name"),
+            col("reason"),
+        )
+        .agg(
+            count(lit(1)).alias("downtime_event_count"),
+            spark_sum("downtime_hours").alias("total_downtime_hours"),
+        )
+    )
+# COMMAND ----------
+# MAGIC ## `serve.machine_downtime_monthly`
+# MAGIC 
+# MAGIC Monthly downtime trends by plant and reason across the full event history.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.machine_downtime_monthly",
+    comment="Monthly downtime event counts and hours by plant and reason",
+    table_properties={"quality": "gold", "domain": "mes"},
+)
+def serve_machine_downtime_monthly():
+    machine_downtime = spark.read.table(f"{REFINED}.machine_downtime")
+    plants = spark.read.table(f"{REFINED}.plants")
+
+    enriched = (
+        machine_downtime.withColumn(
+            "downtime_hours",
+            (unix_timestamp("end_time") - unix_timestamp("start_time")) / lit(3600.0),
+        )
+        .withColumn("month_start_date", trunc("start_time", "month"))
+        .filter(col("downtime_hours") > 0)
+        .filter(col("month_start_date").isNotNull())
+    )
+
+    return (
+        enriched.join(plants, on="plant_id", how="inner")
+        .groupBy("plant_id", "plant_name", "month_start_date", "reason")
+        .agg(
+            count(lit(1)).alias("downtime_event_count"),
+            spark_sum("downtime_hours").alias("total_downtime_hours"),
+        )
+        .select(
+            "plant_id",
+            "plant_name",
+            "month_start_date",
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            "reason",
+            "downtime_event_count",
+            "total_downtime_hours",
+        )
+        .orderBy("plant_id", "month_start_date", "reason")
+    )
