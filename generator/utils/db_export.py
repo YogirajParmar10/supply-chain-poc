@@ -21,6 +21,7 @@ BRONZE_APPEND_TABLES: frozenset[str] = frozenset({
     "sales_orders",
     "production_orders",
     "production_output",
+    "machine_downtime",
     "inventory_transactions",
 })
 
@@ -32,6 +33,7 @@ TRANSACTIONAL_RESET_TABLES: tuple[str, ...] = (
     "inventory_transactions",
     "production_output",
     "production_orders",
+    "machine_downtime",
     "sales_orders",
     "purchase_orders",
 )

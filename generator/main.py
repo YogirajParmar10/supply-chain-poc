@@ -8,6 +8,7 @@ from generator.master import (
     generate_suppliers,
     generate_warehouses,
 )
+from generator.mes.machine_downtime import generate_machine_downtime
 from generator.mes.production_orders import generate_production_orders
 from generator.mes.production_output import generate_production_output
 from generator.transactional.purchase_orders import generate_purchase_orders
@@ -151,6 +152,27 @@ def generate_production_output_data(config: GeneratorConfig | None = None) -> in
     return rows_written
 
 
+def generate_machine_downtime_data(config: GeneratorConfig | None = None) -> int:
+    config = config or GeneratorConfig()
+    engine = get_engine()
+    rng = create_rng(config.seed)
+
+    plants = load_plants(engine)
+    id_start = resolve_next_id_start(engine, "machine_downtime", "downtime_id", "DT")
+    machine_downtime = generate_machine_downtime(
+        plants,
+        config.machine_downtime,
+        rng,
+        noise_settings=config.noise,
+        id_start=id_start,
+    )
+
+    rows_written = write_dataframe(machine_downtime, "machine_downtime", engine)
+    last_id = id_start + config.machine_downtime.count - 1
+    print(f"  downtime_id range: DT{id_start:06d} – DT{last_id:06d}")
+    return rows_written
+
+
 def generate_wms_transaction_data(config: GeneratorConfig | None = None) -> dict[str, int]:
     config = config or GeneratorConfig()
     engine = get_engine()
@@ -228,6 +250,7 @@ def main() -> None:
     sales_order_rows = generate_sales_order_data(config)
     production_order_rows = generate_production_order_data(config)
     production_output_rows = generate_production_output_data(config)
+    machine_downtime_rows = generate_machine_downtime_data(config)
     wms_rows = generate_wms_data(config)
 
     print(f"Generated data for {config.company_name}")
@@ -237,6 +260,7 @@ def main() -> None:
     print(f"  - sales_orders: {sales_order_rows} rows")
     print(f"  - production_orders: {production_order_rows} rows")
     print(f"  - production_output: {production_output_rows} rows")
+    print(f"  - machine_downtime: {machine_downtime_rows} rows")
     print(f"  - inventory_transactions: {wms_rows.get('inventory_transactions', 0)} rows")
     print(f"  - transaction days: {wms_rows.get('transaction_days', 0)}")
     print(f"  - inventory: {wms_rows.get('inventory', 0)} rows")

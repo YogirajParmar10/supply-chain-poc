@@ -22,6 +22,14 @@ INVALID_PRODUCTION_STATUSES: tuple[str, ...] = (
     "",
 )
 
+INVALID_DOWNTIME_REASONS: tuple[str, ...] = (
+    "maintenance",
+    "MACHINE_FAILURE ",
+    "UNKNOWN",
+    "POWERFAILURE",
+    "",
+)
+
 
 def _invalid_end_date(start_date_value: object) -> str:
     try:
@@ -161,3 +169,42 @@ def apply_production_output_noise(
         settings.duplicate_rate,
         rng,
     )
+
+
+def _invalid_end_time(start_time_value: object) -> str:
+    try:
+        from datetime import datetime, timedelta
+
+        start_time = datetime.fromisoformat(str(start_time_value))
+        return (start_time - timedelta(hours=2)).isoformat()
+    except ValueError:
+        return "2020-01-01T00:00:00"
+
+
+def apply_machine_downtime_noise(
+    machine_downtime: pd.DataFrame,
+    _plants: pd.DataFrame,
+    settings: NoiseSettings,
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    if not settings.enabled or machine_downtime.empty:
+        return machine_downtime
+
+    df = machine_downtime.copy()
+    noisy_indices = _pick_indices(len(df), settings.row_noise_rate, rng)
+    for index in noisy_indices:
+        noise_type = int(rng.integers(0, 6))
+        if noise_type == 0:
+            df.at[index, "plant_id"] = _fake_id("PL", rng)
+        elif noise_type == 1:
+            _apply_null(df, index, "machine_name")
+        elif noise_type == 2:
+            _apply_nulls(df, index, ["plant_id", "start_time", "reason"], rng)
+        elif noise_type == 3:
+            df.at[index, "end_time"] = _invalid_end_time(df.at[index, "start_time"])
+        elif noise_type == 4:
+            df.at[index, "reason"] = str(rng.choice(INVALID_DOWNTIME_REASONS))
+        elif noise_type == 5:
+            df.at[index, "machine_name"] = _apply_whitespace(str(df.at[index, "machine_name"]))
+
+    return _append_duplicates(df, settings.duplicate_rate, rng)
