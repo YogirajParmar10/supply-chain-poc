@@ -1,0 +1,13 @@
+=== Snowflake migration 2026-07-08T08:09:03Z ===
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/yogirajsinhparmar/Documents/projects/supply-chain-poc/scripts/load_snowflake.py", line 28, in <module>
+    import snowflake.connector
+ModuleNotFoundError: No module named 'snowflake'
+
+=== Retry after pip install 2026-07-08T08:13:32Z ===
+PLANTS: replaced with 2 rows
+WAREHOUSES: replaced with 3 rows
+PRODUCTION_ORDERS: replaced with 4537 rows
+PRODUCTION_OUTPUT: replaced with 3204 rows

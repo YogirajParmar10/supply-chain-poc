@@ -93,6 +93,14 @@ python scripts/sync_to_azure_blob.py \
   --blob-prefix inventory
 ```
 
+Load Postgres MES + master subset into Snowflake:
+
+```bash
+python -m scripts.load_snowflake
+```
+
+See [`docs/guides/snowflake.md`](docs/guides/snowflake.md) for Snowflake setup and table mapping.
+
 The sync command uploads only blobs that do not already exist, so repeated runs do not duplicate files. See [`docs/guides/azure-blob-sync.md`](docs/guides/azure-blob-sync.md) for full setup and examples.
 
 ### Programmatic usage

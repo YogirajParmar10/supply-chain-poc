@@ -9,6 +9,7 @@ How-to instructions for tools and workflows.
 | Document | Description |
 |----------|-------------|
 | [Azure Blob sync](guides/azure-blob-sync.md) | Upload local CSVs to Azure Blob Storage |
+| [Snowflake loader](guides/snowflake.md) | Postgres → Snowflake mirror for MES + partial master |
 
 ## Pipeline
 

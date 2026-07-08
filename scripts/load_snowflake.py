@@ -1,10 +1,8 @@
 """
 Load master, WMS, and MES data from PostgreSQL into Snowflake.
 
-Reads the tables mapped to Snowflake (master data + warehouse/inventory
-data, plus production data replicated here for local joins against
-inventory) and loads them into FLEXIPACK.PUBLIC, replacing each table's
-contents on every run.
+Reads plants, warehouses, and MES production tables from PostgreSQL and
+loads them into FLEXIPACK.PUBLIC, replacing each table's contents on every run.
 
 The generator produces a deterministic dataset (fixed seed), so a full
 replace per table is simpler and safer here than an incremental upsert --

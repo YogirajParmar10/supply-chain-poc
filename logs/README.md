@@ -17,6 +17,7 @@ logs/
 |------|---------|-------------|
 | 2026-07-07 | [5-year data regeneration](2026-07-07/data-regeneration.md) | [console](2026-07-07/data-regeneration-console.log) |
 | 2026-07-07 | [Azure WMS blob sync](2026-07-07/azure-blob-sync.md) | [console](2026-07-07/azure-blob-sync-console.log) |
+| 2026-07-08 | [Snowflake Postgres migration](2026-07-08/snowflake-migration.md) | [console](2026-07-08/snowflake-migration-console.log) |
 
 ## Adding new logs
 
