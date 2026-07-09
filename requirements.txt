@@ -6,3 +6,5 @@ python-dotenv>=1.0.0
 requests>=2.31.0
 snowflake-connector-python[pandas]>=3.12.0
 azure-storage-blob>=12.22.0
+prophet>=1.1.5
+matplotlib>=3.8.0

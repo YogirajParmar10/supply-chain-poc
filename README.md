@@ -131,6 +131,16 @@ Settings are defined in [`generator/config/settings.py`](generator/config/settin
 
 Running the generator multiple times with the same seed produces identical CSV files.
 
+## Local forecasting
+
+Train company- and material-level Prophet forecasts against local Postgres gold tables:
+
+```bash
+python -m forecasting.pipelines.run_all
+```
+
+See [`forecasting/README.md`](forecasting/README.md) for schemas (`forecast_refined` / `forecast_serve` / `forecast_ml`), exogenous features, and output queries.
+
 ## Project structure
 
 ```text
@@ -140,6 +150,7 @@ generator/
 ├── utils/           # ID formatting, CSV export, RNG helpers
 └── main.py          # Entry point and orchestration
 
+forecasting/         # Local gold features + Prophet forecasting package
 schema/              # CSV schema documentation per system
 docs/                # Guides, pipeline docs, and reference
 logs/                # Operational run logs (generation, sync, etc.)
