@@ -303,6 +303,33 @@ Applies to both `ingest.production_orders` and `ingest.production_output`.
 
 ---
 
+## Forecasting (ML layer)
+
+After gold features are built, run **`notebooks/Sales Forecast Training.ipynb`**.
+
+| Schema | Table | Purpose |
+|--------|-------|---------|
+| `ml` | `forecast_runs` | Run metadata + Prophet params |
+| `ml` | `forecast_backtest` | MAE / RMSE / MAPE / wMAPE per grain |
+| `ml` | `forecast_backtest_detail` | Holdout month actual vs predicted |
+| `ml` | `sales_forecast_monthly` | 12-month forward forecasts |
+
+DDL reference: `forecasting/sql/databricks_ml_tables.sql`
+
+**Suggested workflow**
+
+```text
+operations_silver_transformation_pipeline
+        ↓
+operations_gold_transformation_pipeline
+        ↓
+Sales Forecast Training.ipynb  →  ml.*
+```
+
+**MLflow experiment:** `/Shared/supply-chain/sales_forecast_prophet` (configurable in notebook)
+
+---
+
 ## Validation steps
 
 Run after each stage completes.

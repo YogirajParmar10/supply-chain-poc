@@ -93,6 +93,15 @@ WHERE run_id = (SELECT MAX(run_id) FROM forecast_ml.forecast_runs WHERE grain = 
 ORDER BY grain_id, metric_name;
 ```
 
+## Local vs Databricks
+
+| Local Postgres | Databricks Unity Catalog |
+|---|---|
+| `forecast_serve.*` | `jm_databricks_learning_ws.serve.*` |
+| `forecast_ml.*` | `jm_databricks_learning_ws.ml.*` |
+| `python -m forecasting.pipelines.run_all` | `notebooks/Sales Forecast Training.ipynb` |
+| `forecasting/notebooks/Local Sales Forecast Visualization.ipynb` | charts in training notebook + SQL on `ml.*` |
+
 ## Layout
 
 ```text
