@@ -46,6 +46,7 @@ from pyspark.sql.functions import (
     sequence,
     min as spark_min,
     max as spark_max,
+    greatest,
     expr,
     explode,
     date_format,
@@ -1351,4 +1352,176 @@ def serve_machine_downtime_monthly():
             "total_downtime_hours",
         )
         .orderBy("plant_id", "month_start_date", "reason")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.inventory_monthly`
+# MAGIC 
+# MAGIC Month-end inventory on hand per material (sum across warehouses on the last snapshot day in each month). Used as an exogenous signal for sales forecasting.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.inventory_monthly",
+    comment="Month-end inventory on hand per material for forecasting features",
+    table_properties={"quality": "gold", "domain": "inventory"},
+)
+def serve_inventory_monthly():
+    inventory = spark.read.table(f"{REFINED}.inventory")
+
+    daily = (
+        inventory.withColumn("month_start_date", trunc("snapshot_date", "month"))
+        .groupBy("material_id", "snapshot_date", "month_start_date")
+        .agg(spark_sum("quantity").alias("quantity"))
+    )
+
+    month_end_dates = daily.groupBy("material_id", "month_start_date").agg(
+        spark_max("snapshot_date").alias("snapshot_date")
+    )
+
+    return (
+        daily.join(
+            month_end_dates,
+            on=["material_id", "month_start_date", "snapshot_date"],
+            how="inner",
+        )
+        .select(
+            "material_id",
+            "month_start_date",
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            col("quantity").alias("inventory_on_hand"),
+        )
+        .orderBy("material_id", "month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.company_forecast_features_monthly`
+# MAGIC 
+# MAGIC Company-level monthly feature matrix for forecasting: sales, procurement, production, inventory, and downtime.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.company_forecast_features_monthly",
+    comment="Company-level monthly features for sales forecasting models",
+    table_properties={"quality": "gold", "domain": "forecasting"},
+)
+def serve_company_forecast_features_monthly():
+    sales = spark.read.table(f"{SERVE}.sales_trend_monthly").select(
+        "month_start_date",
+        col("order_count").alias("sales_order_count"),
+        col("total_quantity").alias("sales_quantity"),
+    )
+
+    procurement = spark.read.table(f"{SERVE}.material_procurement_trend_monthly")
+
+    purchase = procurement.groupBy("month_start_date").agg(
+        spark_sum("purchase_quantity").alias("purchase_quantity")
+    )
+
+    production = (
+        procurement.filter(col("material_type") == "FINISHED_GOOD")
+        .groupBy("month_start_date")
+        .agg(spark_sum("production_output_quantity").alias("production_output_quantity"))
+    )
+
+    inventory = spark.read.table(f"{SERVE}.inventory_monthly").groupBy("month_start_date").agg(
+        spark_sum("inventory_on_hand").alias("inventory_on_hand")
+    )
+
+    downtime = (
+        spark.read.table(f"{SERVE}.machine_downtime_monthly")
+        .groupBy("month_start_date")
+        .agg(spark_sum("total_downtime_hours").alias("downtime_hours"))
+    )
+
+    return (
+        sales.join(purchase, on="month_start_date", how="left")
+        .join(production, on="month_start_date", how="left")
+        .join(inventory, on="month_start_date", how="left")
+        .join(downtime, on="month_start_date", how="left")
+        .select(
+            "month_start_date",
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            "sales_order_count",
+            "sales_quantity",
+            coalesce(col("purchase_quantity"), lit(0)).alias("purchase_quantity"),
+            coalesce(col("production_output_quantity"), lit(0)).alias(
+                "production_output_quantity"
+            ),
+            coalesce(col("inventory_on_hand"), lit(0)).alias("inventory_on_hand"),
+            coalesce(col("downtime_hours"), lit(0.0)).alias("downtime_hours"),
+        )
+        .orderBy("month_start_date")
+    )
+# COMMAND ----------
+# MAGIC ## `serve.forecast_features_monthly`
+# MAGIC 
+# MAGIC Dense month spine for top-selling finished goods with procurement, inventory, and downtime signals. Used for material-level forecasting models.
+# COMMAND ----------
+
+@dp.materialized_view(
+    name=f"{SERVE}.forecast_features_monthly",
+    comment="Top-SKU monthly feature matrix for material-level sales forecasting",
+    table_properties={"quality": "gold", "domain": "forecasting"},
+)
+def serve_forecast_features_monthly():
+    top_mats = spark.read.table(f"{SERVE}.top_selling_materials").select(
+        "material_id", "material_name"
+    )
+    procurement = (
+        spark.read.table(f"{SERVE}.material_procurement_trend_monthly")
+        .select(
+            "material_id",
+            "month_start_date",
+            "sales_order_count",
+            "sales_quantity",
+            "purchase_order_count",
+            "purchase_quantity",
+            "production_input_quantity",
+            "production_output_quantity",
+        )
+    )
+    inventory_monthly = spark.read.table(f"{SERVE}.inventory_monthly").select(
+        "material_id", "month_start_date", "inventory_on_hand"
+    )
+
+    bounds = procurement.agg(
+        spark_min("month_start_date").alias("min_month"),
+        spark_max("month_start_date").alias("max_month"),
+    )
+    months = _full_month_spine(bounds)
+    spine = top_mats.crossJoin(months)
+
+    downtime_total = (
+        spark.read.table(f"{SERVE}.machine_downtime_monthly")
+        .groupBy("month_start_date")
+        .agg(spark_sum("total_downtime_hours").alias("plant_downtime_hours"))
+    )
+
+    top_n = top_mats.agg(count(lit(1)).alias("top_n"))
+
+    return (
+        spine.join(procurement, on=["material_id", "month_start_date"], how="left")
+        .join(inventory_monthly, on=["material_id", "month_start_date"], how="left")
+        .join(downtime_total, on="month_start_date", how="left")
+        .crossJoin(top_n)
+        .select(
+            col("material_id"),
+            col("material_name"),
+            col("month_start_date"),
+            date_format("month_start_date", "yyyy-MM").alias("year_month"),
+            coalesce(col("sales_order_count"), lit(0)).alias("sales_order_count"),
+            coalesce(col("sales_quantity"), lit(0)).alias("sales_quantity"),
+            coalesce(col("purchase_order_count"), lit(0)).alias("purchase_order_count"),
+            coalesce(col("purchase_quantity"), lit(0)).alias("purchase_quantity"),
+            coalesce(col("production_input_quantity"), lit(0)).alias(
+                "production_input_quantity"
+            ),
+            coalesce(col("production_output_quantity"), lit(0)).alias(
+                "production_output_quantity"
+            ),
+            coalesce(col("inventory_on_hand"), lit(0)).alias("inventory_on_hand"),
+            (
+                coalesce(col("plant_downtime_hours"), lit(0.0))
+                / greatest(col("top_n"), lit(1))
+            ).alias("downtime_hours"),
+        )
+        .orderBy("material_id", "month_start_date")
     )

@@ -39,6 +39,7 @@ GOLD_ONLY_IMPORTS = [
     "date_format",
     "explode",
     "expr",
+    "greatest",
     "max as spark_max",
     "min as spark_min",
     "sequence",

@@ -37,7 +37,7 @@ ingest (bronze)
                (ldp_gold_transformations.ipynb)
                             │
                             ▼
-                    serve (14 materialized views)
+                    serve (16 materialized views)
 ```
 
 **Architecture:** Bronze (streaming) → Silver (materialized views) → Gold (materialized views)
@@ -269,6 +269,9 @@ Applies to both `ingest.production_orders` and `ingest.production_output`.
 | `production_trend_monthly` | `month_start_date` | `order_count`, `planned_quantity`, `actual_quantity` | Full history of non-cancelled `refined.production_orders` |
 | `machine_downtime_summary` | `plant_id`, `machine_name`, `reason` | `downtime_event_count`, `total_downtime_hours` | `refined.machine_downtime` + `refined.plants` |
 | `machine_downtime_monthly` | `plant_id`, `month_start_date`, `reason` | `downtime_event_count`, `total_downtime_hours` | Monthly rollup of `refined.machine_downtime` |
+| `inventory_monthly` | `material_id`, `month_start_date` | `year_month`, `inventory_on_hand` | Month-end `refined.inventory` per material |
+| `company_forecast_features_monthly` | `month_start_date` | `sales_order_count`, `sales_quantity`, `purchase_quantity`, `production_output_quantity`, `inventory_on_hand`, `downtime_hours` | `serve.sales_trend_monthly`, `serve.material_procurement_trend_monthly`, `serve.inventory_monthly`, `serve.machine_downtime_monthly` |
+| `forecast_features_monthly` | `material_id`, `month_start_date` | procurement + inventory + downtime columns for top SKUs | `serve.top_selling_materials`, `serve.material_procurement_trend_monthly`, `serve.inventory_monthly`, `serve.machine_downtime_monthly` |
 
 ### Dashboard mapping
 
@@ -289,6 +292,14 @@ Applies to both `ingest.production_orders` and `ingest.production_output`.
 | Production trend | `production_trend_monthly` | `year_month`, `order_count`, `planned_quantity`, `actual_quantity` |
 | Downtime by machine | `machine_downtime_summary` | `machine_name`, `reason`, `total_downtime_hours` |
 | Downtime trend | `machine_downtime_monthly` | `year_month`, `reason`, `total_downtime_hours` |
+
+### Forecasting mapping
+
+| Model input | Gold table | Column(s) |
+|-------------|------------|-----------|
+| Company forecast features | `company_forecast_features_monthly` | `sales_quantity`, `purchase_quantity`, `production_output_quantity`, `inventory_on_hand`, `downtime_hours` |
+| Material forecast features | `forecast_features_monthly` | `sales_quantity`, procurement + inventory + `downtime_hours` per top SKU |
+| Month-end inventory signal | `inventory_monthly` | `inventory_on_hand` |
 
 ---
 
