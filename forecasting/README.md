@@ -100,7 +100,7 @@ ORDER BY grain_id, metric_name;
 | `forecast_serve.*` | `jm_databricks_learning_ws.serve.*` |
 | `forecast_ml.*` | `jm_databricks_learning_ws.ml.*` |
 | `python -m forecasting.pipelines.run_all` | `notebooks/Sales Forecast Training.ipynb` |
-| `forecasting/notebooks/Local Sales Forecast Visualization.ipynb` | charts in training notebook + SQL on `ml.*` |
+| `forecasting/notebooks/Local Sales Forecast Visualization.ipynb` | `notebooks/Sales Forecast Visualization.ipynb` |
 
 ## Layout
 

@@ -328,6 +328,8 @@ Sales Forecast Training.ipynb  →  ml.*
 
 **MLflow experiment:** `/Shared/supply-chain/sales_forecast_prophet` (configurable in notebook)
 
+**Visualization:** `notebooks/Sales Forecast Visualization.ipynb` — read-only charts from `serve.*` + `ml.*` (no retraining)
+
 ---
 
 ## Validation steps
