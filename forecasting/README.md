@@ -62,6 +62,22 @@ Company models use multiplicative yearly seasonality. Material models use **addi
 
 ## Inspect outputs
 
+### Notebook (recommended)
+
+Open and **Run All** in:
+
+`forecasting/notebooks/Local Sales Forecast Visualization.ipynb`
+
+Includes charts similar to the Databricks notebook: historical trend, forecast + confidence band, holdout backtest, Prophet components, top-SKU forecasts, and exogenous driver panels.
+
+Use the project `.venv` as the Jupyter kernel.
+
+### SQL / terminal
+
+```bash
+python forecasting/notebooks/explore_forecasts.py
+```
+
 ```sql
 -- latest company forecast
 SELECT year_month, ROUND(yhat) AS forecast, ROUND(yhat_lower) AS lo, ROUND(yhat_upper) AS hi
@@ -87,5 +103,5 @@ forecasting/
 ├── features/            # downtime gen + gold builders
 ├── models/              # Prophet train / infer
 ├── pipelines/           # CLI entrypoint
-└── notebooks/           # optional exploration
+└── notebooks/           # visualization notebook + plot helpers
 ```
